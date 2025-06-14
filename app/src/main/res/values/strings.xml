@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">EconomyApp</string>
+
+    <string name="expense_title">Расходы сегодня</string>
+
+    <string name="income_title">Доходы сегодня</string>
+
+    <string name="account_title">Мой счет</string>
+    <string name="account_balance">Баланс</string>
+    <string name="account_currency">Валюта</string>
+
+    <string name="article_title">Мои статьи</string>
+    <string name="article_search">Найти статью</string>
+
+    <string name="settings_title">Настройки</string>
+
+    <string name="total">Всего</string>
+    <string name="rub">₽</string>
+
+    <string name="navbar_expenses">Расходы</string>
+    <string name="navbar_incomes">Доходы</string>
+    <string name="navbar_account">Счет</string>
+    <string name="navbar_articles">Статьи</string>
+    <string name="navbar_settings">Настройки</string>
 </resources>

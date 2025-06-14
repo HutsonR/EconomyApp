@@ -2,6 +2,17 @@ package com.backcube.economyapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val UltraGreen = Color(0xFF2AE881)
+val PointGreen = Color(0xFF2AE881)
+val LightGreen = Color(0xFFD4FAE6)
+val SurfaceMain = Color(0xFFFEF7FF)
+val SurfaceContainer = Color(0xFFF3EDF7)
+val DarkGray = Color(0XFFECE6F0)
+
+val TextTitle = Color(0xFF1D1B20)
+val TextSubtitle = Color(0xFF49454F)
+val DividerColor = Color(0xFFCAC4D0)
+
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
