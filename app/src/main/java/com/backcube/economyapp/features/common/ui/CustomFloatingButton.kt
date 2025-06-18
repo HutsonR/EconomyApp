@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -35,6 +36,7 @@ fun CustomFloatingButton(
             containerColor = colors.primary,
             contentColor = colors.onPrimary,
             shape = CircleShape,
+            elevation = FloatingActionButtonDefaults.elevation(0.dp),
             modifier = Modifier.size(56.dp)
         ) {
             Icon(

@@ -64,6 +64,6 @@ class SettingsViewModel @Inject constructor() :
         SettingsUiModel(
             name = "О программе",
             type = SettingType.LINK
-        ),
+        )
     )
 }

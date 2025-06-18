@@ -1,6 +1,7 @@
 package com.backcube.economyapp.data.remote.models.response.accounts
 
 import com.backcube.economyapp.domain.models.accounts.AccountHistoryResponseModel
+import com.backcube.economyapp.domain.utils.toCurrencyIsoCode
 
 data class AccountHistoryResponseApiModel(
     val accountId: Int,
@@ -13,7 +14,7 @@ data class AccountHistoryResponseApiModel(
 fun AccountHistoryResponseApiModel.toDomain() = AccountHistoryResponseModel(
     accountId = accountId,
     accountName = accountName,
-    currency = currency,
+    currency = currency.toCurrencyIsoCode(),
     currentBalance = currentBalance.toBigDecimal(),
     history = history.map { it.toDomain() }
 )

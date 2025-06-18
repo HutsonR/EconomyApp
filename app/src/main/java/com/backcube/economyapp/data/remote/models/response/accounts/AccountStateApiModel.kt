@@ -1,6 +1,7 @@
 package com.backcube.economyapp.data.remote.models.response.accounts
 
 import com.backcube.economyapp.domain.models.accounts.AccountStateModel
+import com.backcube.economyapp.domain.utils.toCurrencyIsoCode
 
 data class AccountStateApiModel(
     val id: Int,
@@ -13,5 +14,5 @@ fun AccountStateApiModel.toDomain() = AccountStateModel(
     id = id,
     name = name,
     balance = balance.toBigDecimal(),
-    currency = currency
+    currency = currency.toCurrencyIsoCode()
 )

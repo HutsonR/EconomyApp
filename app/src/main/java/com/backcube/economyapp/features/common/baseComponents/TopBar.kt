@@ -1,5 +1,6 @@
 package com.backcube.economyapp.features.common.baseComponents
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -83,7 +84,9 @@ fun CustomTopBar(
                 }
             }
         } else {
-            {}
+            {
+                Box(Modifier.size(48.dp))
+            }
         },
         actions = if (trailingIconPainter != null && onTrailingClick != null) {
             {
@@ -99,7 +102,9 @@ fun CustomTopBar(
                 }
             }
         } else {
-            {}
+            {
+                Box(Modifier.size(48.dp))
+            }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = backgroundColor,

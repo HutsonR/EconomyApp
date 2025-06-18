@@ -10,5 +10,4 @@ data class AccountHistoryModel(
     val newState: AccountStateModel,
     val changeTimestamp: Instant,
     val createdAt: Instant
-
 )

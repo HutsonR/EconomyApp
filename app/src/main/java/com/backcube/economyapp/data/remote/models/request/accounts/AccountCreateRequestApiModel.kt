@@ -11,5 +11,5 @@ data class AccountCreateRequestApiModel(
 fun AccountCreateRequestModel.toApi() = AccountCreateRequestApiModel(
     name = name,
     balance = balance.toPlainString(),
-    currency = currency
+    currency = currency.name
 )

@@ -7,16 +7,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
 import com.backcube.economyapp.domain.utils.formatAsWholeThousands
-import com.backcube.economyapp.domain.utils.toCurrency
 import com.backcube.economyapp.features.account.store.models.AccountEffect
 import com.backcube.economyapp.features.account.store.models.AccountIntent
 import com.backcube.economyapp.features.account.store.models.AccountState
@@ -32,7 +31,7 @@ fun AccountScreenRoot(
     navController: NavController,
     viewModel: AccountViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val effects = viewModel.effect
 
     Scaffold(
@@ -77,15 +76,15 @@ fun AccountScreen(
                     title = stringResource(R.string.account_balance),
                     leadingEmoji = "\uD83D\uDCB0",
                     isSmallItem = true,
-                    trailingText = state.item.balance.formatAsWholeThousands()
+                    trailingText = state.item.balance.formatAsWholeThousands(),
+                    currencyIsoCode = state.item.currency,
                 )
                 CustomListItem(
                     modifier = Modifier.background(LightGreen),
                     title = stringResource(R.string.account_currency),
                     isSmallItem = true,
                     showLeading = false,
-                    trailingText = state.item.currency.toCurrency(),
-                    showCurrency = false,
+                    currencyIsoCode = state.item.currency,
                     showSeparator = false
                 )
             }

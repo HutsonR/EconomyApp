@@ -9,6 +9,7 @@ import com.backcube.economyapp.domain.models.accounts.AccountResponseModel
 import com.backcube.economyapp.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.economyapp.domain.models.accounts.StatModel
 import com.backcube.economyapp.domain.repositories.AccountRepository
+import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -46,7 +47,7 @@ class FakeAccountRepositoryImpl @Inject constructor() : AccountRepository {
             id = 1,
             name = "Основной счёт",
             balance = BigDecimal("-12500.00"),
-            currency = "RUB",
+            currency = CurrencyIsoCode.RUB,
             incomeStats = listOf(
                 StatModel(
                     categoryId = 1,
@@ -76,7 +77,7 @@ class FakeAccountRepositoryImpl @Inject constructor() : AccountRepository {
             id = 2,
             name = "Копилка",
             balance = BigDecimal("70000.00"),
-            currency = "RUB",
+            currency = CurrencyIsoCode.RUB,
             incomeStats = listOf(
                 StatModel(
                     categoryId = 4,

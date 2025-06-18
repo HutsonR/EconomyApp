@@ -21,14 +21,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.backcube.economyapp.core.navigation.NavBarItem
 import com.backcube.economyapp.ui.theme.LightGreen
 import com.backcube.economyapp.ui.theme.UltraGreen
-
-data class NavBarItem(
-    val label: Int,
-    val icon: Int,
-    val route: String
-)
 
 @Composable
 fun BottomNavBar(

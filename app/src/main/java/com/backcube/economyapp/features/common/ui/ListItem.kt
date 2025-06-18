@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.backcube.economyapp.R
+import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import com.backcube.economyapp.ui.theme.LightGreen
 
 private val BASE_HEIGHT = 70.dp
@@ -50,25 +51,20 @@ fun CustomListItem(
     trailingSubText: String? = null,
     trailingContent: @Composable (() -> Unit)? = null,
     showTrailingIcon: Boolean = true,
-    showCurrency: Boolean = true,
+    currencyIsoCode: CurrencyIsoCode? = null,
     onItemClick: (() -> Unit)? = null
 ) {
     val colors = MaterialTheme.colorScheme
+    val finalHeight = resolveHeight(height, isSmallItem)
 
-    val finalHeight = when {
-        height != null -> height
-        isSmallItem -> SMALL_HEIGHT
-        else -> BASE_HEIGHT
-    }
+    val clickableModifier = if (onItemClick != null) Modifier.clickable { onItemClick() } else Modifier
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .height(finalHeight - 1.dp)
             .padding(bottom = 1.dp)
-            .then(
-                if (onItemClick != null) Modifier.clickable { onItemClick() } else Modifier
-            )
+            .then(clickableModifier)
     ) {
         Row(
             Modifier
@@ -76,6 +72,7 @@ fun CustomListItem(
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
             if (showLeading && leadingEmoji?.isBlank() != true) {
                 LeadingContent(
                     emoji = leadingEmoji,
@@ -85,65 +82,21 @@ fun CustomListItem(
                 Spacer(modifier = Modifier.width(16.dp))
             }
 
-            Column(
-                Modifier
+            MainContentColumn(
+                title = title,
+                subtitle = subtitle,
+                modifier = Modifier
                     .weight(1f)
                     .padding(end = 16.dp)
-            ) {
-                Text(
-                    text = title,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = colors.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                subtitle?.let {
-                    Text(
-                        text = it,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.W400,
-                        color = colors.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            }
+            )
 
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Center
-            ) {
-                if (!trailingText.isNullOrBlank()) {
-                    val currency = if (showCurrency) " ₽" else ""
-                    Text(
-                        text = "$trailingText$currency",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = colors.onSurface
-                    )
-                }
-                if (!trailingSubText.isNullOrBlank()) {
-                    Text(
-                        text = trailingSubText,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = colors.onSurface
-                    )
-                }
-            }
-
-            if (showTrailingIcon) {
-                Spacer(modifier = Modifier.width(16.dp))
-                if (trailingContent != null) {
-                    trailingContent.invoke()
-                } else {
-                    Image(
-                        painter = painterResource(R.drawable.ic_more),
-                        contentDescription = null
-                    )
-                }
-            }
+            TrailingContentColumn(
+                trailingText = trailingText,
+                trailingSubText = trailingSubText,
+                trailingContent = trailingContent,
+                currency = currencyIsoCode?.toCurrency(),
+                showTrailingIcon = showTrailingIcon
+            )
         }
 
         if (showSeparator) {
@@ -161,30 +114,7 @@ private fun LeadingContent(
     title: String,
     background: Color
 ) {
-    val text = emoji ?: run {
-        val words = title
-            .trim()
-            .split("\\s+".toRegex())
-            .filter { it.isNotEmpty() }
-        when {
-            words.size >= 2 -> {
-                val first = words[0].firstOrNull()?.toString().orEmpty()
-                val second = words[1].firstOrNull()?.toString().orEmpty()
-                (first + second).uppercase()
-            }
-            words.size == 1 -> {
-                val w = words[0]
-                if (w.length >= 2) {
-                    w.substring(0, 2).uppercase()
-                } else {
-                    w.firstOrNull()?.toString()?.uppercase().orEmpty()
-                }
-            }
-            else -> {
-                ""
-            }
-        }
-    }
+    val text = emoji ?: getInitialsFromTitle(title)
 
     Box(
         modifier = Modifier
@@ -203,6 +133,111 @@ private fun LeadingContent(
     }
 }
 
+@Composable
+private fun MainContentColumn(
+    title: String,
+    subtitle: String?,
+    modifier: Modifier
+) {
+    val colors = MaterialTheme.colorScheme
+    Column(modifier = modifier) {
+        Text(
+            text = title,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W400,
+            color = colors.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        subtitle?.let {
+            Text(
+                text = it,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.W400,
+                color = colors.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+private fun TrailingContentColumn(
+    trailingText: String?,
+    trailingSubText: String?,
+    trailingContent: @Composable (() -> Unit)?,
+    currency: String?,
+    showTrailingIcon: Boolean
+) {
+    val colors = MaterialTheme.colorScheme
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Center
+    ) {
+        if (!trailingText.isNullOrBlank() || currency != null) {
+            val displayText = when {
+                trailingText.isNullOrBlank() -> currency ?: ""
+                currency.isNullOrBlank() -> trailingText
+                else -> "$trailingText $currency"
+            }
+
+            Text(
+                text = displayText,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W400,
+                color = colors.onSurface
+            )
+        }
+        if (!trailingSubText.isNullOrBlank()) {
+            Text(
+                text = trailingSubText,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W400,
+                color = colors.onSurface
+            )
+        }
+    }
+
+    if (showTrailingIcon) {
+        Spacer(modifier = Modifier.width(16.dp))
+        trailingContent?.invoke() ?: Image(
+            painter = painterResource(R.drawable.ic_more),
+            contentDescription = null
+        )
+    }
+}
+
+private fun getInitialsFromTitle(title: String): String {
+    val words = title
+        .trim()
+        .split("\\s+".toRegex())
+        .filter { it.isNotEmpty() }
+
+    return when {
+        words.size >= 2 -> {
+            val first = words[0].firstOrNull()?.toString().orEmpty()
+            val second = words[1].firstOrNull()?.toString().orEmpty()
+            (first + second).uppercase()
+        }
+
+        words.size == 1 -> {
+            val w = words[0]
+            if (w.length >= 2) {
+                w.substring(0, 2).uppercase()
+            } else {
+                w.firstOrNull()?.toString()?.uppercase().orEmpty()
+            }
+        }
+
+        else -> ""
+    }
+}
+
+private fun resolveHeight(height: Dp?, isSmallItem: Boolean): Dp {
+    return height ?: if (isSmallItem) SMALL_HEIGHT else BASE_HEIGHT
+}
+
 // ===== Previews =====
 
 @Preview(showBackground = true)
@@ -211,7 +246,8 @@ fun Preview_Default() {
     CustomListItem(
         title = "На собачку",
         leadingEmoji = "👤",
-        trailingText = "100 000"
+        trailingText = "100 000",
+        currencyIsoCode = CurrencyIsoCode.RUB
     )
 }
 
@@ -222,7 +258,8 @@ fun Preview_DefaultWithSubTrailingText() {
         title = "На собачку",
         leadingEmoji = "👤",
         trailingText = "100 000",
-        trailingSubText = "22:05"
+        trailingSubText = "22:05",
+        currencyIsoCode = CurrencyIsoCode.RUB
     )
 }
 
@@ -240,22 +277,23 @@ fun Preview_NoSeparator() {
 
 @Preview(showBackground = true)
 @Composable
-fun Preview_NoLeading() {
+fun Preview_NoLeading_WithUSD() {
     CustomListItem(
         title = "На собачку",
         showLeading = false,
         trailingText = "5",
+        currencyIsoCode = CurrencyIsoCode.USD
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun Preview_WithSubtitleAndIcon() {
+fun Preview_WithSubtitleAndIcon_WithCurrencyOnly() {
     CustomListItem(
         title = "Тутуту",
         subtitle = "Энни",
         leadingEmoji = null,
-        trailingText = "5"
+        currencyIsoCode = CurrencyIsoCode.RUB
     )
 }
 
@@ -266,6 +304,7 @@ fun Preview_WithSubtitleAndIconAndEllipsize() {
         title = "На собачку, а может и кошку, а может вообще нет",
         subtitle = "Энни или не Энни? Вот в чем вопрос длиннный предлинный",
         leadingEmoji = null,
-        trailingText = "5"
+        trailingText = "5",
+        currencyIsoCode = CurrencyIsoCode.RUB
     )
 }

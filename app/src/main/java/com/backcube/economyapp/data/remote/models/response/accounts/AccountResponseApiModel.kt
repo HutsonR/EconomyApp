@@ -1,6 +1,7 @@
 package com.backcube.economyapp.data.remote.models.response.accounts
 
 import com.backcube.economyapp.domain.models.accounts.AccountResponseModel
+import com.backcube.economyapp.domain.utils.toCurrencyIsoCode
 import java.time.Instant
 
 data class AccountResponseApiModel(
@@ -18,7 +19,7 @@ fun AccountResponseApiModel.toDomain() = AccountResponseModel(
     id = id,
     name = name,
     balance = balance.toBigDecimal(),
-    currency = currency,
+    currency = currency.toCurrencyIsoCode(),
     incomeStats = incomeStats.map { it.toDomain() },
     expenseStats = expenseStats.map { it.toDomain() },
     createdAt = Instant.parse(createdAt),
