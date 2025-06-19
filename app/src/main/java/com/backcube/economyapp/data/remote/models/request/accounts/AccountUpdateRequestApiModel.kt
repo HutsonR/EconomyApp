@@ -11,5 +11,5 @@ data class AccountUpdateRequestApiModel(
 fun AccountUpdateRequestModel.toApi() = AccountUpdateRequestApiModel(
     name = name,
     balance = balance.toPlainString(),
-    currency = currency
+    currency = currency.name
 )

@@ -6,6 +6,7 @@ import com.backcube.economyapp.domain.models.categories.CategoryModel
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
 import com.backcube.economyapp.domain.repositories.TransactionRepository
+import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -49,7 +50,7 @@ class FakeTransactionRepositoryImpl @Inject constructor(): TransactionRepository
                 id = 1,
                 name = "Основной счёт",
                 balance = BigDecimal("1000.00"),
-                currency = "RUB"
+                currency = CurrencyIsoCode.RUB
             ),
             category = CategoryModel(
                 id = 1,
@@ -69,7 +70,7 @@ class FakeTransactionRepositoryImpl @Inject constructor(): TransactionRepository
                 id = 1,
                 name = "Основной счёт",
                 balance = BigDecimal("1500.00"),
-                currency = "RUB"
+                currency = CurrencyIsoCode.RUB
             ),
             category = CategoryModel(
                 id = 2,
@@ -89,7 +90,7 @@ class FakeTransactionRepositoryImpl @Inject constructor(): TransactionRepository
                 id = 1,
                 name = "Основной счёт",
                 balance = BigDecimal("1200.00"),
-                currency = "RUB"
+                currency = CurrencyIsoCode.RUB
             ),
             category = CategoryModel(
                 id = 3,
@@ -109,7 +110,7 @@ class FakeTransactionRepositoryImpl @Inject constructor(): TransactionRepository
                 id = 1,
                 name = "Основной счёт",
                 balance = BigDecimal("1050.00"),
-                currency = "RUB"
+                currency = CurrencyIsoCode.RUB
             ),
             category = CategoryModel(
                 id = 4,
@@ -129,7 +130,7 @@ class FakeTransactionRepositoryImpl @Inject constructor(): TransactionRepository
                 id = 1,
                 name = "Основной счёт",
                 balance = BigDecimal("850.00"),
-                currency = "RUB"
+                currency = CurrencyIsoCode.RUB
             ),
             category = CategoryModel(
                 id = 5,
@@ -149,7 +150,7 @@ class FakeTransactionRepositoryImpl @Inject constructor(): TransactionRepository
                 id = 1,
                 name = "Основной счёт",
                 balance = BigDecimal("450.00"),
-                currency = "RUB"
+                currency = CurrencyIsoCode.RUB
             ),
             category = CategoryModel(
                 id = 6,
@@ -169,7 +170,7 @@ class FakeTransactionRepositoryImpl @Inject constructor(): TransactionRepository
                 id = 1,
                 name = "Основной счёт",
                 balance = BigDecimal("1150.00"),
-                currency = "RUB"
+                currency = CurrencyIsoCode.RUB
             ),
             category = CategoryModel(
                 id = 7,

@@ -9,12 +9,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
 import com.backcube.economyapp.domain.utils.formatAsWholeThousands
@@ -33,7 +33,7 @@ fun IncomesScreenRoot(
     navController: NavController,
     viewModel: IncomeViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val effects = viewModel.effect
 
     Scaffold(
@@ -78,7 +78,8 @@ fun IncomeScreen(
                     isSmallItem = true,
                     showLeading = false,
                     showTrailingIcon = false,
-                    trailingText = state.totalSum.formatAsWholeThousands()
+                    trailingText = state.totalSum.formatAsWholeThousands(),
+                    currencyIsoCode = state.items.firstOrNull()?.account?.currency
                 )
             }
 
@@ -89,7 +90,8 @@ fun IncomeScreen(
                 CustomListItem(
                     title = item.category.name,
                     showLeading = false,
-                    trailingText = item.amount.formatAsWholeThousands()
+                    trailingText = item.amount.formatAsWholeThousands(),
+                    currencyIsoCode = item.account.currency
                 )
             }
         }

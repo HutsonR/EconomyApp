@@ -2,6 +2,7 @@ package com.backcube.economyapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val White = Color(0xFFFFFFFF)
 val UltraGreen = Color(0xFF2AE881)
 val PointGreen = Color(0xFF2AE881)
 val LightGreen = Color(0xFFD4FAE6)

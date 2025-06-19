@@ -33,7 +33,6 @@ fun CustomTextInput(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    label: String? = null,
     placeholder: String? = null,
     enabled: Boolean = true,
     singleLine: Boolean = true,
@@ -45,15 +44,6 @@ fun CustomTextInput(
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        if (!label.isNullOrEmpty()) {
-            Text(
-                text = label,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .padding(bottom = 4.dp, start = 20.dp)
-            )
-        }
         TextField(
             value = value,
             onValueChange = { new ->
@@ -97,7 +87,6 @@ fun PreviewCustomTextInput() {
     CustomTextInput(
         value = text,
         onValueChange = { text = it },
-        label = "Введите логин",
         placeholder = "Username",
         colors = OutlinedTextFieldDefaults.colors(
             // Цвет текста
