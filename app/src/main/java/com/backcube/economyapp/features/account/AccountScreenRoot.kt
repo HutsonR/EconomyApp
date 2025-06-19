@@ -24,6 +24,7 @@ import com.backcube.economyapp.features.common.ui.CustomFloatingButton
 import com.backcube.economyapp.features.common.ui.CustomListItem
 import com.backcube.economyapp.features.common.ui.ShowProgressIndicator
 import com.backcube.economyapp.ui.theme.LightGreen
+import com.backcube.economyapp.ui.theme.White
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -74,6 +75,7 @@ fun AccountScreen(
                 CustomListItem(
                     modifier = Modifier.background(LightGreen),
                     title = stringResource(R.string.account_balance),
+                    leadingBackground = White,
                     leadingEmoji = "\uD83D\uDCB0",
                     isSmallItem = true,
                     trailingText = state.item.balance.formatAsWholeThousands(),
