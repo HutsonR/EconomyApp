@@ -2,7 +2,8 @@ package com.backcube.economyapp.features.expenses
 
 import androidx.lifecycle.viewModelScope
 import com.backcube.economyapp.core.BaseViewModel
-import com.backcube.economyapp.domain.repositories.TransactionRepository
+import com.backcube.economyapp.domain.usecases.api.AccountUseCase
+import com.backcube.economyapp.domain.usecases.api.TransactionUseCase
 import com.backcube.economyapp.features.expenses.store.models.ExpenseEffect
 import com.backcube.economyapp.features.expenses.store.models.ExpenseIntent
 import com.backcube.economyapp.features.expenses.store.models.ExpenseState
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExpensesViewModel @Inject constructor(
-    private val transactionRepository: TransactionRepository
+    private val transactionUseCase: TransactionUseCase,
+    private val accountUseCase: AccountUseCase
 ) : BaseViewModel<ExpenseState, ExpenseEffect>(ExpenseState()) {
 
     init {
@@ -23,8 +25,8 @@ class ExpensesViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 modifyState { copy(isLoading = true) }
-                val result = transactionRepository.getAccountTransactions(
-                    accountId = 1,
+                val result = transactionUseCase.getAccountTransactions(
+                    accountId = accountUseCase.getAccounts().firstOrNull()?.id ?: 1,
                     startDate = null,
                     endDate = null
                 ).filter { !it.category.isIncome }
@@ -38,6 +40,7 @@ class ExpensesViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                effect(ExpenseEffect.ShowClientError)
             } finally {
                 modifyState { copy(isLoading = false) }
             }
@@ -45,9 +48,8 @@ class ExpensesViewModel @Inject constructor(
     }
 
     fun handleIntent(intent: ExpenseIntent) {
-        // todo Дальше больше
         when(intent) {
-            else -> Unit
+            ExpenseIntent.GoToHistory -> effect(ExpenseEffect.NavigateToHistory)
         }
     }
 }

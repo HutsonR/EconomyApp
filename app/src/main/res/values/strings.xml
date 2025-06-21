@@ -14,8 +14,21 @@
 
     <string name="settings_title">Настройки</string>
 
+    <string name="history_title">Моя история</string>
+
     <string name="total">Всего</string>
     <string name="rub">₽</string>
+    <string name="start">Начало</string>
+    <string name="end">Конец</string>
+    <string name="amount">Сумма</string>
+    <string name="clear">Очистить</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok_big">ОК</string>
+    <string name="no_internet_connection">Нет подключения к интернету</string>
+    <string name="understand">Понятно</string>
+
+    <string name="alert_base_title">Ошибка</string>
+    <string name="alert_base_description">Произошла непредвиденная ошибка. Попробуйте, пожалуйста, позже</string>
 
     <string name="navbar_expenses">Расходы</string>
     <string name="navbar_incomes">Доходы</string>

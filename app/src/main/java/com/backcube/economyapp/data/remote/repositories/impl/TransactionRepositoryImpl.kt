@@ -3,11 +3,13 @@ package com.backcube.economyapp.data.remote.repositories.impl
 import com.backcube.economyapp.data.remote.api.TransactionsApi
 import com.backcube.economyapp.data.remote.models.request.transactions.toApiModel
 import com.backcube.economyapp.data.remote.models.response.transactions.toDomain
+import com.backcube.economyapp.data.remote.repositories.mappers.toApiDate
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
 import com.backcube.economyapp.domain.repositories.TransactionRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.Instant
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
@@ -34,10 +36,14 @@ class TransactionRepositoryImpl @Inject constructor(
 
     override suspend fun getAccountTransactions(
         accountId: Int,
-        startDate: String?,
-        endDate: String?
+        startDate: Instant?,
+        endDate: Instant?
     ): List<TransactionResponseModel> = withContext(Dispatchers.IO) {
-       transactionsApi.getAccountTransactions(accountId, startDate, endDate).map { it.toDomain() }
+       transactionsApi.getAccountTransactions(
+           accountId,
+           startDate?.toApiDate(),
+           endDate?.toApiDate()
+       ).map { it.toDomain() }
     }
 
 }

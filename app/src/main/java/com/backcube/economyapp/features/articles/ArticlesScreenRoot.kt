@@ -27,7 +27,9 @@ import com.backcube.economyapp.features.articles.store.models.ArticleState
 import com.backcube.economyapp.features.common.baseComponents.CustomTopBar
 import com.backcube.economyapp.features.common.ui.CustomListItem
 import com.backcube.economyapp.features.common.ui.CustomTextInput
+import com.backcube.economyapp.features.common.ui.ShowAlertDialog
 import com.backcube.economyapp.features.common.ui.ShowProgressIndicator
+import com.backcube.economyapp.features.common.utils.CollectEffect
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -67,6 +69,22 @@ fun ArticlesScreen(
 ) {
     val colors = MaterialTheme.colorScheme
     var query by remember { mutableStateOf("") }
+    var isAlertVisible by remember { mutableStateOf(false) }
+
+    CollectEffect(effects) { effect ->
+        when (effect) {
+            ArticleEffect.ShowClientError -> isAlertVisible = true
+        }
+    }
+
+    if (isAlertVisible) {
+        ShowAlertDialog(
+            onActionButtonClick = {
+                isAlertVisible = false
+            }
+        )
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()

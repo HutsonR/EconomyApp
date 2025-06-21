@@ -10,6 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -17,11 +20,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.navigation.Screens
+import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import com.backcube.economyapp.domain.utils.formatAsWholeThousands
 import com.backcube.economyapp.features.common.baseComponents.CustomTopBar
 import com.backcube.economyapp.features.common.ui.CustomFloatingButton
 import com.backcube.economyapp.features.common.ui.CustomListItem
+import com.backcube.economyapp.features.common.ui.ShowAlertDialog
 import com.backcube.economyapp.features.common.ui.ShowProgressIndicator
+import com.backcube.economyapp.features.common.utils.CollectEffect
 import com.backcube.economyapp.features.income.store.models.IncomeEffect
 import com.backcube.economyapp.features.income.store.models.IncomeIntent
 import com.backcube.economyapp.features.income.store.models.IncomeState
@@ -41,7 +48,9 @@ fun IncomesScreenRoot(
             CustomTopBar(
                 title = stringResource(R.string.income_title),
                 trailingIconPainter = painterResource(R.drawable.ic_history),
-                onTrailingClick = {},
+                onTrailingClick = {
+                    viewModel.handleIntent(IncomeIntent.GoToHistory)
+                },
                 backgroundColor = MaterialTheme.colorScheme.primary
             )
         }
@@ -64,6 +73,23 @@ fun IncomeScreen(
     effects: Flow<IncomeEffect>,
     onIntent: (IncomeIntent) -> Unit
 ) {
+    var isAlertVisible by remember { mutableStateOf(false) }
+
+    CollectEffect(effects) { effect ->
+        when (effect) {
+            IncomeEffect.NavigateToHistory -> navController.navigate(Screens.HistoryScreen.createRoute(true))
+            IncomeEffect.ShowClientError -> isAlertVisible = true
+        }
+    }
+
+    if (isAlertVisible) {
+        ShowAlertDialog(
+            onActionButtonClick = {
+                isAlertVisible = false
+            }
+        )
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -79,7 +105,7 @@ fun IncomeScreen(
                     showLeading = false,
                     showTrailingIcon = false,
                     trailingText = state.totalSum.formatAsWholeThousands(),
-                    currencyIsoCode = state.items.firstOrNull()?.account?.currency
+                    currencyIsoCode = state.items.firstOrNull()?.account?.currency ?: CurrencyIsoCode.RUB
                 )
             }
 
@@ -89,7 +115,8 @@ fun IncomeScreen(
             ) { item ->
                 CustomListItem(
                     title = item.category.name,
-                    showLeading = false,
+                    subtitle = item.comment,
+                    leadingEmoji = item.category.emoji,
                     trailingText = item.amount.formatAsWholeThousands(),
                     currencyIsoCode = item.account.currency
                 )
