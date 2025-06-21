@@ -8,6 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -22,7 +25,9 @@ import com.backcube.economyapp.features.account.store.models.AccountState
 import com.backcube.economyapp.features.common.baseComponents.CustomTopBar
 import com.backcube.economyapp.features.common.ui.CustomFloatingButton
 import com.backcube.economyapp.features.common.ui.CustomListItem
+import com.backcube.economyapp.features.common.ui.ShowAlertDialog
 import com.backcube.economyapp.features.common.ui.ShowProgressIndicator
+import com.backcube.economyapp.features.common.utils.CollectEffect
 import com.backcube.economyapp.ui.theme.LightGreen
 import com.backcube.economyapp.ui.theme.White
 import kotlinx.coroutines.flow.Flow
@@ -63,6 +68,22 @@ fun AccountScreen(
     effects: Flow<AccountEffect>,
     onIntent: (AccountIntent) -> Unit
 ) {
+    var isAlertVisible by remember { mutableStateOf(false) }
+
+    CollectEffect(effects) { effect ->
+        when (effect) {
+            AccountEffect.ShowClientError -> isAlertVisible = true
+        }
+    }
+
+    if (isAlertVisible) {
+        ShowAlertDialog(
+            onActionButtonClick = {
+                isAlertVisible = false
+            }
+        )
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()

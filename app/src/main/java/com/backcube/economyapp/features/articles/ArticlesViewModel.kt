@@ -2,7 +2,7 @@ package com.backcube.economyapp.features.articles
 
 import androidx.lifecycle.viewModelScope
 import com.backcube.economyapp.core.BaseViewModel
-import com.backcube.economyapp.domain.repositories.CategoryRepository
+import com.backcube.economyapp.domain.usecases.api.CategoryUseCase
 import com.backcube.economyapp.features.articles.store.models.ArticleEffect
 import com.backcube.economyapp.features.articles.store.models.ArticleIntent
 import com.backcube.economyapp.features.articles.store.models.ArticleState
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArticlesViewModel @Inject constructor(
-    private val categoryRepository: CategoryRepository
+    private val categoryUseCase: CategoryUseCase
 ) : BaseViewModel<ArticleState, ArticleEffect>(ArticleState()) {
 
     init {
@@ -23,7 +23,7 @@ class ArticlesViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 modifyState { copy(isLoading = true) }
-                val result = categoryRepository.getCategories()
+                val result = categoryUseCase.getCategories()
 
                 modifyState {
                     copy(
@@ -32,6 +32,7 @@ class ArticlesViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                effect(ArticleEffect.ShowClientError)
             } finally {
                 modifyState { copy(isLoading = false) }
             }
@@ -39,7 +40,6 @@ class ArticlesViewModel @Inject constructor(
     }
 
     fun handleIntent(intent: ArticleIntent) {
-        // todo Дальше больше
         when(intent) {
             is ArticleIntent.OnSearchQuery -> modifyState { copy(searchQuery = intent.text) }
         }

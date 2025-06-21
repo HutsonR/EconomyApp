@@ -1,8 +1,8 @@
 package com.backcube.economyapp.data.remote.di
 
-import com.backcube.economyapp.data.remote.repositories.fake.FakeAccountRepositoryImpl
-import com.backcube.economyapp.data.remote.repositories.fake.FakeCategoryRepositoryImpl
-import com.backcube.economyapp.data.remote.repositories.fake.FakeTransactionRepositoryImpl
+import com.backcube.economyapp.data.remote.repositories.impl.AccountRepositoryImpl
+import com.backcube.economyapp.data.remote.repositories.impl.CategoryRepositoryImpl
+import com.backcube.economyapp.data.remote.repositories.impl.TransactionRepositoryImpl
 import com.backcube.economyapp.domain.repositories.AccountRepository
 import com.backcube.economyapp.domain.repositories.CategoryRepository
 import com.backcube.economyapp.domain.repositories.TransactionRepository
@@ -16,12 +16,12 @@ import dagger.hilt.components.SingletonComponent
 interface RepositoryModule {
 
     @Binds
-    fun bindAccountRepository(fakeAccountRepositoryImpl: FakeAccountRepositoryImpl): AccountRepository
+    fun bindAccountRepository(accountRepositoryImpl: AccountRepositoryImpl): AccountRepository
 
     @Binds
-    fun bindCategoryRepository(fakeCategoryRepositoryImpl: FakeCategoryRepositoryImpl): CategoryRepository
+    fun bindCategoryRepository(categoryRepositoryImpl: CategoryRepositoryImpl): CategoryRepository
 
     @Binds
-    fun bindTransactionRepository(fakeTransactionRepositoryImpl: FakeTransactionRepositoryImpl): TransactionRepository
+    fun bindTransactionRepository(transactionRepositoryImpl: TransactionRepositoryImpl): TransactionRepository
 
 }

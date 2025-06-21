@@ -36,8 +36,8 @@ class FakeTransactionRepositoryImpl @Inject constructor(): TransactionRepository
 
     override suspend fun getAccountTransactions(
         accountId: Int,
-        startDate: String?,
-        endDate: String?
+        startDate: Instant?,
+        endDate: Instant?
     ): List<TransactionResponseModel> = withContext(Dispatchers.IO) {
         delay(LOADING_DELAY)
         return@withContext transactions

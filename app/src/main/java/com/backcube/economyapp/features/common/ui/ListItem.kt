@@ -149,9 +149,9 @@ private fun MainContentColumn(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        subtitle?.let {
+        if (!subtitle.isNullOrBlank()) {
             Text(
-                text = it,
+                text = subtitle,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.W400,
                 color = colors.onSurfaceVariant,

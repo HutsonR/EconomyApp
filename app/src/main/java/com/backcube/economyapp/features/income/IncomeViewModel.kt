@@ -2,7 +2,8 @@ package com.backcube.economyapp.features.income
 
 import androidx.lifecycle.viewModelScope
 import com.backcube.economyapp.core.BaseViewModel
-import com.backcube.economyapp.domain.repositories.TransactionRepository
+import com.backcube.economyapp.domain.usecases.api.AccountUseCase
+import com.backcube.economyapp.domain.usecases.api.TransactionUseCase
 import com.backcube.economyapp.features.income.store.models.IncomeEffect
 import com.backcube.economyapp.features.income.store.models.IncomeIntent
 import com.backcube.economyapp.features.income.store.models.IncomeState
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IncomeViewModel @Inject constructor(
-    private val transactionRepository: TransactionRepository
+    private val transactionUseCase: TransactionUseCase,
+    private val accountUseCase: AccountUseCase
 ) : BaseViewModel<IncomeState, IncomeEffect>(IncomeState()) {
 
     init {
@@ -23,8 +25,8 @@ class IncomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 modifyState { copy(isLoading = true) }
-                val result = transactionRepository.getAccountTransactions(
-                    accountId = 1,
+                val result = transactionUseCase.getAccountTransactions(
+                    accountId = accountUseCase.getAccounts().firstOrNull()?.id ?: 1,
                     startDate = null,
                     endDate = null
                 ).filter { it.category.isIncome }
@@ -38,6 +40,7 @@ class IncomeViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                effect(IncomeEffect.ShowClientError)
             } finally {
                 modifyState { copy(isLoading = false) }
             }
@@ -45,9 +48,8 @@ class IncomeViewModel @Inject constructor(
     }
 
     fun handleIntent(intent: IncomeIntent) {
-        // todo Дальше больше
         when(intent) {
-            else -> Unit
+            IncomeIntent.GoToHistory -> effect(IncomeEffect.NavigateToHistory)
         }
     }
 }

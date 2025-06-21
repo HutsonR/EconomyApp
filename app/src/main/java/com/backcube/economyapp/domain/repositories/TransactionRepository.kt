@@ -2,6 +2,7 @@ package com.backcube.economyapp.domain.repositories
 
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
+import java.time.Instant
 
 interface TransactionRepository {
     /**
@@ -45,7 +46,7 @@ interface TransactionRepository {
      * */
     suspend fun getAccountTransactions(
         accountId: Int,
-        startDate: String?,
-        endDate: String?
+        startDate: Instant?,
+        endDate: Instant?
     ): List<TransactionResponseModel>
 }
