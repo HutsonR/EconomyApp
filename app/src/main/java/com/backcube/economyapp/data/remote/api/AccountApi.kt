@@ -5,6 +5,7 @@ import com.backcube.economyapp.data.remote.models.request.accounts.AccountUpdate
 import com.backcube.economyapp.data.remote.models.response.accounts.AccountApiModel
 import com.backcube.economyapp.data.remote.models.response.accounts.AccountHistoryResponseApiModel
 import com.backcube.economyapp.data.remote.models.response.accounts.AccountResponseApiModel
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -17,7 +18,7 @@ interface AccountApi {
      * Возвращает список всех счетов текущего пользователя
      * */
     @GET("accounts")
-    suspend fun getAccounts(): List<AccountApiModel>
+    suspend fun getAccounts(): Response<List<AccountApiModel>>
 
     /**
      * Создает новый счет для текущего пользователя
@@ -25,7 +26,7 @@ interface AccountApi {
      * @param request See [AccountCreateRequestApiModel]
      * */
     @POST("accounts")
-    suspend fun createAccount(@Body request: AccountCreateRequestApiModel): AccountApiModel
+    suspend fun createAccount(@Body request: AccountCreateRequestApiModel): Response<AccountApiModel>
 
     /**
      * Возвращает информацию о конкретном счете, включая статистику
@@ -33,7 +34,7 @@ interface AccountApi {
      * @param id ID счета
      * */
     @GET("accounts/{id}")
-    suspend fun getAccountById(@Path("id") id: Int): AccountResponseApiModel?
+    suspend fun getAccountById(@Path("id") id: Int): Response<AccountResponseApiModel?>
 
     /**
      * Обновляет данные существующего счета
@@ -45,7 +46,7 @@ interface AccountApi {
     suspend fun updateAccount(
         @Path("id") id: Int,
         @Body request: AccountUpdateRequestApiModel
-    ): AccountApiModel
+    ): Response<AccountApiModel>
 
     /**
      * Возвращает историю изменений баланса и других параметров счета, произведенных вне транзакций (при создании или изменении счета)
@@ -53,6 +54,6 @@ interface AccountApi {
      * @param id ID счета
      * */
     @GET("accounts/{id}/history")
-    suspend fun getAccountHistory(@Path("id") id: Int): AccountHistoryResponseApiModel
+    suspend fun getAccountHistory(@Path("id") id: Int): Response<AccountHistoryResponseApiModel>
 
 }

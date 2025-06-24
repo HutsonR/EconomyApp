@@ -3,6 +3,7 @@ package com.backcube.economyapp.domain.retry
 import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 class RetryHandler @Inject constructor(
     private val retryPolicy: RetryPolicy
@@ -17,11 +18,12 @@ class RetryHandler @Inject constructor(
             try {
                 return block()
             } catch (e: Exception) {
+                if (e is CancellationException) throw e
+
                 lastException = e
                 val isServerError = (e as? HttpException)?.code() in 500..599
-                if (!isServerError) {
-                    throw e
-                }
+                if (!isServerError) throw e
+
                 retryCount++
                 delay(retryPolicy.retryInterval)
             }

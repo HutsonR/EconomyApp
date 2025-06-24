@@ -18,15 +18,14 @@ interface TransactionsApi {
      * @param request see [TransactionRequestApiModel]
      * */
     @POST("transactions")
-    suspend fun createTransaction(@Body request: TransactionRequestApiModel): TransactionResponseApiModel
-
+    suspend fun createTransaction(@Body request: TransactionRequestApiModel): Response<TransactionResponseApiModel>
     /**
      * Возвращает детальную информацию о транзакции
      *
      * @param id ID транзакции
      * */
     @GET("transactions/{id}")
-    suspend fun getTransactionById(@Path("id") id: Int): TransactionResponseApiModel
+    suspend fun getTransactionById(@Path("id") id: Int): Response<TransactionResponseApiModel>
 
     /**
      * Обновляет существующую транзакцию
@@ -38,7 +37,7 @@ interface TransactionsApi {
     suspend fun updateTransaction(
         @Path("id") id: Int,
         @Body request: TransactionRequestApiModel
-    ): TransactionResponseApiModel
+    ): Response<TransactionResponseApiModel>
 
     /**
      * Удаляет транзакцию с возможностью возврата средств на счет
@@ -60,5 +59,5 @@ interface TransactionsApi {
         @Path("accountId") accountId: Int,
         @Query("startDate") startDate: String?,
         @Query("endDate") endDate: String?
-    ): List<TransactionResponseApiModel>
+    ): Response<List<TransactionResponseApiModel>>
 }
