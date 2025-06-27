@@ -4,6 +4,17 @@ import com.backcube.economyapp.domain.models.accounts.AccountModel
 import com.backcube.economyapp.domain.utils.toCurrencyIsoCode
 import java.time.Instant
 
+/**
+ * Основная модель счета
+ *
+ * @property id ID счета
+ * @property userId ID пользователя, которому принадлежит счет
+ * @property name Название счета
+ * @property balance Текущий баланс
+ * @property currency Валюта счета
+ * @property createdAt Дата создания
+ * @property updatedAt Дата последнего обновления
+ */
 data class AccountApiModel(
     val id: Int,
     val userId: Int,

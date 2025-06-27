@@ -21,15 +21,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
+import com.backcube.economyapp.core.ui.components.CustomListItem
+import com.backcube.economyapp.core.ui.components.CustomTextInput
+import com.backcube.economyapp.core.ui.components.ShowAlertDialog
+import com.backcube.economyapp.core.ui.components.ShowProgressIndicator
+import com.backcube.economyapp.core.ui.utils.CollectEffect
 import com.backcube.economyapp.features.articles.store.models.ArticleEffect
 import com.backcube.economyapp.features.articles.store.models.ArticleIntent
 import com.backcube.economyapp.features.articles.store.models.ArticleState
-import com.backcube.economyapp.features.common.baseComponents.CustomTopBar
-import com.backcube.economyapp.features.common.ui.CustomListItem
-import com.backcube.economyapp.features.common.ui.CustomTextInput
-import com.backcube.economyapp.features.common.ui.ShowAlertDialog
-import com.backcube.economyapp.features.common.ui.ShowProgressIndicator
-import com.backcube.economyapp.features.common.utils.CollectEffect
 import kotlinx.coroutines.flow.Flow
 
 @Composable

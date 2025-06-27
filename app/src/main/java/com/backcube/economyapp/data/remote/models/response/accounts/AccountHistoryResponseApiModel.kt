@@ -3,6 +3,15 @@ package com.backcube.economyapp.data.remote.models.response.accounts
 import com.backcube.economyapp.domain.models.accounts.AccountHistoryResponseModel
 import com.backcube.economyapp.domain.utils.toCurrencyIsoCode
 
+/**
+ * Ответ API с историей изменений счета
+ *
+ * @property accountId ID счета
+ * @property accountName Название счета
+ * @property currency Валюта счета
+ * @property currentBalance Текущий баланс
+ * @property history Список изменений счета
+ */
 data class AccountHistoryResponseApiModel(
     val accountId: Int,
     val accountName: String,

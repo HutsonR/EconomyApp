@@ -1,4 +1,4 @@
-package com.backcube.economyapp.features.common.ui
+package com.backcube.economyapp.core.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box

@@ -1,4 +1,4 @@
-package com.backcube.economyapp.navigation
+package com.backcube.economyapp.core.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
@@ -8,7 +8,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.backcube.economyapp.core.navigation.Screens
 import com.backcube.economyapp.features.account.AccountScreenRoot
 import com.backcube.economyapp.features.articles.ArticlesScreenRoot
 import com.backcube.economyapp.features.expenses.ExpensesScreenRoot

@@ -24,10 +24,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.navigation.AppNavHost
 import com.backcube.economyapp.core.navigation.NavBarItem
-import com.backcube.economyapp.features.common.baseComponents.BottomNavBar
+import com.backcube.economyapp.core.ui.baseComponents.BottomNavBar
 import com.backcube.economyapp.main.viewmodels.NetworkViewModel
-import com.backcube.economyapp.navigation.AppNavHost
 import com.backcube.economyapp.ui.theme.EconomyAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 

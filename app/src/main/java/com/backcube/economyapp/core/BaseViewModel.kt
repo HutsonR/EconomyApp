@@ -1,6 +1,7 @@
 package com.backcube.economyapp.core
 
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.update
  *                navigation, displaying a snackbar).
  * @param initialState The initial state of the UI. This is used to initialize the `state` flow.
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 abstract class BaseViewModel<State, Effects>(initialState: State) : ViewModel() {
 
     private val _state: MutableStateFlow<State> = MutableStateFlow(initialState)

@@ -1,4 +1,4 @@
-package com.backcube.economyapp.features.common.baseComponents
+package com.backcube.economyapp.core.ui.baseComponents
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -25,6 +25,16 @@ import com.backcube.economyapp.core.navigation.NavBarItem
 import com.backcube.economyapp.ui.theme.LightGreen
 import com.backcube.economyapp.ui.theme.UltraGreen
 
+/**
+ * Кастомная нижняя навигационная панель (Bottom Navigation Bar).
+ *
+ * Отображает список навигационных элементов с иконками и подписями. Поддерживает подсветку активного пункта
+ * и автоматическую навигацию через [NavHostController]. Использует цвета темы Material и собственные цвета выделения.
+ *
+ * @param items Список элементов навигации, каждый из которых содержит route, label и иконку ([NavBarItem]).
+ * @param navController Контроллер навигации, с которым связан NavHost.
+ * @param modifier [Modifier] для кастомизации внешнего вида панели.
+ */
 @Composable
 fun BottomNavBar(
     items: List<NavBarItem>,

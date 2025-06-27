@@ -1,4 +1,4 @@
-package com.backcube.economyapp.features.common.ui
+package com.backcube.economyapp.core.ui.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonColors

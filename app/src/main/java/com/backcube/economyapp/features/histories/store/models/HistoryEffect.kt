@@ -1,6 +1,6 @@
 package com.backcube.economyapp.features.histories.store.models
 
-import com.backcube.economyapp.features.common.ui.date.DateMode
+import com.backcube.economyapp.core.ui.components.date.DateMode
 
 sealed interface HistoryEffect {
     data object GoBack : HistoryEffect
