@@ -4,6 +4,18 @@ import com.backcube.economyapp.domain.models.accounts.AccountResponseModel
 import com.backcube.economyapp.domain.utils.toCurrencyIsoCode
 import java.time.Instant
 
+/**
+ * Подробная информация о счете, включая статистику
+ *
+ * @property id ID счета
+ * @property name Название счета
+ * @property balance Баланс счета
+ * @property currency Валюта
+ * @property incomeStats Статистика доходов по категориям
+ * @property expenseStats Статистика расходов по категориям
+ * @property createdAt Дата создания
+ * @property updatedAt Дата последнего обновления
+ */
 data class AccountResponseApiModel(
     val id: Int,
     val name: String,

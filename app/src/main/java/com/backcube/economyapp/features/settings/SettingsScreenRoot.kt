@@ -24,8 +24,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
-import com.backcube.economyapp.features.common.baseComponents.CustomTopBar
-import com.backcube.economyapp.features.common.ui.CustomListItem
+import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
+import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.features.settings.models.SettingType
 import com.backcube.economyapp.features.settings.store.models.SettingsEffect
 import com.backcube.economyapp.features.settings.store.models.SettingsIntent

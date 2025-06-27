@@ -7,6 +7,18 @@ import com.backcube.economyapp.data.remote.models.response.categories.toDomain
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
 import java.time.Instant
 
+/**
+ * Ответ API на запрос транзакции (с вложенными объектами счета и категории)
+ *
+ * @property id ID транзакции
+ * @property account Информация о счете
+ * @property category Информация о категории
+ * @property amount Сумма транзакции
+ * @property transactionDate Дата транзакции
+ * @property comment Комментарий (если есть)
+ * @property createdAt Дата создания
+ * @property updatedAt Дата последнего обновления
+ */
 data class TransactionResponseApiModel(
     val id: Int,
     val account: AccountBriefApiModel,

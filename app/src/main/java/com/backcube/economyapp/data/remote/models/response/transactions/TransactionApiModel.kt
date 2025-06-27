@@ -3,6 +3,18 @@ package com.backcube.economyapp.data.remote.models.response.transactions
 import com.backcube.economyapp.domain.models.transactions.TransactionModel
 import java.time.Instant
 
+/**
+ * Модель транзакции
+ *
+ * @property id ID транзакции
+ * @property accountId ID счета
+ * @property categoryId ID категории
+ * @property amount Сумма
+ * @property transactionDate Дата транзакции (YYYY-MM-DD)
+ * @property comment Комментарий (необязательный)
+ * @property createdAt Дата создания
+ * @property updatedAt Дата обновления
+ */
 data class TransactionApiModel(
     val id: Int,
     val accountId: Int,

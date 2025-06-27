@@ -1,4 +1,4 @@
-package com.backcube.economyapp.features.common.ui.date
+package com.backcube.economyapp.core.ui.components.date
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

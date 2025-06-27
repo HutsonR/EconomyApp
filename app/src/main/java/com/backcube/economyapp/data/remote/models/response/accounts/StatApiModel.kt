@@ -2,6 +2,14 @@ package com.backcube.economyapp.data.remote.models.response.accounts
 
 import com.backcube.economyapp.domain.models.accounts.StatModel
 
+/**
+ * Модель статистики по категории
+ *
+ * @property categoryId ID категории
+ * @property categoryName Название категории
+ * @property emoji Эмодзи, ассоциированное с категорией
+ * @property amount Сумма по категории
+ */
 data class StatApiModel(
     val categoryId: Int,
     val categoryName: String,

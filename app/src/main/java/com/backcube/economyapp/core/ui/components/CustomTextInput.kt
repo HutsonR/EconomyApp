@@ -1,4 +1,4 @@
-package com.backcube.economyapp.features.common.ui
+package com.backcube.economyapp.core.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

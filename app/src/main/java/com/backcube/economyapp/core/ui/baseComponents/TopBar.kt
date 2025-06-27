@@ -1,4 +1,4 @@
-package com.backcube.economyapp.features.common.baseComponents
+package com.backcube.economyapp.core.ui.baseComponents
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,20 +29,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 /**
- * Кастомный TopBar с поддержкой edge-to-edge.
+ * Кастомный TopBar с центрированным заголовком и поддержкой edge-to-edge-дизайна.
  *
- * @param title Заголовок в центре. Отображается одной строкой с обрезкой по ellipsis, если не помещается.
- * @param modifier Дополнительный Modifier.
- * @param backgroundColor Цвет фона. По умолчанию — MaterialTheme.colorScheme.primary.
- *                        Можно передать Color.Transparent или любой другой цвет.
- * @param contentColor Цвет контента (иконки, текста). По умолчанию — MaterialTheme.colorScheme.onPrimary.
- * @param leadingIconPainter Optional Painter для леваой иконки (из ресурсов SVG/Figma). Если null — иконка не отображается.
- * @param leadingIconContentDescription Описание для accessibility. Рекомендуется передавать осмысленную строку, либо null.
- * @param onLeadingClick Lambda: действие по клику на левую иконку. Срабатывает только если leadingIconPainter != null и onLeadingClick != null.
- * @param trailingIconPainter Optional Painter для правой иконки. Если null — не отображается.
- * @param trailingIconContentDescription Описание для accessibility для правой иконки.
- * @param onTrailingClick Lambda: действие по клику на правую иконку. Срабатывает только если trailingIconPainter != null и onTrailingClick != null.
+ * Использует [CenterAlignedTopAppBar] из Material3 и автоматически управляет фоном, цветом контента,
+ * и отображением иконок (если заданы).
+ *
+ * @param title Текст заголовка, выравненный по центру. Отображается в одну строку, обрезается по ellipsis при переполнении.
+ * @param modifier [Modifier] для настройки внешнего вида. Например, для установки отступов, высоты и т.д.
+ * @param backgroundColor Цвет фона top bar. По умолчанию — [MaterialTheme.colorScheme.primary].
+ *                        Можно использовать [Color.Transparent] для прозрачности.
+ * @param contentColor Цвет контента: заголовка, иконок. По умолчанию — [MaterialTheme.colorScheme.onSurface].
+ * @param leadingIconPainter Иконка слева (например, кнопка "назад"). Если `null`, левая иконка не отображается.
+ * @param leadingIconContentDescription Описание левой иконки для accessibility. Рекомендуется передавать осмысленное описание или `null`.
+ * @param onLeadingClick Обработчик клика по левой иконке. Срабатывает только если `leadingIconPainter` и `onLeadingClick` заданы.
+ * @param trailingIconPainter Иконка справа (например, "настройки" или "поиск"). Если `null`, правая иконка не отображается.
+ * @param trailingIconContentDescription Описание правой иконки для accessibility.
+ * @param onTrailingClick Обработчик клика по правой иконке. Срабатывает только если `trailingIconPainter` и `onTrailingClick` заданы.
  */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopBar(
@@ -191,7 +195,7 @@ fun Preview_TopBar_BothIcons() {
 @Composable
 fun Preview_TopBar_Transparent() {
     MaterialTheme {
-        androidx.compose.foundation.layout.Box(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 56.dp)

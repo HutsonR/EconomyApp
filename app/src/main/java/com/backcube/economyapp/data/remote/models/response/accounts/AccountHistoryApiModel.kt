@@ -3,6 +3,17 @@ package com.backcube.economyapp.data.remote.models.response.accounts
 import com.backcube.economyapp.domain.models.accounts.AccountHistoryModel
 import java.time.Instant
 
+/**
+ * Модель записи об изменении состояния счета
+ *
+ * @property id ID записи истории
+ * @property accountId ID счета
+ * @property changeType Тип изменения (например, "create", "update")
+ * @property previousState Состояние счета до изменения (может отсутствовать)
+ * @property newState Состояние счета после изменения
+ * @property changeTimestamp Дата и время изменения
+ * @property createdAt Дата создания записи в системе
+ */
 data class AccountHistoryApiModel(
     val id: Int,
     val accountId: Long,

@@ -69,5 +69,4 @@ class NetworkModule {
         return NetworkConnectivityObserver(context)
     }
 
-
 }
