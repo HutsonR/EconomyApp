@@ -1,22 +1,26 @@
 package com.backcube.economyapp.domain.retry
 
+import com.backcube.economyapp.domain.qualifiers.IoDispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
 class RetryHandler @Inject constructor(
-    private val retryPolicy: RetryPolicy
+    private val retryPolicy: RetryPolicy,
+    @IoDispatchers private val dispatcher: CoroutineDispatcher,
 ) {
     suspend fun <T> executeWithRetry(
         block: suspend () -> T
-    ): T {
+    ): T = withContext(dispatcher) {
         var retryCount = 0
         var lastException: Exception? = null
 
         while (retryCount < retryPolicy.maxRetries) {
             try {
-                return block()
+                return@withContext block()
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
 

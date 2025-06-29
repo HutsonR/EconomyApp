@@ -7,31 +7,33 @@ import com.backcube.economyapp.data.remote.repositories.mappers.toApiDate
 import com.backcube.economyapp.data.remote.utils.getOrThrow
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
+import com.backcube.economyapp.domain.qualifiers.IoDispatchers
 import com.backcube.economyapp.domain.repositories.TransactionRepository
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
-    private val transactionsApi: TransactionsApi
+    private val transactionsApi: TransactionsApi,
+    @IoDispatchers private val dispatcher: CoroutineDispatcher,
 ): TransactionRepository {
-    override suspend fun createTransaction(request: TransactionRequestModel): TransactionResponseModel = withContext(Dispatchers.IO) {
+    override suspend fun createTransaction(request: TransactionRequestModel): TransactionResponseModel = withContext(dispatcher) {
         transactionsApi.createTransaction(request.toApiModel()).getOrThrow().toDomain()
     }
 
-    override suspend fun getTransactionById(id: Int): TransactionResponseModel = withContext(Dispatchers.IO) {
+    override suspend fun getTransactionById(id: Int): TransactionResponseModel = withContext(dispatcher) {
         transactionsApi.getTransactionById(id).getOrThrow().toDomain()
     }
 
     override suspend fun updateTransaction(
         id: Int,
         request: TransactionRequestModel
-    ): TransactionResponseModel = withContext(Dispatchers.IO) {
+    ): TransactionResponseModel = withContext(dispatcher) {
         transactionsApi.updateTransaction(id, request.toApiModel()).getOrThrow().toDomain()
     }
 
-    override suspend fun deleteTransaction(id: Int): Boolean = withContext(Dispatchers.IO) {
+    override suspend fun deleteTransaction(id: Int): Boolean = withContext(dispatcher) {
         transactionsApi.deleteTransaction(id).isSuccessful
     }
 
@@ -39,7 +41,7 @@ class TransactionRepositoryImpl @Inject constructor(
         accountId: Int,
         startDate: Instant?,
         endDate: Instant?
-    ): List<TransactionResponseModel> = withContext(Dispatchers.IO) {
+    ): List<TransactionResponseModel> = withContext(dispatcher) {
        transactionsApi.getAccountTransactions(
            accountId,
            startDate?.toApiDate(),

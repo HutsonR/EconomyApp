@@ -9,34 +9,36 @@ import com.backcube.economyapp.domain.models.accounts.AccountHistoryResponseMode
 import com.backcube.economyapp.domain.models.accounts.AccountModel
 import com.backcube.economyapp.domain.models.accounts.AccountResponseModel
 import com.backcube.economyapp.domain.models.accounts.AccountUpdateRequestModel
+import com.backcube.economyapp.domain.qualifiers.IoDispatchers
 import com.backcube.economyapp.domain.repositories.AccountRepository
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AccountRepositoryImpl @Inject constructor(
-    private val accountApi: AccountApi
+    private val accountApi: AccountApi,
+    @IoDispatchers private val dispatcher: CoroutineDispatcher,
 ) : AccountRepository {
-    override suspend fun getAccounts(): List<AccountModel> = withContext(Dispatchers.IO) {
+    override suspend fun getAccounts(): List<AccountModel> = withContext(dispatcher) {
         accountApi.getAccounts().getOrThrow().map { it.toDomain() }
     }
 
-    override suspend fun createAccount(request: AccountCreateRequestModel): AccountModel = withContext(Dispatchers.IO) {
+    override suspend fun createAccount(request: AccountCreateRequestModel): AccountModel = withContext(dispatcher) {
         accountApi.createAccount(request.toApi()).getOrThrow().toDomain()
     }
 
-    override suspend fun getAccountById(id: Int): AccountResponseModel? = withContext(Dispatchers.IO) {
+    override suspend fun getAccountById(id: Int): AccountResponseModel? = withContext(dispatcher) {
         accountApi.getAccountById(id).getOrThrow()?.toDomain()
     }
 
     override suspend fun updateAccount(
         id: Int,
         request: AccountUpdateRequestModel
-    ): AccountModel = withContext(Dispatchers.IO) {
+    ): AccountModel = withContext(dispatcher) {
         accountApi.updateAccount(id, request.toApi()).getOrThrow().toDomain()
     }
 
-    override suspend fun getAccountHistory(id: Int): AccountHistoryResponseModel = withContext(Dispatchers.IO) {
+    override suspend fun getAccountHistory(id: Int): AccountHistoryResponseModel = withContext(dispatcher) {
        accountApi.getAccountHistory(id).getOrThrow().toDomain()
     }
 }
