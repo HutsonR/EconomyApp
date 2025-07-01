@@ -1,4 +1,4 @@
-package com.backcube.economyapp.domain.di
+package com.backcube.economyapp.di.domain
 
 import com.backcube.economyapp.domain.usecases.api.AccountUseCase
 import com.backcube.economyapp.domain.usecases.api.CategoryUseCase

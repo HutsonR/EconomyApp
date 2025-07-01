@@ -1,4 +1,4 @@
-package com.backcube.economyapp.data.remote.di
+package com.backcube.economyapp.di.data
 
 import com.backcube.economyapp.data.remote.api.AccountApi
 import com.backcube.economyapp.data.remote.api.CategoriesApi

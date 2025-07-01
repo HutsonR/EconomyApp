@@ -1,4 +1,4 @@
-package com.backcube.economyapp.data.remote.di
+package com.backcube.economyapp.di.data
 
 import com.backcube.economyapp.data.remote.repositories.impl.AccountRepositoryImpl
 import com.backcube.economyapp.data.remote.repositories.impl.CategoryRepositoryImpl

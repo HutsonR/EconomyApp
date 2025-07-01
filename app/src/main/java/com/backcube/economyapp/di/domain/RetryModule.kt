@@ -1,4 +1,4 @@
-package com.backcube.economyapp.domain.di
+package com.backcube.economyapp.di.domain
 
 import com.backcube.economyapp.domain.qualifiers.IoDispatchers
 import com.backcube.economyapp.domain.retry.DefaultRetryPolicy

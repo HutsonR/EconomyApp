@@ -1,4 +1,4 @@
-package com.backcube.economyapp.data.remote.di
+package com.backcube.economyapp.di.data
 
 import android.content.Context
 import com.backcube.economyapp.BuildConfig
