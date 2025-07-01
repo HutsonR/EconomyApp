@@ -1,6 +1,6 @@
-package com.backcube.economyapp.domain.retry
+package com.backcube.economyapp.domain.utils.retry
 
-import com.backcube.economyapp.domain.qualifiers.IoDispatchers
+import com.backcube.economyapp.domain.utils.qualifiers.IoDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

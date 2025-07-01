@@ -2,7 +2,7 @@ package com.backcube.economyapp.domain.usecases.impl
 
 import com.backcube.economyapp.domain.models.categories.CategoryModel
 import com.backcube.economyapp.domain.repositories.CategoryRepository
-import com.backcube.economyapp.domain.retry.RetryHandler
+import com.backcube.economyapp.domain.utils.retry.RetryHandler
 import com.backcube.economyapp.domain.usecases.api.CategoryUseCase
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.backcube.economyapp.domain.retry
+package com.backcube.economyapp.domain.utils.retry
 
 data class DefaultRetryPolicy(
     override val maxRetries: Int = 3,

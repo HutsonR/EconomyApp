@@ -9,7 +9,7 @@ import com.backcube.economyapp.domain.models.accounts.AccountHistoryResponseMode
 import com.backcube.economyapp.domain.models.accounts.AccountModel
 import com.backcube.economyapp.domain.models.accounts.AccountResponseModel
 import com.backcube.economyapp.domain.models.accounts.AccountUpdateRequestModel
-import com.backcube.economyapp.domain.qualifiers.IoDispatchers
+import com.backcube.economyapp.domain.utils.qualifiers.IoDispatchers
 import com.backcube.economyapp.domain.repositories.AccountRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

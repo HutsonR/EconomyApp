@@ -1,7 +1,7 @@
 package com.backcube.economyapp.di.domain
 
-import com.backcube.economyapp.domain.qualifiers.DefaultDispatchers
-import com.backcube.economyapp.domain.qualifiers.IoDispatchers
+import com.backcube.economyapp.domain.utils.qualifiers.DefaultDispatchers
+import com.backcube.economyapp.domain.utils.qualifiers.IoDispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

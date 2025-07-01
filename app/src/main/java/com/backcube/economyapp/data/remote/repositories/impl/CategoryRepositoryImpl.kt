@@ -4,7 +4,7 @@ import com.backcube.economyapp.data.remote.api.CategoriesApi
 import com.backcube.economyapp.data.remote.models.response.categories.toDomain
 import com.backcube.economyapp.data.remote.utils.getOrThrow
 import com.backcube.economyapp.domain.models.categories.CategoryModel
-import com.backcube.economyapp.domain.qualifiers.IoDispatchers
+import com.backcube.economyapp.domain.utils.qualifiers.IoDispatchers
 import com.backcube.economyapp.domain.repositories.CategoryRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

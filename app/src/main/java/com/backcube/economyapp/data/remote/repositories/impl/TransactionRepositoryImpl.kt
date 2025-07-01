@@ -7,7 +7,7 @@ import com.backcube.economyapp.data.remote.repositories.mappers.toApiDate
 import com.backcube.economyapp.data.remote.utils.getOrThrow
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
-import com.backcube.economyapp.domain.qualifiers.IoDispatchers
+import com.backcube.economyapp.domain.utils.qualifiers.IoDispatchers
 import com.backcube.economyapp.domain.repositories.TransactionRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

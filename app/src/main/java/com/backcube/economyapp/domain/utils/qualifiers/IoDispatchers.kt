@@ -1,4 +1,4 @@
-package com.backcube.economyapp.domain.qualifiers
+package com.backcube.economyapp.domain.utils.qualifiers
 
 import javax.inject.Qualifier
 

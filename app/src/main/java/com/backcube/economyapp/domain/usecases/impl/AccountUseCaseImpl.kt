@@ -6,7 +6,7 @@ import com.backcube.economyapp.domain.models.accounts.AccountModel
 import com.backcube.economyapp.domain.models.accounts.AccountResponseModel
 import com.backcube.economyapp.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.economyapp.domain.repositories.AccountRepository
-import com.backcube.economyapp.domain.retry.RetryHandler
+import com.backcube.economyapp.domain.utils.retry.RetryHandler
 import com.backcube.economyapp.domain.usecases.api.AccountUseCase
 import javax.inject.Inject
 
