@@ -6,5 +6,6 @@ data class ArticleState(
     val isLoading: Boolean = false,
     val hasError: Boolean = false,
     val searchQuery: String = "",
-    val items: List<CategoryModel> = emptyList()
+    val initialItems: List<CategoryModel> = emptyList(),
+    val filteredItems: List<CategoryModel> = emptyList()
 )

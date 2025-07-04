@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.ui.theme.LightGreen
 import com.backcube.economyapp.domain.utils.CurrencyIsoCode
-import com.backcube.economyapp.ui.theme.LightGreen
 
 private val BASE_HEIGHT = 70.dp
 private val SMALL_HEIGHT = 56.dp
@@ -44,7 +44,8 @@ fun CustomListItem(
     showSeparator: Boolean = true,
     title: String,
     subtitle: String? = null,
-    leadingEmoji: String? = null,
+    leadingEmojiOrText: String? = null,
+    leadingContent: @Composable (() -> Unit)? = null,
     showLeading: Boolean = true,
     leadingBackground: Color = LightGreen,
     trailingText: String? = null,
@@ -52,6 +53,10 @@ fun CustomListItem(
     trailingContent: @Composable (() -> Unit)? = null,
     showTrailingIcon: Boolean = true,
     currencyIsoCode: CurrencyIsoCode? = null,
+    titleColor: Color = MaterialTheme.colorScheme.onSurface,
+    subtitleColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    trailingTextColor: Color = MaterialTheme.colorScheme.onSurface,
+    trailingSubTextColor: Color = MaterialTheme.colorScheme.onSurface,
     onItemClick: (() -> Unit)? = null
 ) {
     val colors = MaterialTheme.colorScheme
@@ -73,12 +78,19 @@ fun CustomListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            if (showLeading && leadingEmoji?.isBlank() != true) {
-                LeadingContent(
-                    emoji = leadingEmoji,
-                    title = title,
-                    background = leadingBackground
-                )
+            if (showLeading) {
+                when {
+                    leadingContent != null -> {
+                        leadingContent()
+                    }
+                    leadingEmojiOrText?.isBlank() != true ->  {
+                        LeadingContent(
+                            emoji = leadingEmojiOrText,
+                            title = title,
+                            background = leadingBackground
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.width(16.dp))
             }
 
@@ -87,7 +99,9 @@ fun CustomListItem(
                 subtitle = subtitle,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 16.dp)
+                    .padding(end = 16.dp),
+                textColor = titleColor,
+                subtitleColor = subtitleColor
             )
 
             TrailingContentColumn(
@@ -95,7 +109,9 @@ fun CustomListItem(
                 trailingSubText = trailingSubText,
                 trailingContent = trailingContent,
                 currency = currencyIsoCode?.toCurrency(),
-                showTrailingIcon = showTrailingIcon
+                showTrailingIcon = showTrailingIcon,
+                trailingTextColor = trailingTextColor,
+                trailingSubTextColor = trailingSubTextColor
             )
         }
 
@@ -137,15 +153,16 @@ private fun LeadingContent(
 private fun MainContentColumn(
     title: String,
     subtitle: String?,
-    modifier: Modifier
+    modifier: Modifier,
+    textColor: Color,
+    subtitleColor: Color
 ) {
-    val colors = MaterialTheme.colorScheme
     Column(modifier = modifier) {
         Text(
             text = title,
             fontSize = 16.sp,
             fontWeight = FontWeight.W400,
-            color = colors.onSurface,
+            color = textColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -154,7 +171,7 @@ private fun MainContentColumn(
                 text = subtitle,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.W400,
-                color = colors.onSurfaceVariant,
+                color = subtitleColor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -168,9 +185,10 @@ private fun TrailingContentColumn(
     trailingSubText: String?,
     trailingContent: @Composable (() -> Unit)?,
     currency: String?,
-    showTrailingIcon: Boolean
+    showTrailingIcon: Boolean,
+    trailingTextColor: Color,
+    trailingSubTextColor: Color
 ) {
-    val colors = MaterialTheme.colorScheme
     Column(
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Center
@@ -186,7 +204,7 @@ private fun TrailingContentColumn(
                 text = displayText,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W400,
-                color = colors.onSurface
+                color = trailingTextColor
             )
         }
         if (!trailingSubText.isNullOrBlank()) {
@@ -194,7 +212,7 @@ private fun TrailingContentColumn(
                 text = trailingSubText,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W400,
-                color = colors.onSurface
+                color = trailingSubTextColor
             )
         }
     }
@@ -245,7 +263,7 @@ private fun resolveHeight(height: Dp?, isSmallItem: Boolean): Dp {
 fun Preview_Default() {
     CustomListItem(
         title = "На собачку",
-        leadingEmoji = "👤",
+        leadingEmojiOrText = "👤",
         trailingText = "100 000",
         currencyIsoCode = CurrencyIsoCode.RUB
     )
@@ -256,7 +274,7 @@ fun Preview_Default() {
 fun Preview_DefaultWithSubTrailingText() {
     CustomListItem(
         title = "На собачку",
-        leadingEmoji = "👤",
+        leadingEmojiOrText = "👤",
         trailingText = "100 000",
         trailingSubText = "22:05",
         currencyIsoCode = CurrencyIsoCode.RUB
@@ -268,7 +286,7 @@ fun Preview_DefaultWithSubTrailingText() {
 fun Preview_NoSeparator() {
     CustomListItem(
         title = "Настройки",
-        leadingEmoji = "\uD83D\uDC57",
+        leadingEmojiOrText = "\uD83D\uDC57",
         showSeparator = false,
         trailingText = "",
         showTrailingIcon = false
@@ -292,7 +310,7 @@ fun Preview_WithSubtitleAndIcon_WithCurrencyOnly() {
     CustomListItem(
         title = "Тутуту",
         subtitle = "Энни",
-        leadingEmoji = null,
+        leadingEmojiOrText = null,
         currencyIsoCode = CurrencyIsoCode.RUB
     )
 }
@@ -303,8 +321,24 @@ fun Preview_WithSubtitleAndIconAndEllipsize() {
     CustomListItem(
         title = "На собачку, а может и кошку, а может вообще нет",
         subtitle = "Энни или не Энни? Вот в чем вопрос длиннный предлинный",
-        leadingEmoji = null,
+        leadingEmojiOrText = null,
         trailingText = "5",
         currencyIsoCode = CurrencyIsoCode.RUB
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Preview_WithSubtitleAndIconAndLeading() {
+    CustomListItem(
+        title = "На собачку, а может и кошку, а может вообще нет",
+        subtitle = "Энни или не Энни? Вот в чем вопрос длиннный предлинный",
+        leadingContent = {
+            Image(
+                painter = painterResource(R.drawable.ic_cancel),
+                contentDescription = null
+            )
+        },
+        showTrailingIcon = false
     )
 }

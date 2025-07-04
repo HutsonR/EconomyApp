@@ -26,13 +26,13 @@ import com.backcube.economyapp.core.ui.components.CustomFloatingButton
 import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.core.ui.components.ShowAlertDialog
 import com.backcube.economyapp.core.ui.components.ShowProgressIndicator
+import com.backcube.economyapp.core.ui.theme.LightGreen
 import com.backcube.economyapp.core.ui.utils.CollectEffect
 import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import com.backcube.economyapp.domain.utils.formatAsWholeThousands
 import com.backcube.economyapp.features.income.store.models.IncomeEffect
 import com.backcube.economyapp.features.income.store.models.IncomeIntent
 import com.backcube.economyapp.features.income.store.models.IncomeState
-import com.backcube.economyapp.ui.theme.LightGreen
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -116,7 +116,7 @@ fun IncomeScreen(
                 CustomListItem(
                     title = item.category.name,
                     subtitle = item.comment,
-                    leadingEmoji = item.category.emoji,
+                    leadingEmojiOrText = item.category.emoji,
                     trailingText = item.amount.formatAsWholeThousands(),
                     currencyIsoCode = item.account.currency
                 )

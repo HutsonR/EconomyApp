@@ -20,4 +20,8 @@ sealed class Screens(val route: String) {
         fun createRoute(isIncome: Boolean) = "history/${Uri.encode(isIncome.toString())}"
     }
 
+    data object AccountEditScreen : Screens("account_edit") {
+        fun createRoute(accountId: String) = "account_edit/${Uri.encode(accountId)}"
+    }
+
 }

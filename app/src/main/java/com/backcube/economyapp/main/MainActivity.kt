@@ -27,8 +27,8 @@ import com.backcube.economyapp.R
 import com.backcube.economyapp.core.navigation.AppNavHost
 import com.backcube.economyapp.core.navigation.NavBarItem
 import com.backcube.economyapp.core.ui.baseComponents.BottomNavBar
+import com.backcube.economyapp.core.ui.theme.EconomyAppTheme
 import com.backcube.economyapp.main.viewmodels.NetworkViewModel
-import com.backcube.economyapp.ui.theme.EconomyAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

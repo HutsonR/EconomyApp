@@ -6,6 +6,7 @@
     <string name="income_title">Доходы сегодня</string>
 
     <string name="account_title">Мой счет</string>
+    <string name="account_name">Название</string>
     <string name="account_balance">Баланс</string>
     <string name="account_currency">Валюта</string>
 
@@ -26,6 +27,10 @@
     <string name="ok_big">ОК</string>
     <string name="no_internet_connection">Нет подключения к интернету</string>
     <string name="understand">Понятно</string>
+    
+    <string name="currency_rub">Российский рубль</string>
+    <string name="currency_usd">Американский доллар</string>
+    <string name="currency_eur">Евро</string>
 
     <string name="alert_base_title">Ошибка</string>
     <string name="alert_base_description">Произошла непредвиденная ошибка. Попробуйте, пожалуйста, позже</string>
