@@ -1,4 +1,4 @@
-package com.backcube.economyapp.ui.theme
+package com.backcube.economyapp.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -9,6 +9,7 @@ val LightGreen = Color(0xFFD4FAE6)
 val SurfaceMain = Color(0xFFFEF7FF)
 val SurfaceContainer = Color(0xFFF3EDF7)
 val DarkGray = Color(0XFFECE6F0)
+val RedBackground = Color(0xFFE46962)
 
 val TextTitle = Color(0xFF1D1B20)
 val TextSubtitle = Color(0xFF49454F)

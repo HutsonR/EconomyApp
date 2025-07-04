@@ -1,4 +1,4 @@
-package com.backcube.economyapp.ui.theme
+package com.backcube.economyapp.core.ui.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
@@ -11,7 +11,9 @@ private val LightColorScheme = lightColorScheme(
     onSurfaceVariant = TextSubtitle,
     outlineVariant = DividerColor,
     surfaceContainerHigh = DarkGray,
-    onBackground = LightGreen
+    onBackground = LightGreen,
+    errorContainer = RedBackground,
+    onErrorContainer = White
 )
 
 @Composable

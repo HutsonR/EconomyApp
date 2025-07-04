@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.backcube.economyapp.core.navigation.NavBarItem
-import com.backcube.economyapp.ui.theme.LightGreen
-import com.backcube.economyapp.ui.theme.UltraGreen
+import com.backcube.economyapp.core.ui.theme.LightGreen
+import com.backcube.economyapp.core.ui.theme.UltraGreen
 
 /**
  * Кастомная нижняя навигационная панель (Bottom Navigation Bar).

@@ -27,6 +27,7 @@ import com.backcube.economyapp.core.ui.components.ShowAlertDialog
 import com.backcube.economyapp.core.ui.components.ShowProgressIndicator
 import com.backcube.economyapp.core.ui.components.date.CustomDatePicker
 import com.backcube.economyapp.core.ui.components.date.DateMode
+import com.backcube.economyapp.core.ui.theme.LightGreen
 import com.backcube.economyapp.core.ui.utils.CollectEffect
 import com.backcube.economyapp.core.ui.utils.formatAsPeriodDate
 import com.backcube.economyapp.core.ui.utils.formatAsTransactionDate
@@ -35,7 +36,6 @@ import com.backcube.economyapp.domain.utils.formatAsWholeThousands
 import com.backcube.economyapp.features.histories.store.models.HistoryEffect
 import com.backcube.economyapp.features.histories.store.models.HistoryIntent
 import com.backcube.economyapp.features.histories.store.models.HistoryState
-import com.backcube.economyapp.ui.theme.LightGreen
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -163,7 +163,7 @@ fun HistoryScreen(
                 CustomListItem(
                     title = item.category.name,
                     subtitle = item.comment,
-                    leadingEmoji = item.category.emoji,
+                    leadingEmojiOrText = item.category.emoji,
                     trailingText = item.amount.formatAsWholeThousands(),
                     currencyIsoCode = item.account.currency,
                     trailingSubText = item.transactionDate.formatAsTransactionDate()

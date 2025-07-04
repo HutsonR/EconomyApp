@@ -8,7 +8,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.backcube.economyapp.features.account.AccountScreenRoot
+import com.backcube.economyapp.features.account.edit.AccountEditScreenRoot
+import com.backcube.economyapp.features.account.main.AccountScreenRoot
 import com.backcube.economyapp.features.articles.ArticlesScreenRoot
 import com.backcube.economyapp.features.expenses.ExpensesScreenRoot
 import com.backcube.economyapp.features.histories.HistoryScreenRoot
@@ -54,6 +55,16 @@ fun AppNavHost(
             val isIncome = Uri.decode(stackEntry.arguments?.getString("isIncome"))
             HistoryScreenRoot(
                 isIncome.toBoolean(),
+                navController = navController
+            )
+        }
+        composable(
+            route = Screens.AccountEditScreen.route + "/{accountId}",
+            arguments = listOf(navArgument("accountId") { type = NavType.StringType })
+        ) { stackEntry ->
+            val accountId = Uri.decode(stackEntry.arguments?.getString("accountId"))
+            AccountEditScreenRoot(
+                accountId = accountId.toInt(),
                 navController = navController
             )
         }

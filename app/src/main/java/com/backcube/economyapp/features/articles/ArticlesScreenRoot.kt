@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -93,25 +96,35 @@ fun ArticlesScreen(
         ShowProgressIndicator(state.isLoading)
         CustomTextInput(
             value = query,
-            onValueChange = { query = it },
+            onValueChange = {
+                query = it
+                onIntent(ArticleIntent.OnChangeQuery(it))
+            },
             placeholder = stringResource(id = R.string.article_search),
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    contentDescription = null
+                )
+            },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
+                focusedTextColor = colors.onSurface,
+                unfocusedTextColor = colors.onSurface,
                 focusedContainerColor = colors.surfaceContainerHigh,
                 unfocusedContainerColor = colors.surfaceContainerHigh,
                 disabledContainerColor = colors.surfaceContainerHigh,
-                unfocusedBorderColor = colors.outlineVariant
+                unfocusedBorderColor = Color.Transparent
             )
         )
         LazyColumn {
             items(
-                items = state.items,
+                items = state.filteredItems,
                 key = { it.id }
             ) { item ->
                 CustomListItem(
                     title = item.name,
-                    leadingEmoji = item.emoji,
+                    leadingEmojiOrText = item.emoji,
                     showTrailingIcon = false
                 )
             }
