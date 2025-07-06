@@ -29,28 +29,43 @@ class IncomeViewModel @Inject constructor(
     }
 
     private suspend fun fetchData() {
-        try {
-            modifyState { copy(isLoading = true) }
-            val accountId = accountUseCase.getAccounts().firstOrNull()?.id ?: 1
-            val result = transactionUseCase.getAccountTransactions(
-                accountId = accountId,
-                startDate = null,
-                endDate = null
-            ).filter { it.category.isIncome }
-            val totalSum = result.sumOf { it.amount }
+        modifyState { copy(isLoading = true) }
+        val accountsResult = accountUseCase.getAccounts()
 
-            modifyState {
-                copy(
-                    items = result,
-                    totalSum = totalSum
+        accountsResult.fold(
+            onSuccess = { accounts ->
+                val accountId = accounts.firstOrNull()?.id ?: 1
+                val transactionResult = transactionUseCase.getAccountTransactions(
+                    accountId = accountId,
+                    startDate = null,
+                    endDate = null
                 )
+
+                transactionResult.fold(
+                    onSuccess = { transactions ->
+                        val filteredTransactions = transactions.filter { it.category.isIncome }
+                        val totalTransactionsSum = filteredTransactions.sumOf { it.amount }
+
+                        modifyState {
+                            copy(
+                                items = filteredTransactions,
+                                totalSum = totalTransactionsSum
+                            )
+                        }
+                    },
+                    onFailure = {
+                        it.printStackTrace()
+                        effect(IncomeEffect.ShowClientError)
+                    }
+                )
+            },
+            onFailure = {
+                it.printStackTrace()
+                effect(IncomeEffect.ShowClientError)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            effect(IncomeEffect.ShowClientError)
-        } finally {
-            modifyState { copy(isLoading = false) }
-        }
+        )
+
+        modifyState { copy(isLoading = false) }
     }
 
     fun handleIntent(intent: IncomeIntent) {

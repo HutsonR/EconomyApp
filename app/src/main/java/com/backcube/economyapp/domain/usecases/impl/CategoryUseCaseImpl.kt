@@ -2,8 +2,8 @@ package com.backcube.economyapp.domain.usecases.impl
 
 import com.backcube.economyapp.domain.models.categories.CategoryModel
 import com.backcube.economyapp.domain.repositories.CategoryRepository
-import com.backcube.economyapp.domain.utils.retry.RetryHandler
 import com.backcube.economyapp.domain.usecases.api.CategoryUseCase
+import com.backcube.economyapp.domain.utils.retry.RetryHandler
 import javax.inject.Inject
 
 class CategoryUseCaseImpl @Inject constructor(
@@ -11,14 +11,14 @@ class CategoryUseCaseImpl @Inject constructor(
     private val retryHandler: RetryHandler
 ): CategoryUseCase {
 
-    override suspend fun getCategories(): List<CategoryModel> {
-        return retryHandler.executeWithRetry {
+    override suspend fun getCategories(): Result<List<CategoryModel>> {
+        return retryHandler.executeWithRetryResult {
             categoryRepository.getCategories()
         }
     }
 
-    override suspend fun getCategoriesByType(isIncome: Boolean): List<CategoryModel> {
-        return retryHandler.executeWithRetry {
+    override suspend fun getCategoriesByType(isIncome: Boolean): Result<List<CategoryModel>> {
+        return retryHandler.executeWithRetryResult {
             categoryRepository.getCategoriesByType(isIncome)
         }
     }

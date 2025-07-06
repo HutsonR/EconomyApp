@@ -10,14 +10,14 @@ interface TransactionUseCase {
      *
      * @param request see [TransactionRequestModel]
      * */
-    suspend fun createTransaction(request: TransactionRequestModel): TransactionResponseModel
+    suspend fun createTransaction(request: TransactionRequestModel): Result<TransactionResponseModel>
 
     /**
      * Возвращает детальную информацию о транзакции
      *
      * @param id ID транзакции
      * */
-    suspend fun getTransactionById(id: Int): TransactionResponseModel
+    suspend fun getTransactionById(id: Int): Result<TransactionResponseModel>
 
     /**
      * Обновляет существующую транзакцию
@@ -28,14 +28,14 @@ interface TransactionUseCase {
     suspend fun updateTransaction(
         id: Int,
         request: TransactionRequestModel
-    ): TransactionResponseModel
+    ): Result<TransactionResponseModel>
 
     /**
      * Удаляет транзакцию с возможностью возврата средств на счет
      *
      * @param id ID транзакции
      * */
-    suspend fun deleteTransaction(id: Int): Boolean
+    suspend fun deleteTransaction(id: Int): Result<Boolean>
 
     /**
      * Возвращает список транзакций для указанного счета за указанный период
@@ -48,5 +48,5 @@ interface TransactionUseCase {
         accountId: Int,
         startDate: Instant?,
         endDate: Instant?
-    ): List<TransactionResponseModel>
+    ): Result<List<TransactionResponseModel>>
 }

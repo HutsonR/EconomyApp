@@ -34,4 +34,13 @@ class RetryHandler @Inject constructor(
         }
         throw lastException ?: IllegalStateException("Retries exhausted")
     }
+
+    suspend fun <T> executeWithRetryResult(block: suspend () -> T): Result<T> = withContext(dispatcher) {
+        try {
+            val result = executeWithRetry(block)
+            Result.success(result)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

@@ -22,26 +22,29 @@ class AccountEditViewModel @Inject constructor(
 
     fun fetchData(accountId: Int) {
         viewModelScope.launch {
-            try {
-                modifyState { copy(isLoading = true) }
-                val result = accountUseCase.getAccountById(id = accountId)
+            modifyState { copy(isLoading = true) }
+            val accountResult = accountUseCase.getAccountById(accountId)
 
-                modifyState {
-                    if (result != null) {
-                        copy(
-                            item = result,
-                            balance = result.balance.toPlainString()
-                        )
-                    } else {
-                        copy(isLoading = false)
+            accountResult.fold(
+                onSuccess = { account ->
+                    modifyState {
+                        if (account != null) {
+                            copy(
+                                item = account,
+                                balance = account.balance.toPlainString()
+                            )
+                        } else {
+                            copy(isLoading = false)
+                        }
                     }
+                },
+                onFailure = {
+                    it.printStackTrace()
+                    effect(AccountEditEffect.ShowClientError)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                effect(AccountEditEffect.ShowClientError)
-            } finally {
-                modifyState { copy(isLoading = false) }
-            }
+            )
+
+            modifyState { copy(isLoading = false) }
         }
     }
 
@@ -70,31 +73,34 @@ class AccountEditViewModel @Inject constructor(
 
     private fun updateAccount() {
         viewModelScope.launch {
-            try {
-                modifyState { copy(isLoading = true) }
-                convertAndSaveBalance(getState().balance)
-                val updatedAccount = getState().item
-                if (updatedAccount == null) {
-                    effect(AccountEditEffect.ShowClientError)
-                    return@launch
-                }
+            modifyState { copy(isLoading = true) }
 
-                accountUseCase.updateAccount(
-                    updatedAccount.id,
-                    request = AccountUpdateRequestModel(
-                        name = updatedAccount.name,
-                        balance = updatedAccount.balance,
-                        currency = updatedAccount.currency
-                    )
-                )
-                accountNotifierUseCase.notifyAccountChanged()
-                effect(AccountEditEffect.GoBack)
-            } catch (e: Exception) {
-                e.printStackTrace()
+            convertAndSaveBalance(getState().balance)
+            val updatedAccount = getState().item
+
+            if (updatedAccount == null) {
                 effect(AccountEditEffect.ShowClientError)
-            } finally {
-                modifyState { copy(isLoading = false) }
+                return@launch
             }
+
+            accountUseCase.updateAccount(
+                updatedAccount.id,
+                request = AccountUpdateRequestModel(
+                    name = updatedAccount.name,
+                    balance = updatedAccount.balance,
+                    currency = updatedAccount.currency
+                )
+            ).fold(
+                onSuccess = {
+                    accountNotifierUseCase.notifyAccountChanged()
+                    effect(AccountEditEffect.GoBack)
+                },
+                onFailure = {
+                    it.printStackTrace()
+                    modifyState { copy(isLoading = false) }
+                    effect(AccountEditEffect.ShowClientError)
+                }
+            )
         }
     }
 

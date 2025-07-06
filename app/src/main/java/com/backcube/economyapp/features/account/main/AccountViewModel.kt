@@ -29,24 +29,32 @@ class AccountViewModel @Inject constructor(
     }
 
     private suspend fun fetchData() {
-        try {
-            modifyState { copy(isLoading = true) }
-            val accountId = accountUseCase.getAccounts().firstOrNull()?.id ?: 1
-            val result = accountUseCase.getAccountById(id = accountId)
+        modifyState { copy(isLoading = true) }
 
-            modifyState {
-                if (result != null) {
-                    copy(item = result)
-                } else {
-                    copy(isLoading = false)
-                }
+        val accountsResult = accountUseCase.getAccounts()
+
+        accountsResult.fold(
+            onSuccess = { accounts ->
+                val accountId = accounts.firstOrNull()?.id ?: 1
+                val accountResult = accountUseCase.getAccountById(accountId)
+
+                accountResult.fold(
+                    onSuccess = { account ->
+                        modifyState { copy(item = account) }
+                    },
+                    onFailure = {
+                        it.printStackTrace()
+                        effect(AccountEffect.ShowClientError)
+                    }
+                )
+            },
+            onFailure = {
+                it.printStackTrace()
+                effect(AccountEffect.ShowClientError)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            effect(AccountEffect.ShowClientError)
-        } finally {
-            modifyState { copy(isLoading = false) }
-        }
+        )
+
+        modifyState { copy(isLoading = false) }
     }
 
     fun handleIntent(intent: AccountIntent) {

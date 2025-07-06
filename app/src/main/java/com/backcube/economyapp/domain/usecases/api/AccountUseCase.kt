@@ -10,21 +10,21 @@ interface AccountUseCase {
     /**
      * Возвращает список всех счетов текущего пользователя
      * */
-    suspend fun getAccounts(): List<AccountModel>
+    suspend fun getAccounts(): Result<List<AccountModel>>
 
     /**
      * Создает новый счет для текущего пользователя
      *
      * @param request See [AccountCreateRequestModel]
      * */
-    suspend fun createAccount(request: AccountCreateRequestModel): AccountModel
+    suspend fun createAccount(request: AccountCreateRequestModel): Result<AccountModel>
 
     /**
      * Возвращает информацию о конкретном счете, включая статистику
      *
      * @param id ID счета
      * */
-    suspend fun getAccountById(id: Int): AccountResponseModel?
+    suspend fun getAccountById(id: Int): Result<AccountResponseModel?>
 
     /**
      * Обновляет данные существующего счета
@@ -35,12 +35,12 @@ interface AccountUseCase {
     suspend fun updateAccount(
         id: Int,
         request: AccountUpdateRequestModel
-    ): AccountModel
+    ): Result<AccountModel>
 
     /**
      * Возвращает историю изменений баланса и других параметров счета, произведенных вне транзакций (при создании или изменении счета)
      *
      * @param id ID счета
      * */
-    suspend fun getAccountHistory(id: Int): AccountHistoryResponseModel
+    suspend fun getAccountHistory(id: Int): Result<AccountHistoryResponseModel>
 }

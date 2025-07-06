@@ -34,27 +34,45 @@ class HistoryViewModel @Inject constructor(
 
     private fun fetchData() {
         viewModelScope.launch {
-            try {
-                modifyState { copy(isLoading = true) }
-                val result = transactionUseCase.getAccountTransactions(
-                    accountId = accountUseCase.getAccounts().firstOrNull()?.id ?: 1,
-                    startDate = getState().startHistoryDate,
-                    endDate = getState().endHistoryDate
-                ).filter { it.category.isIncome == getState().isIncome }
-                val totalSum = result.sumOf { it.amount }
+            modifyState { copy(isLoading = true) }
+            val accountsResult = accountUseCase.getAccounts()
 
-                modifyState {
-                    copy(
-                        items = result,
-                        totalSum = totalSum
+            accountsResult.fold(
+                onSuccess = { accounts ->
+                    val accountId = accounts.firstOrNull()?.id ?: 1
+                    val transactionResult = transactionUseCase.getAccountTransactions(
+                        accountId = accountId,
+                        startDate = getState().startHistoryDate,
+                        endDate = getState().endHistoryDate
                     )
+
+                    transactionResult.fold(
+                        onSuccess = { transactions ->
+                            val filteredTransactions = transactions.filter {
+                                it.category.isIncome == getState().isIncome
+                            }
+                            val totalTransactionsSum = filteredTransactions.sumOf { it.amount }
+
+                            modifyState {
+                                copy(
+                                    items = filteredTransactions,
+                                    totalSum = totalTransactionsSum
+                                )
+                            }
+                        },
+                        onFailure = {
+                            it.printStackTrace()
+                            effect(HistoryEffect.ShowClientError)
+                        }
+                    )
+                },
+                onFailure = {
+                    it.printStackTrace()
+                    effect(HistoryEffect.ShowClientError)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                effect(HistoryEffect.ShowClientError)
-            } finally {
-                modifyState { copy(isLoading = false) }
-            }
+            )
+
+            modifyState { copy(isLoading = false) }
         }
     }
 

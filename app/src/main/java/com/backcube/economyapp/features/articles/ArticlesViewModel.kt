@@ -27,22 +27,24 @@ class ArticlesViewModel @Inject constructor(
 
     private fun fetchData() {
         viewModelScope.launch {
-            try {
-                modifyState { copy(isLoading = true) }
-                val result = categoryUseCase.getCategories()
+            modifyState { copy(isLoading = true) }
 
-                modifyState {
-                    copy(
-                        initialItems = result,
-                        filteredItems = result
-                    )
+            categoryUseCase.getCategories().fold(
+                onSuccess = {
+                    modifyState {
+                        copy(
+                            initialItems = it,
+                            filteredItems = it
+                        )
+                    }
+                },
+                onFailure = {
+                    it.printStackTrace()
+                    effect(ArticleEffect.ShowClientError)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                effect(ArticleEffect.ShowClientError)
-            } finally {
-                modifyState { copy(isLoading = false) }
-            }
+            )
+
+            modifyState { copy(isLoading = false) }
         }
     }
 
