@@ -1,6 +1,7 @@
 package com.backcube.economyapp.main
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -25,6 +27,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.backcube.economyapp.R
 import com.backcube.economyapp.core.navigation.AppNavHost
+import com.backcube.economyapp.core.navigation.DoubleBackPressToExit
 import com.backcube.economyapp.core.navigation.NavBarItem
 import com.backcube.economyapp.core.ui.baseComponents.BottomNavBar
 import com.backcube.economyapp.core.ui.theme.EconomyAppTheme
@@ -53,7 +56,15 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun AppScreen() {
+        val context = LocalContext.current
         val navController = rememberNavController()
+
+        DoubleBackPressToExit(
+            navController,
+            NavBarItem.all.map { it.route }
+        ) {
+            (context as? Activity)?.finish()
+        }
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),

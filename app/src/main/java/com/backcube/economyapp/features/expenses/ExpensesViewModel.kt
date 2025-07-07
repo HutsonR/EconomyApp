@@ -37,8 +37,8 @@ class ExpensesViewModel @Inject constructor(
                 val accountId = accounts.firstOrNull()?.id ?: 1
                 val transactionResult = transactionUseCase.getAccountTransactions(
                     accountId = accountId,
-                    startDate = null,
-                    endDate = null
+                    startDate = getState().expenseDate,
+                    endDate = getState().expenseDate
                 )
 
                 transactionResult.fold(

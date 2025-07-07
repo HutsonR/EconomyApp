@@ -182,7 +182,7 @@ fun AccountEditScreen(
                         color = colors.onSurface
                     ),
                     leadingText = stringResource(id = R.string.account_balance),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = colors.onSurface,
                         unfocusedTextColor = colors.onSurface,
@@ -206,6 +206,6 @@ fun AccountEditScreen(
 
 private fun validateBalanceInput(input: String): Boolean {
     if (input.isEmpty()) return true
-    val regex = Regex("""^\d+([.,]\d{0,2})?$""")
+    val regex = Regex("""^-?\d+([.,]\d{0,2})?$""")
     return regex.matches(input)
 }

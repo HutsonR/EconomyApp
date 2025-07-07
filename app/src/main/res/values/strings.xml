@@ -40,4 +40,6 @@
     <string name="navbar_account">Счет</string>
     <string name="navbar_articles">Статьи</string>
     <string name="navbar_settings">Настройки</string>
+
+    <string name="exit_double_tap">Нажмите назад ещё раз, чтобы выйти</string>
 </resources>

@@ -37,8 +37,8 @@ class IncomeViewModel @Inject constructor(
                 val accountId = accounts.firstOrNull()?.id ?: 1
                 val transactionResult = transactionUseCase.getAccountTransactions(
                     accountId = accountId,
-                    startDate = null,
-                    endDate = null
+                    startDate = getState().incomeDate,
+                    endDate = getState().incomeDate
                 )
 
                 transactionResult.fold(
