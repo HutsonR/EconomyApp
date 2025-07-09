@@ -17,13 +17,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.di.appComponent
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.features.settings.models.SettingType
@@ -34,9 +35,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SettingsScreenRoot(
-    navController: NavController,
-    viewModel: SettingsViewModel = hiltViewModel()
+    navController: NavController
 ) {
+    val context = LocalContext.current
+    val viewModel = remember {
+        context.appComponent
+            .createSettingsComponent()
+            .create()
+            .settingsViewModel
+    }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val effects = viewModel.effect
 

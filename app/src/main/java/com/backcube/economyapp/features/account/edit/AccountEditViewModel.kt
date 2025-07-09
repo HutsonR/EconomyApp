@@ -9,12 +9,10 @@ import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import com.backcube.economyapp.features.account.edit.store.models.AccountEditEffect
 import com.backcube.economyapp.features.account.edit.store.models.AccountEditIntent
 import com.backcube.economyapp.features.account.edit.store.models.AccountEditState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import javax.inject.Inject
 
-@HiltViewModel
 class AccountEditViewModel @Inject constructor(
     private val accountUseCase: AccountUseCase,
     private val accountNotifierUseCase: AccountNotifierUseCase

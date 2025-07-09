@@ -1,4 +1,4 @@
-package com.backcube.economyapp.di.domain
+package com.backcube.economyapp.data.remote.di
 
 import com.backcube.economyapp.data.remote.utils.retry.DefaultRetryPolicy
 import com.backcube.economyapp.data.remote.utils.retry.RetryHandler
@@ -6,12 +6,9 @@ import com.backcube.economyapp.data.remote.utils.retry.RetryPolicy
 import com.backcube.economyapp.domain.utils.qualifiers.IoDispatchers
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
-@InstallIn(SingletonComponent::class)
 object RetryModule {
     @Provides
     fun provideRetryPolicy(): RetryPolicy = DefaultRetryPolicy(

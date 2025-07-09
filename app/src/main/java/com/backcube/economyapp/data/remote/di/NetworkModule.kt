@@ -1,4 +1,4 @@
-package com.backcube.economyapp.di.data
+package com.backcube.economyapp.data.remote.di
 
 import android.content.Context
 import com.backcube.economyapp.BuildConfig
@@ -6,9 +6,6 @@ import com.backcube.economyapp.data.remote.utils.NetworkConnectivityObserver
 import com.backcube.economyapp.domain.utils.ConnectivityObserver
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -19,7 +16,6 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
 class NetworkModule {
 
     @Provides
@@ -65,7 +61,7 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideConnectivityObserver(@ApplicationContext context: Context): ConnectivityObserver {
+    fun provideConnectivityObserver(context: Context): ConnectivityObserver {
         return NetworkConnectivityObserver(context)
     }
 

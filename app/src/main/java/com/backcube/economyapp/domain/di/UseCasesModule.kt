@@ -1,4 +1,4 @@
-package com.backcube.economyapp.di.domain
+package com.backcube.economyapp.domain.di
 
 import com.backcube.economyapp.domain.usecases.api.AccountUseCase
 import com.backcube.economyapp.domain.usecases.api.CategoryUseCase
@@ -8,13 +8,9 @@ import com.backcube.economyapp.domain.usecases.impl.CategoryUseCaseImpl
 import com.backcube.economyapp.domain.usecases.impl.TransactionUseCaseImpl
 import dagger.Binds
 import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
-interface DomainModule {
-
+interface UseCasesModule {
     @Binds
     fun bindAccountUseCase(accountUseCaseImpl: AccountUseCaseImpl): AccountUseCase
 
@@ -23,5 +19,4 @@ interface DomainModule {
 
     @Binds
     fun bindTransactionUseCase(transactionUseCaseImpl: TransactionUseCaseImpl): TransactionUseCase
-
 }

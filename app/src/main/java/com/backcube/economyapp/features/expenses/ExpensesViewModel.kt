@@ -8,11 +8,9 @@ import com.backcube.economyapp.domain.usecases.impl.common.AccountNotifierUseCas
 import com.backcube.economyapp.features.expenses.store.models.ExpenseEffect
 import com.backcube.economyapp.features.expenses.store.models.ExpenseIntent
 import com.backcube.economyapp.features.expenses.store.models.ExpenseState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
 class ExpensesViewModel @Inject constructor(
     private val transactionUseCase: TransactionUseCase,
     private val accountUseCase: AccountUseCase,

@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
-    alias(libs.plugins.hilt)
 }
 
 val mapkitApiKey: String by lazy {
@@ -75,11 +74,11 @@ dependencies {
     implementation(libs.compose.animation)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.navigation.compose)
 
-    // hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
+    // Dagger
+    implementation(libs.dagger.core)
+    kapt(libs.dagger.compiler)
 
     // network
     implementation(libs.okhttp.logging.interceptor)

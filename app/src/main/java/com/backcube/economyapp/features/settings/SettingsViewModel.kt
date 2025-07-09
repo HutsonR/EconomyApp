@@ -5,10 +5,8 @@ import com.backcube.economyapp.features.settings.domain.GetSettingsListUseCase
 import com.backcube.economyapp.features.settings.store.models.SettingsEffect
 import com.backcube.economyapp.features.settings.store.models.SettingsIntent
 import com.backcube.economyapp.features.settings.store.models.SettingsState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val getSettingsListUseCase: GetSettingsListUseCase
 ) :

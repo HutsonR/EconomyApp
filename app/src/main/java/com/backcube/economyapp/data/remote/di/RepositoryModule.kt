@@ -1,4 +1,4 @@
-package com.backcube.economyapp.di.data
+package com.backcube.economyapp.data.remote.di
 
 import com.backcube.economyapp.data.remote.repositories.impl.AccountRepositoryImpl
 import com.backcube.economyapp.data.remote.repositories.impl.CategoryRepositoryImpl
@@ -8,11 +8,8 @@ import com.backcube.economyapp.domain.repositories.CategoryRepository
 import com.backcube.economyapp.domain.repositories.TransactionRepository
 import dagger.Binds
 import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
 interface RepositoryModule {
 
     @Binds

@@ -7,13 +7,11 @@ import com.backcube.economyapp.features.articles.domain.GetFilteredArticlesUseCa
 import com.backcube.economyapp.features.articles.store.models.ArticleEffect
 import com.backcube.economyapp.features.articles.store.models.ArticleIntent
 import com.backcube.economyapp.features.articles.store.models.ArticleState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
 class ArticlesViewModel @Inject constructor(
     private val categoryUseCase: CategoryUseCase,
     private val getFilteredArticlesUseCase: GetFilteredArticlesUseCase

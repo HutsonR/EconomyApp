@@ -8,14 +8,12 @@ import com.backcube.economyapp.domain.usecases.api.TransactionUseCase
 import com.backcube.economyapp.features.histories.store.models.HistoryEffect
 import com.backcube.economyapp.features.histories.store.models.HistoryIntent
 import com.backcube.economyapp.features.histories.store.models.HistoryState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
-@HiltViewModel
 class HistoryViewModel @Inject constructor(
     private val transactionUseCase: TransactionUseCase,
     private val accountUseCase: AccountUseCase

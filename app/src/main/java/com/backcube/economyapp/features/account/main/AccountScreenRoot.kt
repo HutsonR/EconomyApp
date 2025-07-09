@@ -16,12 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.di.appComponent
 import com.backcube.economyapp.core.navigation.Screens
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.CustomFloatingButton
@@ -40,9 +41,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun AccountScreenRoot(
-    navController: NavController,
-    viewModel: AccountViewModel = hiltViewModel()
+    navController: NavController
 ) {
+    val context = LocalContext.current
+    val viewModel = remember {
+        context.appComponent
+            .createAccountComponent()
+            .create()
+            .accountViewModel
+    }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val effects = viewModel.effect
 

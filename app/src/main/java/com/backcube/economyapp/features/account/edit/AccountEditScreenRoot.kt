@@ -20,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -27,10 +28,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.di.appComponent
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.core.ui.components.CustomTextInput
@@ -46,9 +47,15 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun AccountEditScreenRoot(
     accountId: Int,
-    navController: NavController,
-    viewModel: AccountEditViewModel = hiltViewModel()
+    navController: NavController
 ) {
+    val context = LocalContext.current
+    val viewModel = remember {
+        context.appComponent
+            .createAccountComponent()
+            .create()
+            .accountEditViewModel
+    }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val effects = viewModel.effect
 
