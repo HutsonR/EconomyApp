@@ -1,8 +1,8 @@
 package com.backcube.economyapp.di.data
 
-import com.backcube.economyapp.data.remote.api.AccountApi
-import com.backcube.economyapp.data.remote.api.CategoriesApi
-import com.backcube.economyapp.data.remote.api.TransactionsApi
+import com.backcube.data.remote.api.AccountApi
+import com.backcube.data.remote.api.CategoriesApi
+import com.backcube.data.remote.api.TransactionsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

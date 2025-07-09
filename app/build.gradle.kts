@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
-    alias(libs.plugins.hilt)
 }
 
 val mapkitApiKey: String by lazy {
@@ -54,15 +53,28 @@ android {
 }
 
 dependencies {
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    for (dirName in listOf("core", "features")) {
+        fun File.isModule() = this.isDirectory && File(this, "build.gradle.kts").exists()
+
+        val dir = File(rootDir, dirName)
+        val moduleDirs = dir.listFiles()
+            ?.filter { it.isModule() }
+
+        val modules = moduleDirs
+            ?.map { ":$dirName:${it.name}" }
+            ?: emptyList()
+
+        (modules).forEach { module ->
+            implementation(project(module))
+        }
+    }
+
+}
+
+dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,19 +82,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    implementation(libs.material.icon.extended)
-    implementation(libs.compose.animation)
-    implementation(libs.androidx.navigation.fragment)
-    implementation(libs.androidx.navigation.ui)
-
-    // hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
-
-    // network
-    implementation(libs.okhttp.logging.interceptor)
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.json)
 }

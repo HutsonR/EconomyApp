@@ -21,21 +21,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.backcube.account.common.components.SheetCurrencies
+import com.backcube.account.main.AccountViewModel
+import com.backcube.account.main.store.models.AccountEffect
+import com.backcube.account.main.store.models.AccountIntent
+import com.backcube.account.main.store.models.AccountState
+import com.backcube.domain.utils.formatAsWholeThousands
 import com.backcube.economyapp.R
 import com.backcube.economyapp.core.navigation.Screens
-import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
-import com.backcube.economyapp.core.ui.components.CustomFloatingButton
-import com.backcube.economyapp.core.ui.components.CustomListItem
-import com.backcube.economyapp.core.ui.components.ShowAlertDialog
-import com.backcube.economyapp.core.ui.components.ShowProgressIndicator
-import com.backcube.economyapp.core.ui.theme.LightGreen
-import com.backcube.economyapp.core.ui.theme.White
-import com.backcube.economyapp.core.ui.utils.CollectEffect
-import com.backcube.economyapp.domain.utils.formatAsWholeThousands
-import com.backcube.economyapp.features.account.common.components.SheetCurrencies
-import com.backcube.economyapp.features.account.main.store.models.AccountEffect
-import com.backcube.economyapp.features.account.main.store.models.AccountIntent
-import com.backcube.economyapp.features.account.main.store.models.AccountState
+import com.backcube.ui.baseComponents.CustomTopBar
+import com.backcube.ui.components.CustomFloatingButton
+import com.backcube.ui.components.CustomListItem
+import com.backcube.ui.components.ShowAlertDialog
+import com.backcube.ui.components.ShowProgressIndicator
+import com.backcube.ui.theme.LightGreen
+import com.backcube.ui.theme.White
+import com.backcube.ui.utils.CollectEffect
 import kotlinx.coroutines.flow.Flow
 
 @Composable

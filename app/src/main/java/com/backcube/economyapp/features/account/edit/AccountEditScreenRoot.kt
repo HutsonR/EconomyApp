@@ -30,17 +30,18 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.backcube.account.common.components.SheetCurrencies
+import com.backcube.account.edit.AccountEditViewModel
+import com.backcube.account.edit.store.models.AccountEditEffect
+import com.backcube.account.edit.store.models.AccountEditIntent
+import com.backcube.account.edit.store.models.AccountEditState
 import com.backcube.economyapp.R
-import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
-import com.backcube.economyapp.core.ui.components.CustomListItem
-import com.backcube.economyapp.core.ui.components.CustomTextInput
-import com.backcube.economyapp.core.ui.components.ShowAlertDialog
-import com.backcube.economyapp.core.ui.components.ShowProgressIndicator
-import com.backcube.economyapp.core.ui.utils.CollectEffect
-import com.backcube.economyapp.features.account.common.components.SheetCurrencies
-import com.backcube.economyapp.features.account.edit.store.models.AccountEditEffect
-import com.backcube.economyapp.features.account.edit.store.models.AccountEditIntent
-import com.backcube.economyapp.features.account.edit.store.models.AccountEditState
+import com.backcube.ui.baseComponents.CustomTopBar
+import com.backcube.ui.components.CustomListItem
+import com.backcube.ui.components.CustomTextInput
+import com.backcube.ui.components.ShowAlertDialog
+import com.backcube.ui.components.ShowProgressIndicator
+import com.backcube.ui.utils.CollectEffect
 import kotlinx.coroutines.flow.Flow
 
 @Composable

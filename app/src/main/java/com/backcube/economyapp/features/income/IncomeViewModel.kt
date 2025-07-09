@@ -1,10 +1,10 @@
 package com.backcube.economyapp.features.income
 
 import androidx.lifecycle.viewModelScope
+import com.backcube.domain.usecases.api.AccountUseCase
+import com.backcube.domain.usecases.api.TransactionUseCase
+import com.backcube.domain.usecases.impl.common.AccountNotifierUseCase
 import com.backcube.economyapp.core.BaseViewModel
-import com.backcube.economyapp.domain.usecases.api.AccountUseCase
-import com.backcube.economyapp.domain.usecases.api.TransactionUseCase
-import com.backcube.economyapp.domain.usecases.impl.common.AccountNotifierUseCase
 import com.backcube.economyapp.features.income.store.models.IncomeEffect
 import com.backcube.economyapp.features.income.store.models.IncomeIntent
 import com.backcube.economyapp.features.income.store.models.IncomeState

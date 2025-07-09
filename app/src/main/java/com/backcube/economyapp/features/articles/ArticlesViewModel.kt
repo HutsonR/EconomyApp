@@ -1,8 +1,8 @@
 package com.backcube.economyapp.features.articles
 
 import androidx.lifecycle.viewModelScope
+import com.backcube.domain.usecases.api.CategoryUseCase
 import com.backcube.economyapp.core.BaseViewModel
-import com.backcube.economyapp.domain.usecases.api.CategoryUseCase
 import com.backcube.economyapp.features.articles.domain.GetFilteredArticlesUseCase
 import com.backcube.economyapp.features.articles.store.models.ArticleEffect
 import com.backcube.economyapp.features.articles.store.models.ArticleIntent

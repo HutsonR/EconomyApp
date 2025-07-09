@@ -9,8 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.backcube.economyapp.R
 import kotlinx.coroutines.delay
 
@@ -25,18 +23,12 @@ import kotlinx.coroutines.delay
  */
 @Composable
 fun DoubleBackPressToExit(
-    navController: NavHostController,
+    currentRoute: String,
     rootRoutes: List<String>,
     onExit: () -> Unit
 ) {
     val context = LocalContext.current
     var backPressedOnce by remember { mutableStateOf(false) }
-
-    val currentRoute = navController
-        .currentBackStackEntryAsState()
-        .value
-        ?.destination
-        ?.route
 
     val isRootRoute = currentRoute in rootRoutes
 

@@ -29,9 +29,9 @@ import com.backcube.economyapp.R
 import com.backcube.economyapp.core.navigation.AppNavHost
 import com.backcube.economyapp.core.navigation.DoubleBackPressToExit
 import com.backcube.economyapp.core.navigation.NavBarItem
-import com.backcube.economyapp.core.ui.baseComponents.BottomNavBar
-import com.backcube.economyapp.core.ui.theme.EconomyAppTheme
 import com.backcube.economyapp.main.viewmodels.NetworkViewModel
+import com.backcube.ui.baseComponents.BottomNavBar
+import com.backcube.ui.theme.EconomyAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -58,9 +58,14 @@ class MainActivity : ComponentActivity() {
     fun AppScreen() {
         val context = LocalContext.current
         val navController = rememberNavController()
+        val currentRoute = navController
+            .currentBackStackEntryAsState()
+            .value
+            ?.destination
+            ?.route
 
         DoubleBackPressToExit(
-            navController,
+            currentRoute,
             NavBarItem.all.map { it.route }
         ) {
             (context as? Activity)?.finish()

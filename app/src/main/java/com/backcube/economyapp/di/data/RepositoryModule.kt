@@ -1,11 +1,11 @@
 package com.backcube.economyapp.di.data
 
-import com.backcube.economyapp.data.remote.repositories.impl.AccountRepositoryImpl
-import com.backcube.economyapp.data.remote.repositories.impl.CategoryRepositoryImpl
-import com.backcube.economyapp.data.remote.repositories.impl.TransactionRepositoryImpl
-import com.backcube.economyapp.domain.repositories.AccountRepository
-import com.backcube.economyapp.domain.repositories.CategoryRepository
-import com.backcube.economyapp.domain.repositories.TransactionRepository
+import com.backcube.data.remote.repositories.impl.AccountRepositoryImpl
+import com.backcube.data.remote.repositories.impl.CategoryRepositoryImpl
+import com.backcube.data.remote.repositories.impl.TransactionRepositoryImpl
+import com.backcube.domain.repositories.AccountRepository
+import com.backcube.domain.repositories.CategoryRepository
+import com.backcube.domain.repositories.TransactionRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

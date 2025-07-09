@@ -1,6 +1,7 @@
 package com.backcube.economyapp.features.account.edit.store.models
 
-import com.backcube.economyapp.domain.utils.CurrencyIsoCode
+import com.backcube.account.edit.store.models.AccountEditIntent
+import com.backcube.domain.models.accounts.CurrencyIsoCode
 
 sealed interface AccountEditIntent {
     data class OnAccountNameChange(val name: String) : AccountEditIntent

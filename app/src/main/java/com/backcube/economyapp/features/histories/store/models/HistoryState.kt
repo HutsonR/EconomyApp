@@ -1,6 +1,6 @@
 package com.backcube.economyapp.features.histories.store.models
 
-import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
+import com.backcube.domain.models.transactions.TransactionResponseModel
 import java.math.BigDecimal
 import java.time.Instant
 

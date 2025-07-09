@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.backcube.domain.models.accounts.CurrencyIsoCode
 import com.backcube.economyapp.R
-import com.backcube.economyapp.core.ui.components.CustomListItem
-import com.backcube.economyapp.core.ui.theme.EconomyAppTheme
-import com.backcube.economyapp.domain.utils.CurrencyIsoCode
+import com.backcube.ui.components.CustomListItem
+import com.backcube.ui.theme.EconomyAppTheme
 
 @Composable
 fun SheetCurrencies(

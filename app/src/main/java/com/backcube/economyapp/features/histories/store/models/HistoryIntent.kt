@@ -1,6 +1,6 @@
 package com.backcube.economyapp.features.histories.store.models
 
-import com.backcube.economyapp.core.ui.components.date.DateMode
+import com.backcube.ui.components.date.DateMode
 
 sealed interface HistoryIntent {
     data object GoBack : HistoryIntent

@@ -20,22 +20,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.backcube.domain.models.accounts.CurrencyIsoCode
+import com.backcube.domain.utils.formatAsWholeThousands
 import com.backcube.economyapp.R
-import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
-import com.backcube.economyapp.core.ui.components.CustomListItem
-import com.backcube.economyapp.core.ui.components.ShowAlertDialog
-import com.backcube.economyapp.core.ui.components.ShowProgressIndicator
-import com.backcube.economyapp.core.ui.components.date.CustomDatePicker
-import com.backcube.economyapp.core.ui.components.date.DateMode
-import com.backcube.economyapp.core.ui.theme.LightGreen
-import com.backcube.economyapp.core.ui.utils.CollectEffect
-import com.backcube.economyapp.core.ui.utils.formatAsPeriodDate
-import com.backcube.economyapp.core.ui.utils.formatAsTransactionDate
-import com.backcube.economyapp.domain.utils.CurrencyIsoCode
-import com.backcube.economyapp.domain.utils.formatAsWholeThousands
 import com.backcube.economyapp.features.histories.store.models.HistoryEffect
 import com.backcube.economyapp.features.histories.store.models.HistoryIntent
 import com.backcube.economyapp.features.histories.store.models.HistoryState
+import com.backcube.ui.baseComponents.CustomTopBar
+import com.backcube.ui.components.CustomListItem
+import com.backcube.ui.components.ShowAlertDialog
+import com.backcube.ui.components.ShowProgressIndicator
+import com.backcube.ui.components.date.CustomDatePicker
+import com.backcube.ui.components.date.DateMode
+import com.backcube.ui.theme.LightGreen
+import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.formatAsPeriodDate
+import com.backcube.ui.utils.formatAsTransactionDate
 import kotlinx.coroutines.flow.Flow
 
 @Composable

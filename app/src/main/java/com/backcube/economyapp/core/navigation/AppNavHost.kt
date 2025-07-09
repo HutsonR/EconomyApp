@@ -8,8 +8,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.backcube.economyapp.features.account.edit.AccountEditScreenRoot
-import com.backcube.economyapp.features.account.main.AccountScreenRoot
+import com.backcube.account.edit.AccountEditScreenRoot
+import com.backcube.account.main.AccountScreenRoot
 import com.backcube.economyapp.features.articles.ArticlesScreenRoot
 import com.backcube.economyapp.features.expenses.ExpensesScreenRoot
 import com.backcube.economyapp.features.histories.HistoryScreenRoot

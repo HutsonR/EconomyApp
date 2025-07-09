@@ -1,6 +1,7 @@
 package com.backcube.economyapp.features.account.main.store.models
 
-import com.backcube.economyapp.domain.utils.CurrencyIsoCode
+import com.backcube.account.main.store.models.AccountIntent
+import com.backcube.domain.models.accounts.CurrencyIsoCode
 
 sealed interface AccountIntent {
     data class OnCurrencySelected(val isoCode: CurrencyIsoCode) : AccountIntent

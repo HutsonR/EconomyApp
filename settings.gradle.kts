@@ -19,6 +19,21 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "EconomyApp"
+
 include(":app")
- 
+include(":core")
+include(":core:base")
+include(":core:domain")
+include(":core:ui")
+include(":core:navigation")
+include(":core:data")
+include(":features")
+include(":features:account")
+include(":features:articles")
+include(":features:expenses")
+include(":features:histories")
+include(":features:income")
+include(":features:settings")

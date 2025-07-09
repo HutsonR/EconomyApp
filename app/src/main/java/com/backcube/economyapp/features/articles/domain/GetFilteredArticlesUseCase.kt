@@ -1,7 +1,7 @@
 package com.backcube.economyapp.features.articles.domain
 
-import com.backcube.economyapp.domain.models.categories.CategoryModel
-import com.backcube.economyapp.domain.utils.qualifiers.DefaultDispatchers
+import com.backcube.domain.models.categories.CategoryModel
+import com.backcube.domain.utils.qualifiers.DefaultDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

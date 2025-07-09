@@ -1,9 +1,9 @@
 package com.backcube.economyapp.di.data
 
 import android.content.Context
+import com.backcube.data.remote.utils.NetworkConnectivityObserver
+import com.backcube.domain.utils.ConnectivityObserver
 import com.backcube.economyapp.BuildConfig
-import com.backcube.economyapp.data.remote.utils.NetworkConnectivityObserver
-import com.backcube.economyapp.domain.utils.ConnectivityObserver
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

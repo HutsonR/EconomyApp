@@ -1,14 +1,14 @@
 package com.backcube.economyapp.features.account.edit
 
 import androidx.lifecycle.viewModelScope
+import com.backcube.account.edit.store.models.AccountEditEffect
+import com.backcube.account.edit.store.models.AccountEditIntent
+import com.backcube.account.edit.store.models.AccountEditState
+import com.backcube.domain.models.accounts.AccountUpdateRequestModel
+import com.backcube.domain.models.accounts.CurrencyIsoCode
+import com.backcube.domain.usecases.api.AccountUseCase
+import com.backcube.domain.usecases.impl.common.AccountNotifierUseCase
 import com.backcube.economyapp.core.BaseViewModel
-import com.backcube.economyapp.domain.models.accounts.AccountUpdateRequestModel
-import com.backcube.economyapp.domain.usecases.api.AccountUseCase
-import com.backcube.economyapp.domain.usecases.impl.common.AccountNotifierUseCase
-import com.backcube.economyapp.domain.utils.CurrencyIsoCode
-import com.backcube.economyapp.features.account.edit.store.models.AccountEditEffect
-import com.backcube.economyapp.features.account.edit.store.models.AccountEditIntent
-import com.backcube.economyapp.features.account.edit.store.models.AccountEditState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
