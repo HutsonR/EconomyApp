@@ -4,50 +4,43 @@ import com.backcube.economyapp.domain.models.transactions.TransactionRequestMode
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
 import com.backcube.economyapp.domain.repositories.TransactionRepository
 import com.backcube.economyapp.domain.usecases.api.TransactionUseCase
-import com.backcube.economyapp.domain.utils.retry.RetryHandler
 import java.time.Instant
 import javax.inject.Inject
 
 class TransactionUseCaseImpl @Inject constructor(
-    private val transactionRepository: TransactionRepository,
-    private val retryHandler: RetryHandler
+    private val transactionRepository: TransactionRepository
 ): TransactionUseCase {
 
-    override suspend fun createTransaction(request: TransactionRequestModel): Result<TransactionResponseModel> {
-        return retryHandler.executeWithRetryResult {
+    override suspend fun createTransaction(request: TransactionRequestModel): Result<TransactionResponseModel> =
+        runCatching {
             transactionRepository.createTransaction(request)
         }
-    }
 
-    override suspend fun getTransactionById(id: Int): Result<TransactionResponseModel> {
-        return retryHandler.executeWithRetryResult {
+    override suspend fun getTransactionById(id: Int): Result<TransactionResponseModel> =
+        runCatching {
             transactionRepository.getTransactionById(id)
         }
-    }
 
     override suspend fun updateTransaction(
         id: Int,
         request: TransactionRequestModel
-    ): Result<TransactionResponseModel> {
-        return retryHandler.executeWithRetryResult {
+    ): Result<TransactionResponseModel> =
+        runCatching {
             transactionRepository.updateTransaction(id, request)
         }
-    }
 
-    override suspend fun deleteTransaction(id: Int): Result<Boolean> {
-        return retryHandler.executeWithRetryResult {
+    override suspend fun deleteTransaction(id: Int): Result<Boolean> =
+        runCatching {
             transactionRepository.deleteTransaction(id)
         }
-    }
 
     override suspend fun getAccountTransactions(
         accountId: Int,
         startDate: Instant?,
         endDate: Instant?
-    ): Result<List<TransactionResponseModel>> {
-        return retryHandler.executeWithRetryResult {
+    ): Result<List<TransactionResponseModel>> =
+        runCatching {
             transactionRepository.getAccountTransactions(accountId, startDate, endDate)
         }
-    }
 
 }

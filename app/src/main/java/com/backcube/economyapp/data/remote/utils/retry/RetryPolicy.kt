@@ -1,4 +1,4 @@
-package com.backcube.economyapp.domain.utils.retry
+package com.backcube.economyapp.data.remote.utils.retry
 
 interface RetryPolicy {
     val maxRetries: Int

@@ -1,9 +1,9 @@
 package com.backcube.economyapp.di.domain
 
+import com.backcube.economyapp.data.remote.utils.retry.DefaultRetryPolicy
+import com.backcube.economyapp.data.remote.utils.retry.RetryHandler
+import com.backcube.economyapp.data.remote.utils.retry.RetryPolicy
 import com.backcube.economyapp.domain.utils.qualifiers.IoDispatchers
-import com.backcube.economyapp.domain.utils.retry.DefaultRetryPolicy
-import com.backcube.economyapp.domain.utils.retry.RetryHandler
-import com.backcube.economyapp.domain.utils.retry.RetryPolicy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
