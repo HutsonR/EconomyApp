@@ -3,6 +3,7 @@ package com.backcube.economyapp.data.remote.repositories.fake
 import com.backcube.economyapp.data.remote.repositories.fake.utils.LOADING_DELAY
 import com.backcube.economyapp.domain.models.accounts.AccountBriefModel
 import com.backcube.economyapp.domain.models.categories.CategoryModel
+import com.backcube.economyapp.domain.models.transactions.TransactionModel
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
 import com.backcube.economyapp.domain.repositories.TransactionRepository
@@ -15,7 +16,7 @@ import java.time.Instant
 import javax.inject.Inject
 
 class FakeTransactionRepositoryImpl @Inject constructor(): TransactionRepository {
-    override suspend fun createTransaction(request: TransactionRequestModel): TransactionResponseModel = withContext(Dispatchers.IO) {
+    override suspend fun createTransaction(request: TransactionRequestModel): TransactionModel = withContext(Dispatchers.IO) {
         TODO("Not yet implemented")
     }
 

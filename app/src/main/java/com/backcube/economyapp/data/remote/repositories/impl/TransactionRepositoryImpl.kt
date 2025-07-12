@@ -6,6 +6,7 @@ import com.backcube.economyapp.data.remote.models.response.transactions.toDomain
 import com.backcube.economyapp.data.remote.repositories.mappers.toApiDate
 import com.backcube.economyapp.data.remote.utils.getOrThrow
 import com.backcube.economyapp.data.remote.utils.retry.RetryHandler
+import com.backcube.economyapp.domain.models.transactions.TransactionModel
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
 import com.backcube.economyapp.domain.repositories.TransactionRepository
@@ -16,7 +17,7 @@ class TransactionRepositoryImpl @Inject constructor(
     private val transactionsApi: TransactionsApi,
     private val retryHandler: RetryHandler,
 ): TransactionRepository {
-    override suspend fun createTransaction(request: TransactionRequestModel): TransactionResponseModel =
+    override suspend fun createTransaction(request: TransactionRequestModel): TransactionModel =
         retryHandler.executeWithRetry {
             transactionsApi.createTransaction(request.toApiModel()).getOrThrow().toDomain()
         }

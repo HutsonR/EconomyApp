@@ -1,6 +1,7 @@
 package com.backcube.economyapp.data.remote.api
 
 import com.backcube.economyapp.data.remote.models.request.transactions.TransactionRequestApiModel
+import com.backcube.economyapp.data.remote.models.response.transactions.TransactionApiModel
 import com.backcube.economyapp.data.remote.models.response.transactions.TransactionResponseApiModel
 import retrofit2.Response
 import retrofit2.http.Body
@@ -18,7 +19,7 @@ interface TransactionsApi {
      * @param request see [TransactionRequestApiModel]
      * */
     @POST("transactions")
-    suspend fun createTransaction(@Body request: TransactionRequestApiModel): Response<TransactionResponseApiModel>
+    suspend fun createTransaction(@Body request: TransactionRequestApiModel): Response<TransactionApiModel>
     /**
      * Возвращает детальную информацию о транзакции
      *

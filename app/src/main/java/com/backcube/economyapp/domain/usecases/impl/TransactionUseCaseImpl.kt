@@ -1,5 +1,6 @@
 package com.backcube.economyapp.domain.usecases.impl
 
+import com.backcube.economyapp.domain.models.transactions.TransactionModel
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
 import com.backcube.economyapp.domain.repositories.TransactionRepository
@@ -11,7 +12,7 @@ class TransactionUseCaseImpl @Inject constructor(
     private val transactionRepository: TransactionRepository
 ): TransactionUseCase {
 
-    override suspend fun createTransaction(request: TransactionRequestModel): Result<TransactionResponseModel> =
+    override suspend fun createTransaction(request: TransactionRequestModel): Result<TransactionModel> =
         runCatching {
             transactionRepository.createTransaction(request)
         }

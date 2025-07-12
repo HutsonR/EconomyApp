@@ -1,5 +1,6 @@
 package com.backcube.economyapp.domain.repositories
 
+import com.backcube.economyapp.domain.models.transactions.TransactionModel
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
 import java.time.Instant
@@ -10,7 +11,7 @@ interface TransactionRepository {
      *
      * @param request see [TransactionRequestModel]
      * */
-    suspend fun createTransaction(request: TransactionRequestModel): TransactionResponseModel
+    suspend fun createTransaction(request: TransactionRequestModel): TransactionModel
 
     /**
      * Возвращает детальную информацию о транзакции

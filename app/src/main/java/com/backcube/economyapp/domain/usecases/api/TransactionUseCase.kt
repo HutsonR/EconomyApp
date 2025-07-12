@@ -1,5 +1,6 @@
 package com.backcube.economyapp.domain.usecases.api
 
+import com.backcube.economyapp.domain.models.transactions.TransactionModel
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.models.transactions.TransactionResponseModel
 import java.time.Instant
@@ -10,7 +11,7 @@ interface TransactionUseCase {
      *
      * @param request see [TransactionRequestModel]
      * */
-    suspend fun createTransaction(request: TransactionRequestModel): Result<TransactionResponseModel>
+    suspend fun createTransaction(request: TransactionRequestModel): Result<TransactionModel>
 
     /**
      * Возвращает детальную информацию о транзакции
