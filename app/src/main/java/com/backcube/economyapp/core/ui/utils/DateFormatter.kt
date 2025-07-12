@@ -35,3 +35,8 @@ fun Instant.formatAsSimpleDate(): String =
 
 fun Instant.formatAsSimpleTime(): String =
     this.atZone(zoneId).format(timeFormatter)
+
+fun Instant.toHourMinute(): Pair<Int, Int> {
+    val zonedDateTime = this.atZone(zoneId)
+    return zonedDateTime.hour to zonedDateTime.minute
+}

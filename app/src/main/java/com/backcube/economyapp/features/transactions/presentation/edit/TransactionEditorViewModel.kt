@@ -22,6 +22,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.Instant
+import java.time.ZoneId
 
 class TransactionEditorViewModel @AssistedInject constructor(
     @Assisted private val transactionId: Int,
@@ -88,7 +89,7 @@ class TransactionEditorViewModel @AssistedInject constructor(
             is TransactionEditorIntent.OnAmountChange -> updateTransactionAmount(intent.amount)
             is TransactionEditorIntent.OnCategorySelected -> updateTransactionCategory(intent.category)
             is TransactionEditorIntent.OnDateSelected -> updateDate(intent.date)
-            is TransactionEditorIntent.OnTimeSelected -> TODO()
+            is TransactionEditorIntent.OnTimeSelected -> updateTime(intent.hour, intent.minute)
             is TransactionEditorIntent.OnDescriptionChange -> updateTransactionDescription(intent.description)
             TransactionEditorIntent.OnOpenAccountSheet -> effect(TransactionEditorEffect.ShowAccountSheet)
             TransactionEditorIntent.OnOpenCategorySheet -> effect(TransactionEditorEffect.ShowCategorySheet)
@@ -119,6 +120,17 @@ class TransactionEditorViewModel @AssistedInject constructor(
     private fun updateDate(newDate: Long?) {
         val newInstant = newDate?.let { Instant.ofEpochMilli(it) } ?: Instant.now()
         modifyState { copy(selectedTransactionDate = newInstant) }
+    }
+
+    private fun updateTime(hour: Int, minute: Int) {
+        val oldDate = getState().selectedTransactionDate.atZone(ZoneId.systemDefault())
+        val newDateTime = oldDate
+            .withHour(hour)
+            .withMinute(minute)
+            .withSecond(0)
+            .withNano(0)
+
+        modifyState { copy(selectedTransactionDate = newDateTime.toInstant()) }
     }
 
     private fun updateTransaction() {

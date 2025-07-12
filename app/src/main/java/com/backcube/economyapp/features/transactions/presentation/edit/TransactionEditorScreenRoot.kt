@@ -35,6 +35,7 @@ import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.AlertData
 import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.core.ui.components.CustomTextInput
+import com.backcube.economyapp.core.ui.components.CustomTimePicker
 import com.backcube.economyapp.core.ui.components.ShowAlertDialog
 import com.backcube.economyapp.core.ui.components.ShowProgressIndicator
 import com.backcube.economyapp.core.ui.components.date.CustomDatePicker
@@ -43,6 +44,7 @@ import com.backcube.economyapp.core.ui.utils.CollectEffect
 import com.backcube.economyapp.core.ui.utils.formatAsSimpleDate
 import com.backcube.economyapp.core.ui.utils.formatAsSimpleTime
 import com.backcube.economyapp.core.ui.utils.toCurrency
+import com.backcube.economyapp.core.ui.utils.toHourMinute
 import com.backcube.economyapp.features.transactions.presentation.common.components.SheetAccounts
 import com.backcube.economyapp.features.transactions.presentation.common.components.SheetCategories
 import com.backcube.economyapp.features.transactions.presentation.edit.di.TransactionEditorViewModelFactory
@@ -214,7 +216,17 @@ fun TransactionEditorScreen(
     }
 
     if (isTimePickerOpen) {
-
+        val (initHour, initMinute) = state.selectedTransactionDate.toHourMinute()
+        CustomTimePicker(
+            initialHour = initHour,
+            initialMinute = initMinute,
+            onTimeSelected = { hour, minute ->
+                onIntent(TransactionEditorIntent.OnTimeSelected(hour, minute))
+                isTimePickerOpen = !isTimePickerOpen
+            },
+            onDismiss = { isTimePickerOpen = !isTimePickerOpen },
+            onClear = { isTimePickerOpen = !isTimePickerOpen }
+        )
     }
 
     Column(
@@ -271,7 +283,8 @@ fun TransactionEditorScreen(
                 title = stringResource(R.string.time),
                 showLeading = false,
                 trailingText = state.selectedTransactionDate.formatAsSimpleTime(),
-                showTrailingIcon = false
+                showTrailingIcon = false,
+                onItemClick = { onIntent(TransactionEditorIntent.OnOpenTimePickerModal) }
             )
             CustomTextInput(
                 value = queryTransactionDescription,
