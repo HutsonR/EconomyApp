@@ -2,6 +2,7 @@ package com.backcube.economyapp.core.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -31,11 +32,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+private val BASE_HEIGHT = 70.dp
+private val SMALL_HEIGHT = 56.dp
+
 @Composable
 fun CustomTextInput(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    isSmallItem: Boolean = true,
     placeholder: String? = null,
     enabled: Boolean = true,
     singleLine: Boolean = true,
@@ -65,10 +70,14 @@ fun CustomTextInput(
                     modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                 )
             }
+            val height = if (isSmallItem) SMALL_HEIGHT else BASE_HEIGHT
             TextField(
                 value = value,
                 onValueChange = onValueChange,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).defaultMinSize(
+                    minWidth = TextFieldDefaults.MinWidth,
+                    minHeight = height
+                ),
                 enabled = enabled,
                 singleLine = singleLine,
                 textStyle = textStyle,
