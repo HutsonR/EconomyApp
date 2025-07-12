@@ -53,6 +53,7 @@ fun CustomTextInput(
     ),
     leadingText: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
+    trailingText: String? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     capitalizeFirstLetter: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -95,6 +96,13 @@ fun CustomTextInput(
                 ),
                 visualTransformation = visualTransformation
             )
+            if (!trailingText.isNullOrEmpty()) {
+                Text(
+                    text = trailingText,
+                    style = leadingTextStyles,
+                    modifier = Modifier.padding(end = 16.dp)
+                )
+            }
         }
         HorizontalDivider(
             thickness = 1.dp,

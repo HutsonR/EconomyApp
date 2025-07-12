@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.backcube.economyapp.core.BaseViewModel
 import com.backcube.economyapp.domain.usecases.api.AccountUseCase
 import com.backcube.economyapp.domain.usecases.api.TransactionUseCase
-import com.backcube.economyapp.domain.usecases.impl.common.AccountNotifierUseCase
+import com.backcube.economyapp.domain.usecases.impl.common.UpdateNotifierUseCase
 import com.backcube.economyapp.features.transactions.presentation.list.store.models.TransactionEffect
 import com.backcube.economyapp.features.transactions.presentation.list.store.models.TransactionIntent
 import com.backcube.economyapp.features.transactions.presentation.list.store.models.TransactionState
@@ -16,14 +16,14 @@ import kotlinx.coroutines.launch
 class TransactionsViewModel @AssistedInject constructor(
     private val transactionUseCase: TransactionUseCase,
     private val accountUseCase: AccountUseCase,
-    private val accountNotifierUseCase: AccountNotifierUseCase,
+    private val updateNotifierUseCase: UpdateNotifierUseCase,
     @Assisted private val isIncome: Boolean
 ) : BaseViewModel<TransactionState, TransactionEffect>(TransactionState()) {
 
     init {
         viewModelScope.launch {
             fetchData()
-            accountNotifierUseCase.refreshTrigger.collect {
+            updateNotifierUseCase.refreshTrigger.collect {
                 fetchData()
             }
         }

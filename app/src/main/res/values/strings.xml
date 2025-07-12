@@ -49,6 +49,7 @@
     <!-- Alert -->
     <string name="alert_base_title">Ошибка</string>
     <string name="alert_base_description">Произошла непредвиденная ошибка. Попробуйте, пожалуйста, позже</string>
+    <string name="alert_reqiured_fields_description">Заполнены не все обязательные поля</string>
 
     <!-- Navbar names -->
     <string name="navbar_expenses">Расходы</string>

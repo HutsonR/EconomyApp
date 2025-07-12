@@ -1,14 +1,16 @@
 package com.backcube.economyapp.features.transactions.presentation.edit
 
 import androidx.lifecycle.viewModelScope
+import com.backcube.economyapp.R
 import com.backcube.economyapp.core.BaseViewModel
+import com.backcube.economyapp.core.ui.components.AlertData
 import com.backcube.economyapp.domain.models.accounts.AccountModel
 import com.backcube.economyapp.domain.models.categories.CategoryModel
 import com.backcube.economyapp.domain.models.transactions.TransactionRequestModel
 import com.backcube.economyapp.domain.usecases.api.AccountUseCase
 import com.backcube.economyapp.domain.usecases.api.CategoryUseCase
 import com.backcube.economyapp.domain.usecases.api.TransactionUseCase
-import com.backcube.economyapp.domain.usecases.impl.common.AccountNotifierUseCase
+import com.backcube.economyapp.domain.usecases.impl.common.UpdateNotifierUseCase
 import com.backcube.economyapp.features.transactions.presentation.edit.store.models.TransactionEditorEffect
 import com.backcube.economyapp.features.transactions.presentation.edit.store.models.TransactionEditorIntent
 import com.backcube.economyapp.features.transactions.presentation.edit.store.models.TransactionEditorState
@@ -26,7 +28,7 @@ class TransactionEditorViewModel @AssistedInject constructor(
     private val transactionUseCase: TransactionUseCase,
     private val categoryUseCase: CategoryUseCase,
     private val accountUseCase: AccountUseCase,
-    private val accountNotifierUseCase: AccountNotifierUseCase
+    private val updateNotifierUseCase: UpdateNotifierUseCase
 ) : BaseViewModel<TransactionEditorState, TransactionEditorEffect>(TransactionEditorState()) {
 
     init {
@@ -49,7 +51,6 @@ class TransactionEditorViewModel @AssistedInject constructor(
                 it.printStackTrace()
                 effect(TransactionEditorEffect.ShowFetchError)
             }
-
             categoriesResult.onSuccess { categories ->
                 modifyState { copy(categories = categories) }
             }.onFailure {
@@ -61,7 +62,16 @@ class TransactionEditorViewModel @AssistedInject constructor(
                 val transactionResult = transactionUseCase.getTransactionById(transactionId)
 
                 transactionResult.onSuccess { transaction ->
-                    modifyState { copy(item = transaction) }
+                    val selectedAccount = getState().accounts.singleOrNull { it.id == transaction.account.id }
+                    modifyState {
+                        copy(
+                            selectedAccount = selectedAccount,
+                            selectedCategory = transaction.category,
+                            amount = transaction.amount.toString(),
+                            selectedTransactionDate = transaction.transactionDate,
+                            comment = transaction.comment.orEmpty()
+                        )
+                    }
                 }.onFailure {
                     it.printStackTrace()
                     effect(TransactionEditorEffect.ShowFetchError)
@@ -78,10 +88,12 @@ class TransactionEditorViewModel @AssistedInject constructor(
             is TransactionEditorIntent.OnAmountChange -> updateTransactionAmount(intent.amount)
             is TransactionEditorIntent.OnCategorySelected -> updateTransactionCategory(intent.category)
             is TransactionEditorIntent.OnDateSelected -> updateDate(intent.date)
+            is TransactionEditorIntent.OnTimeSelected -> TODO()
             is TransactionEditorIntent.OnDescriptionChange -> updateTransactionDescription(intent.description)
             TransactionEditorIntent.OnOpenAccountSheet -> effect(TransactionEditorEffect.ShowAccountSheet)
             TransactionEditorIntent.OnOpenCategorySheet -> effect(TransactionEditorEffect.ShowCategorySheet)
             TransactionEditorIntent.OnOpenDatePickerModal -> effect(TransactionEditorEffect.ShowDatePickerModal)
+            TransactionEditorIntent.OnOpenTimePickerModal -> effect(TransactionEditorEffect.ShowTimePickerModal)
             TransactionEditorIntent.OnCancelClick -> effect(TransactionEditorEffect.GoBack)
             TransactionEditorIntent.OnSaveClick -> updateTransaction()
             TransactionEditorIntent.Refresh -> fetchData()
@@ -111,21 +123,25 @@ class TransactionEditorViewModel @AssistedInject constructor(
 
     private fun updateTransaction() {
         viewModelScope.launch {
-            modifyState { copy(isLoading = true) }
-            convertAndSaveBalance(getState().amount)
-
             val selectedAccountId = getState().selectedAccount?.id
             val selectedCategoryId = getState().selectedCategory?.id
             val selectedTransactionDate = getState().selectedTransactionDate
-            if (selectedAccountId == null || selectedCategoryId == null) {
-                effect(TransactionEditorEffect.ShowClientError)
+            val amount = getState().amount
+            if (selectedAccountId == null || selectedCategoryId == null || amount.isBlank()) {
+                effect(
+                    TransactionEditorEffect.ShowClientError(
+                        AlertData(message = R.string.alert_reqiured_fields_description)
+                    )
+                )
                 return@launch
             }
+
+            modifyState { copy(isLoading = true) }
 
             val requestTransactionModel = TransactionRequestModel(
                 accountId = selectedAccountId,
                 categoryId = selectedCategoryId,
-                amount = getState().formattedAmount,
+                amount = toBigDecimal(amount),
                 transactionDate = selectedTransactionDate,
                 comment = getState().comment,
             )
@@ -143,18 +159,17 @@ class TransactionEditorViewModel @AssistedInject constructor(
                 onFailure = {
                     it.printStackTrace()
                     modifyState { copy(isLoading = false) }
-                    effect(TransactionEditorEffect.GoBack)
+                    effect(TransactionEditorEffect.ShowClientError())
                 }
             )
-            accountNotifierUseCase.notifyAccountChanged()
+            updateNotifierUseCase.notifyAccountChanged()
         }
     }
 
-    private fun convertAndSaveBalance(balance: String) {
-        val newBalance = balance.takeIf { it.isNotBlank() }?.let {
+    private fun toBigDecimal(balance: String): BigDecimal {
+        return balance.takeIf { it.isNotBlank() }?.let {
             BigDecimal(it.replace(',', '.'))
-        }
-        modifyState { copy(formattedAmount = newBalance ?: BigDecimal.ZERO) }
+        } ?: BigDecimal.ZERO
     }
 
     @AssistedFactory

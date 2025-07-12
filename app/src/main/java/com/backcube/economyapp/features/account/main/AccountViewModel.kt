@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.backcube.economyapp.core.BaseViewModel
 import com.backcube.economyapp.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.economyapp.domain.usecases.api.AccountUseCase
-import com.backcube.economyapp.domain.usecases.impl.common.AccountNotifierUseCase
+import com.backcube.economyapp.domain.usecases.impl.common.UpdateNotifierUseCase
 import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import com.backcube.economyapp.features.account.main.store.models.AccountEffect
 import com.backcube.economyapp.features.account.main.store.models.AccountIntent
@@ -14,13 +14,13 @@ import javax.inject.Inject
 
 class AccountViewModel @Inject constructor(
     private val accountUseCase: AccountUseCase,
-    private val accountNotifierUseCase: AccountNotifierUseCase
+    private val updateNotifierUseCase: UpdateNotifierUseCase
 ) : BaseViewModel<AccountState, AccountEffect>(AccountState()) {
 
     init {
         viewModelScope.launch {
             fetchData()
-            accountNotifierUseCase.refreshTrigger.collect {
+            updateNotifierUseCase.refreshTrigger.collect {
                 fetchData()
             }
         }
@@ -89,7 +89,7 @@ class AccountViewModel @Inject constructor(
                         currency = updatedAccount.currency
                     )
                 )
-                accountNotifierUseCase.notifyAccountChanged()
+                updateNotifierUseCase.notifyAccountChanged()
                 modifyState { copy(item = updatedAccount) }
             } catch (e: Exception) {
                 e.printStackTrace()

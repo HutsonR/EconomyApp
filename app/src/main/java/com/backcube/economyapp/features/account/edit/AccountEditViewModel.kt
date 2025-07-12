@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.backcube.economyapp.core.BaseViewModel
 import com.backcube.economyapp.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.economyapp.domain.usecases.api.AccountUseCase
-import com.backcube.economyapp.domain.usecases.impl.common.AccountNotifierUseCase
+import com.backcube.economyapp.domain.usecases.impl.common.UpdateNotifierUseCase
 import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import com.backcube.economyapp.features.account.edit.store.models.AccountEditEffect
 import com.backcube.economyapp.features.account.edit.store.models.AccountEditIntent
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class AccountEditViewModel @Inject constructor(
     private val accountUseCase: AccountUseCase,
-    private val accountNotifierUseCase: AccountNotifierUseCase
+    private val updateNotifierUseCase: UpdateNotifierUseCase
 ) : BaseViewModel<AccountEditState, AccountEditEffect>(AccountEditState()) {
 
     fun fetchData(accountId: Int) {
@@ -90,7 +90,7 @@ class AccountEditViewModel @Inject constructor(
                 )
             ).fold(
                 onSuccess = {
-                    accountNotifierUseCase.notifyAccountChanged()
+                    updateNotifierUseCase.notifyAccountChanged()
                     effect(AccountEditEffect.GoBack)
                 },
                 onFailure = {

@@ -25,9 +25,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
 import com.backcube.economyapp.core.di.appComponent
@@ -42,6 +42,8 @@ import com.backcube.economyapp.core.ui.components.date.DateMode
 import com.backcube.economyapp.core.ui.utils.CollectEffect
 import com.backcube.economyapp.core.ui.utils.formatAsSimpleDate
 import com.backcube.economyapp.core.ui.utils.formatAsSimpleTime
+import com.backcube.economyapp.core.ui.utils.toCurrency
+import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import com.backcube.economyapp.features.transactions.presentation.common.components.SheetAccounts
 import com.backcube.economyapp.features.transactions.presentation.common.components.SheetCategories
 import com.backcube.economyapp.features.transactions.presentation.edit.di.TransactionEditorViewModelFactory
@@ -57,17 +59,18 @@ fun TransactionEditorScreenRoot(
     navController: NavController
 ) {
     val context = LocalContext.current
-    val viewModel: TransactionEditorViewModel = remember {
-        val factory = context.appComponent
-            .createTransactionsComponent()
-            .create()
-            .transactionEditorViewModel
+    val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
 
-        ViewModelProvider(
-            context as ViewModelStoreOwner,
-            TransactionEditorViewModelFactory(factory, transactionId = transactionId)
-        )[TransactionEditorViewModel::class.java]
-    }
+    val viewModel: TransactionEditorViewModel = viewModel(
+        viewModelStoreOwner = owner,
+        factory = TransactionEditorViewModelFactory(
+            context.appComponent
+                .createTransactionsComponent()
+                .create()
+                .transactionEditorViewModel,
+            transactionId = transactionId
+        )
+    )
     val state by viewModel.state.collectAsStateWithLifecycle()
     val effects = viewModel.effect
 
@@ -121,10 +124,12 @@ fun TransactionEditorScreen(
     var isAccountSheetOpen by rememberSaveable { mutableStateOf(false) }
     var isCategorySheetOpen by rememberSaveable { mutableStateOf(false) }
     var isDatePickerOpen by rememberSaveable { mutableStateOf(false) }
+    var isTimePickerOpen by rememberSaveable { mutableStateOf(false) }
     var isFetchAlertVisible by remember { mutableStateOf(false) }
     var isClientAlertVisible by remember { mutableStateOf(false) }
+    var clientAlertData by remember { mutableStateOf(AlertData()) }
 
-    val queryTransactionDescription = state.comment.orEmpty()
+    val queryTransactionDescription = state.comment
     val queryAmountRaw = state.amount
 
     CollectEffect(effects) { effect ->
@@ -133,8 +138,12 @@ fun TransactionEditorScreen(
             TransactionEditorEffect.ShowAccountSheet -> isAccountSheetOpen = !isAccountSheetOpen
             TransactionEditorEffect.ShowCategorySheet -> isCategorySheetOpen = !isCategorySheetOpen
             TransactionEditorEffect.ShowDatePickerModal -> isDatePickerOpen = !isDatePickerOpen
+            TransactionEditorEffect.ShowTimePickerModal -> isTimePickerOpen = !isTimePickerOpen
             TransactionEditorEffect.ShowFetchError -> isFetchAlertVisible = !isFetchAlertVisible
-            TransactionEditorEffect.ShowClientError -> isClientAlertVisible = !isClientAlertVisible
+            is TransactionEditorEffect.ShowClientError -> {
+                clientAlertData = effect.alertData
+                isClientAlertVisible = !isClientAlertVisible
+            }
         }
     }
 
@@ -152,8 +161,8 @@ fun TransactionEditorScreen(
 
     if (isClientAlertVisible) {
         ShowAlertDialog(
+            alertData = clientAlertData,
             onActionButtonClick = {
-                onIntent(TransactionEditorIntent.OnCancelClick)
                 isClientAlertVisible = false
             }
         )
@@ -205,13 +214,17 @@ fun TransactionEditorScreen(
         )
     }
 
+    if (isTimePickerOpen) {
+
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
         ShowProgressIndicator(state.isLoading)
-        val item = state.item
+        if (state.isLoading) return
         Column {
             CustomListItem(
                 title = stringResource(R.string.account),
@@ -244,6 +257,7 @@ fun TransactionEditorScreen(
                     fontWeight = FontWeight.W400,
                     color = colors.onSurface
                 ),
+                trailingText = state.selectedAccount?.currency?.toCurrency(),
                 colors = defaultTextFieldColors,
                 isSmallItem = false
             )
@@ -281,6 +295,11 @@ fun TransactionEditorScreen(
 
 private fun validateBalanceInput(input: String): Boolean {
     if (input.isEmpty()) return true
-    val regex = Regex("""^-?\d+([.,]\d{0,2})?$""")
+
+    val allowedCurrencySymbols = CurrencyIsoCode.entries
+        .map { it.toCurrency() }
+        .joinToString("|") { Regex.escape(it) }
+    val regex = Regex("""^-?\d+(?:[.,]\d{0,2})?\s?(?:$allowedCurrencySymbols)?$""")
+
     return regex.matches(input)
 }

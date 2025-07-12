@@ -7,6 +7,7 @@ sealed interface TransactionEditorIntent {
     data class OnAmountChange(val amount: String) : TransactionEditorIntent
     data class OnDescriptionChange(val description: String) : TransactionEditorIntent
     data class OnDateSelected(val date: Long?) : TransactionEditorIntent
+    data class OnTimeSelected(val date: Long?) : TransactionEditorIntent
     data class OnAccountSelected(val account: AccountModel) : TransactionEditorIntent
     data class OnCategorySelected(val category: CategoryModel) : TransactionEditorIntent
     data object OnSaveClick : TransactionEditorIntent
@@ -14,5 +15,6 @@ sealed interface TransactionEditorIntent {
     data object OnOpenAccountSheet : TransactionEditorIntent
     data object OnOpenCategorySheet : TransactionEditorIntent
     data object OnOpenDatePickerModal : TransactionEditorIntent
+    data object OnOpenTimePickerModal : TransactionEditorIntent
     data object Refresh : TransactionEditorIntent
 }
