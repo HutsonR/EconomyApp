@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.backcube.economyapp.R
 import com.backcube.economyapp.core.ui.theme.LightGreen
+import com.backcube.economyapp.core.ui.utils.toCurrency
 import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 
 private val BASE_HEIGHT = 70.dp

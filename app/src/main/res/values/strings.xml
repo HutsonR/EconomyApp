@@ -1,22 +1,29 @@
 <resources>
     <string name="app_name">EconomyApp</string>
 
+    <!-- Transactions -->
     <string name="expense_title">Расходы сегодня</string>
+    <string name="my_expenses_title">Мои расходы</string>
 
     <string name="income_title">Доходы сегодня</string>
+    <string name="my_incomes_title">Мои доходы</string>
 
+    <string name="history_title">Моя история</string>
+
+    <!-- Account -->
     <string name="account_title">Мой счет</string>
     <string name="account_name">Название</string>
     <string name="account_balance">Баланс</string>
     <string name="account_currency">Валюта</string>
 
+    <!-- Articles -->
     <string name="article_title">Мои статьи</string>
     <string name="article_search">Найти статью</string>
 
+    <!-- Settings -->
     <string name="settings_title">Настройки</string>
 
-    <string name="history_title">Моя история</string>
-
+    <!-- Other -->
     <string name="total">Всего</string>
     <string name="rub">₽</string>
     <string name="start">Начало</string>
@@ -25,21 +32,28 @@
     <string name="clear">Очистить</string>
     <string name="cancel">Отмена</string>
     <string name="ok_big">ОК</string>
+    <string name="account">Счет</string>
+    <string name="category">Статья</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
+    <string name="comment">Комментарий</string>
     <string name="no_internet_connection">Нет подключения к интернету</string>
     <string name="understand">Понятно</string>
+    <string name="repeat">Повторить</string>
+    <string name="exit_double_tap">Нажмите назад ещё раз, чтобы выйти</string>
     
     <string name="currency_rub">Российский рубль</string>
     <string name="currency_usd">Американский доллар</string>
     <string name="currency_eur">Евро</string>
 
+    <!-- Alert -->
     <string name="alert_base_title">Ошибка</string>
     <string name="alert_base_description">Произошла непредвиденная ошибка. Попробуйте, пожалуйста, позже</string>
 
+    <!-- Navbar names -->
     <string name="navbar_expenses">Расходы</string>
     <string name="navbar_incomes">Доходы</string>
     <string name="navbar_account">Счет</string>
     <string name="navbar_articles">Статьи</string>
     <string name="navbar_settings">Настройки</string>
-
-    <string name="exit_double_tap">Нажмите назад ещё раз, чтобы выйти</string>
 </resources>

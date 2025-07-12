@@ -7,42 +7,35 @@ import com.backcube.economyapp.domain.models.accounts.AccountResponseModel
 import com.backcube.economyapp.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.economyapp.domain.repositories.AccountRepository
 import com.backcube.economyapp.domain.usecases.api.AccountUseCase
-import com.backcube.economyapp.domain.utils.retry.RetryHandler
 import javax.inject.Inject
 
 class AccountUseCaseImpl @Inject constructor(
-    private val accountRepository: AccountRepository,
-    private val retryHandler: RetryHandler
+    private val accountRepository: AccountRepository
 ): AccountUseCase {
 
-    override suspend fun getAccounts(): Result<List<AccountModel>> {
-        return retryHandler.executeWithRetryResult {
+    override suspend fun getAccounts(): Result<List<AccountModel>> =
+        runCatching {
             accountRepository.getAccounts()
         }
-    }
 
-    override suspend fun createAccount(request: AccountCreateRequestModel): Result<AccountModel> {
-        return retryHandler.executeWithRetryResult {
+    override suspend fun createAccount(request: AccountCreateRequestModel): Result<AccountModel> =
+        runCatching {
             accountRepository.createAccount(request)
         }
-    }
 
-    override suspend fun getAccountById(id: Int): Result<AccountResponseModel?> {
-        return retryHandler.executeWithRetryResult {
+    override suspend fun getAccountById(id: Int): Result<AccountResponseModel?> =
+        runCatching {
             accountRepository.getAccountById(id)
         }
-    }
 
-    override suspend fun updateAccount(id: Int, request: AccountUpdateRequestModel): Result<AccountModel> {
-        return retryHandler.executeWithRetryResult {
+    override suspend fun updateAccount(id: Int, request: AccountUpdateRequestModel): Result<AccountModel> =
+        runCatching {
             accountRepository.updateAccount(id, request)
         }
-    }
 
-    override suspend fun getAccountHistory(id: Int): Result<AccountHistoryResponseModel> {
-        return retryHandler.executeWithRetryResult {
+    override suspend fun getAccountHistory(id: Int): Result<AccountHistoryResponseModel> =
+        runCatching {
             accountRepository.getAccountHistory(id)
         }
-    }
 
 }

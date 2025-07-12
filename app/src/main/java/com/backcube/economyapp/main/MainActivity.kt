@@ -21,27 +21,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.di.appComponent
 import com.backcube.economyapp.core.navigation.AppNavHost
 import com.backcube.economyapp.core.navigation.DoubleBackPressToExit
 import com.backcube.economyapp.core.navigation.NavBarItem
 import com.backcube.economyapp.core.ui.baseComponents.BottomNavBar
 import com.backcube.economyapp.core.ui.theme.EconomyAppTheme
 import com.backcube.economyapp.main.viewmodels.NetworkViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var networkViewModel: NetworkViewModel
 
     private lateinit var navController: NavHostController
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appComponent.inject(this)
 
         setupWindow()
 
@@ -81,11 +84,11 @@ class MainActivity : ComponentActivity() {
             )
         }
 
-        NetworkSnackbar()
+        NetworkSnackbar(networkViewModel)
     }
 
     @Composable
-    fun NetworkSnackbar(viewModel: NetworkViewModel = hiltViewModel()) {
+    fun NetworkSnackbar(viewModel: NetworkViewModel) {
         val isConnected by viewModel.isConnected.collectAsStateWithLifecycle()
 
         if (!isConnected) {

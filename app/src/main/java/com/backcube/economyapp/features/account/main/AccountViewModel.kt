@@ -9,11 +9,9 @@ import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import com.backcube.economyapp.features.account.main.store.models.AccountEffect
 import com.backcube.economyapp.features.account.main.store.models.AccountIntent
 import com.backcube.economyapp.features.account.main.store.models.AccountState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
 class AccountViewModel @Inject constructor(
     private val accountUseCase: AccountUseCase,
     private val accountNotifierUseCase: AccountNotifierUseCase

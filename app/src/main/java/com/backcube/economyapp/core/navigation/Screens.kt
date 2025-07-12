@@ -24,4 +24,11 @@ sealed class Screens(val route: String) {
         fun createRoute(accountId: String) = "account_edit/${Uri.encode(accountId)}"
     }
 
+    data object TransactionEditScreen : Screens("transaction_edit") {
+        fun createRoute(
+            transactionId: String,
+            isIncome: Boolean
+        ) = "transaction_edit/${Uri.encode(transactionId)}/${Uri.encode(isIncome.toString())}"
+    }
+
 }

@@ -19,11 +19,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.di.appComponent
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.core.ui.components.CustomTextInput
@@ -37,9 +38,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun ArticlesScreenRoot(
-    navController: NavController,
-    viewModel: ArticlesViewModel = hiltViewModel()
+    navController: NavController
 ) {
+    val context = LocalContext.current
+    val viewModel = remember {
+        context.appComponent
+            .createArticlesComponent()
+            .create()
+            .articlesViewModel
+    }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val effects = viewModel.effect
 

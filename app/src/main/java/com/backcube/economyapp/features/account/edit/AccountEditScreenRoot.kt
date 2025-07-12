@@ -20,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -27,10 +28,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.di.appComponent
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.core.ui.components.CustomTextInput
@@ -46,9 +47,15 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun AccountEditScreenRoot(
     accountId: Int,
-    navController: NavController,
-    viewModel: AccountEditViewModel = hiltViewModel()
+    navController: NavController
 ) {
+    val context = LocalContext.current
+    val viewModel = remember {
+        context.appComponent
+            .createAccountComponent()
+            .create()
+            .accountEditViewModel
+    }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val effects = viewModel.effect
 
@@ -88,6 +95,26 @@ fun AccountEditScreen(
     onIntent: (AccountEditIntent) -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
+    val defaultTextFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedTextColor = colors.onSurface,
+        unfocusedTextColor = colors.onSurface,
+        focusedContainerColor = colors.surface,
+        unfocusedContainerColor = Color.Transparent,
+        disabledContainerColor = Color.Transparent,
+        unfocusedBorderColor = Color.Transparent
+    )
+    val defaultMainTextStyle = TextStyle(
+        color = colors.onSurface,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.W400,
+        textAlign = TextAlign.End
+    )
+    val defaultLeadingTextStyle = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.W400,
+        color = colors.onSurface
+    )
+
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isIsoCodeSheetOpen by rememberSaveable { mutableStateOf(false) }
     var isAlertVisible by remember { mutableStateOf(false) }
@@ -143,25 +170,9 @@ fun AccountEditScreen(
                         onIntent(AccountEditIntent.OnAccountNameChange(it))
                     },
                     leadingText = stringResource(id = R.string.account_name),
-                    textStyle = TextStyle(
-                        color = colors.onSurface,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        textAlign = TextAlign.End
-                    ),
-                    leadingTextStyles = TextStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = colors.onSurface
-                    ),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = colors.onSurface,
-                        unfocusedTextColor = colors.onSurface,
-                        focusedContainerColor = colors.surface,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent
-                    )
+                    textStyle = defaultMainTextStyle,
+                    leadingTextStyles = defaultLeadingTextStyle,
+                    colors = defaultTextFieldColors
                 )
                 CustomTextInput(
                     value = queryBalanceRaw,
@@ -170,27 +181,11 @@ fun AccountEditScreen(
                             onIntent(AccountEditIntent.OnAccountBalanceChange(it))
                         }
                     },
-                    textStyle = TextStyle(
-                        color = colors.onSurface,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        textAlign = TextAlign.End
-                    ),
-                    leadingTextStyles = TextStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W400,
-                        color = colors.onSurface
-                    ),
+                    textStyle = defaultMainTextStyle,
+                    leadingTextStyles = defaultLeadingTextStyle,
                     leadingText = stringResource(id = R.string.account_balance),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = colors.onSurface,
-                        unfocusedTextColor = colors.onSurface,
-                        focusedContainerColor = colors.surface,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent
-                    )
+                    colors = defaultTextFieldColors
                 )
                 CustomListItem(
                     title = stringResource(R.string.account_currency),

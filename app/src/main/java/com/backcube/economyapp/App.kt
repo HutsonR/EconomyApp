@@ -1,7 +1,17 @@
 package com.backcube.economyapp
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
 
-@HiltAndroidApp
-class App: Application()
+class App: Application() {
+
+    lateinit var appComponent: AppComponent
+        private set
+
+    override fun onCreate() {
+        super.onCreate()
+
+        appComponent = DaggerAppComponent.builder()
+            .setContext(applicationContext)
+            .build()
+    }
+}

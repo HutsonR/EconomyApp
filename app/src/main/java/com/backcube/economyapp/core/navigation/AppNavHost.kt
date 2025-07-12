@@ -11,11 +11,12 @@ import androidx.navigation.navArgument
 import com.backcube.economyapp.features.account.edit.AccountEditScreenRoot
 import com.backcube.economyapp.features.account.main.AccountScreenRoot
 import com.backcube.economyapp.features.articles.ArticlesScreenRoot
-import com.backcube.economyapp.features.expenses.ExpensesScreenRoot
-import com.backcube.economyapp.features.histories.HistoryScreenRoot
-import com.backcube.economyapp.features.income.IncomesScreenRoot
 import com.backcube.economyapp.features.settings.SettingsScreenRoot
 import com.backcube.economyapp.features.splash.SplashScreenRoot
+import com.backcube.economyapp.features.transactions.presentation.edit.TransactionEditorScreenRoot
+import com.backcube.economyapp.features.transactions.presentation.histories.HistoryScreenRoot
+import com.backcube.economyapp.features.transactions.presentation.list.screens.ExpensesScreenRoot
+import com.backcube.economyapp.features.transactions.presentation.list.screens.IncomesScreenRoot
 
 @Composable
 fun AppNavHost(
@@ -58,6 +59,7 @@ fun AppNavHost(
                 navController = navController
             )
         }
+
         composable(
             route = Screens.AccountEditScreen.route + "/{accountId}",
             arguments = listOf(navArgument("accountId") { type = NavType.StringType })
@@ -65,6 +67,22 @@ fun AppNavHost(
             val accountId = Uri.decode(stackEntry.arguments?.getString("accountId"))
             AccountEditScreenRoot(
                 accountId = accountId.toInt(),
+                navController = navController
+            )
+        }
+
+        composable(
+            route = Screens.TransactionEditScreen.route + "/{transactionId}/{isIncome}",
+            arguments = listOf(
+                navArgument("transactionId") { type = NavType.StringType },
+                navArgument("isIncome") { type = NavType.StringType }
+            )
+        ) { stackEntry ->
+            val transactionId = Uri.decode(stackEntry.arguments?.getString("transactionId"))
+            val isIncome = Uri.decode(stackEntry.arguments?.getString("isIncome"))
+            TransactionEditorScreenRoot(
+                transactionId = transactionId.toInt(),
+                isIncome = isIncome.toBoolean(),
                 navController = navController
             )
         }
