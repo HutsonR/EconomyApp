@@ -43,7 +43,6 @@ import com.backcube.economyapp.core.ui.utils.CollectEffect
 import com.backcube.economyapp.core.ui.utils.formatAsSimpleDate
 import com.backcube.economyapp.core.ui.utils.formatAsSimpleTime
 import com.backcube.economyapp.core.ui.utils.toCurrency
-import com.backcube.economyapp.domain.utils.CurrencyIsoCode
 import com.backcube.economyapp.features.transactions.presentation.common.components.SheetAccounts
 import com.backcube.economyapp.features.transactions.presentation.common.components.SheetCategories
 import com.backcube.economyapp.features.transactions.presentation.edit.di.TransactionEditorViewModelFactory
@@ -295,11 +294,6 @@ fun TransactionEditorScreen(
 
 private fun validateBalanceInput(input: String): Boolean {
     if (input.isEmpty()) return true
-
-    val allowedCurrencySymbols = CurrencyIsoCode.entries
-        .map { it.toCurrency() }
-        .joinToString("|") { Regex.escape(it) }
-    val regex = Regex("""^-?\d+(?:[.,]\d{0,2})?\s?(?:$allowedCurrencySymbols)?$""")
-
+    val regex = Regex("""^-?\d+([.,]\d{0,2})?$""")
     return regex.matches(input)
 }
