@@ -22,9 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.backcube.economyapp.R
 import com.backcube.economyapp.core.di.appComponent
+import com.backcube.economyapp.core.navigation.AppNavigationController
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.core.ui.components.CustomTextInput
@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun ArticlesScreenRoot(
-    navController: NavController
+    navController: AppNavigationController
 ) {
     val context = LocalContext.current
     val viewModel = remember {
@@ -72,7 +72,7 @@ fun ArticlesScreenRoot(
 @Composable
 fun ArticlesScreen(
     modifier: Modifier,
-    navController: NavController,
+    navController: AppNavigationController,
     state: ArticleState,
     effects: Flow<ArticleEffect>,
     onIntent: (ArticleIntent) -> Unit

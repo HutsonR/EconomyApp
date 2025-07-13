@@ -1,4 +1,4 @@
-package com.backcube.economyapp.core.navigation
+package com.backcube.economyapp.main.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
@@ -8,6 +8,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.backcube.economyapp.core.navigation.AppNavigationController
+import com.backcube.economyapp.core.navigation.Screens
 import com.backcube.economyapp.features.account.edit.AccountEditScreenRoot
 import com.backcube.economyapp.features.account.main.AccountScreenRoot
 import com.backcube.economyapp.features.articles.ArticlesScreenRoot
@@ -21,6 +23,7 @@ import com.backcube.economyapp.features.transactions.presentation.list.screens.I
 @Composable
 fun AppNavHost(
     navController: NavHostController,
+    protectedNavController: AppNavigationController,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -33,19 +36,19 @@ fun AppNavHost(
             SplashScreenRoot(navController)
         }
         composable(Screens.AccountScreen.route) {
-            AccountScreenRoot(navController)
+            AccountScreenRoot(protectedNavController)
         }
         composable(Screens.ArticlesScreen.route) {
-            ArticlesScreenRoot(navController)
+            ArticlesScreenRoot(protectedNavController)
         }
         composable(Screens.ExpensesScreen.route) {
-            ExpensesScreenRoot(navController)
+            ExpensesScreenRoot(protectedNavController)
         }
         composable(Screens.IncomesScreen.route) {
-            IncomesScreenRoot(navController)
+            IncomesScreenRoot(protectedNavController)
         }
         composable(Screens.SettingsScreen.route) {
-            SettingsScreenRoot(navController)
+            SettingsScreenRoot(protectedNavController)
         }
 
         // Secondary screens
@@ -56,7 +59,7 @@ fun AppNavHost(
             val isIncome = Uri.decode(stackEntry.arguments?.getString("isIncome"))
             HistoryScreenRoot(
                 isIncome.toBoolean(),
-                navController = navController
+                navController = protectedNavController
             )
         }
 
@@ -67,7 +70,7 @@ fun AppNavHost(
             val accountId = Uri.decode(stackEntry.arguments?.getString("accountId"))
             AccountEditScreenRoot(
                 accountId = accountId.toInt(),
-                navController = navController
+                navController = protectedNavController
             )
         }
 
@@ -83,7 +86,7 @@ fun AppNavHost(
             TransactionEditorScreenRoot(
                 transactionId = transactionId.toInt(),
                 isIncome = isIncome.toBoolean(),
-                navController = navController
+                navController = protectedNavController
             )
         }
     }

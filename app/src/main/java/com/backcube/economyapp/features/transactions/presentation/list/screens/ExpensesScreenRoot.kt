@@ -20,9 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.backcube.economyapp.R
 import com.backcube.economyapp.core.di.appComponent
+import com.backcube.economyapp.core.navigation.AppNavigationController
 import com.backcube.economyapp.core.navigation.Screens
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.AlertData
@@ -43,7 +43,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun ExpensesScreenRoot(
-    navController: NavController
+    navController: AppNavigationController
 ) {
     val context = LocalContext.current
     val viewModel: TransactionsViewModel = remember {
@@ -85,7 +85,7 @@ fun ExpensesScreenRoot(
 @Composable
 fun ExpenseScreen(
     modifier: Modifier,
-    navController: NavController,
+    navController: AppNavigationController,
     state: TransactionState,
     effects: Flow<TransactionEffect>,
     onIntent: (TransactionIntent) -> Unit

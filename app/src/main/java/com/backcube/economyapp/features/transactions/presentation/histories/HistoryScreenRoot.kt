@@ -19,9 +19,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.backcube.economyapp.R
 import com.backcube.economyapp.core.di.appComponent
+import com.backcube.economyapp.core.navigation.AppNavigationController
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.core.ui.components.ShowAlertDialog
@@ -42,7 +42,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun HistoryScreenRoot(
     isIncome: Boolean,
-    navController: NavController
+    navController: AppNavigationController
 ) {
     val context = LocalContext.current
     val viewModel = remember {
@@ -83,7 +83,7 @@ fun HistoryScreenRoot(
 @Composable
 fun HistoryScreen(
     modifier: Modifier,
-    navController: NavController,
+    navController: AppNavigationController,
     state: HistoryState,
     effects: Flow<HistoryEffect>,
     onIntent: (HistoryIntent) -> Unit
