@@ -29,9 +29,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.backcube.economyapp.R
 import com.backcube.economyapp.core.di.appComponent
+import com.backcube.economyapp.core.navigation.AppNavigationController
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.core.ui.components.CustomTextInput
@@ -47,7 +47,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun AccountEditScreenRoot(
     accountId: Int,
-    navController: NavController
+    navController: AppNavigationController
 ) {
     val context = LocalContext.current
     val viewModel = remember {
@@ -89,7 +89,7 @@ fun AccountEditScreenRoot(
 @Composable
 fun AccountEditScreen(
     modifier: Modifier,
-    navController: NavController,
+    navController: AppNavigationController,
     state: AccountEditState,
     effects: Flow<AccountEditEffect>,
     onIntent: (AccountEditIntent) -> Unit

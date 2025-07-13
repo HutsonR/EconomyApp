@@ -1,8 +1,9 @@
-package com.backcube.economyapp.core.navigation
+package com.backcube.economyapp.main.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.backcube.economyapp.R
+import com.backcube.economyapp.core.navigation.Screens
 
 sealed class NavBarItem(
     @StringRes val label: Int,

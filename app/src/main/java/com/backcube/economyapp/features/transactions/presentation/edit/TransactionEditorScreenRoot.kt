@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.backcube.economyapp.R
 import com.backcube.economyapp.core.di.appComponent
+import com.backcube.economyapp.core.navigation.AppNavigationController
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.AlertData
 import com.backcube.economyapp.core.ui.components.CustomListItem
@@ -57,7 +57,7 @@ import kotlinx.coroutines.flow.Flow
 fun TransactionEditorScreenRoot(
     transactionId: Int,
     isIncome: Boolean,
-    navController: NavController
+    navController: AppNavigationController
 ) {
     val context = LocalContext.current
     val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
@@ -106,7 +106,7 @@ fun TransactionEditorScreenRoot(
 @Composable
 fun TransactionEditorScreen(
     modifier: Modifier,
-    navController: NavController,
+    navController: AppNavigationController,
     state: TransactionEditorState,
     effects: Flow<TransactionEditorEffect>,
     onIntent: (TransactionEditorIntent) -> Unit

@@ -1,4 +1,4 @@
-package com.backcube.economyapp.core.navigation
+package com.backcube.economyapp.main.navigation
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler

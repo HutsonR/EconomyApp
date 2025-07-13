@@ -20,10 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.backcube.economyapp.core.navigation.NavBarItem
 import com.backcube.economyapp.core.ui.theme.LightGreen
 import com.backcube.economyapp.core.ui.theme.UltraGreen
+import com.backcube.economyapp.main.navigation.NavBarItem
 
 /**
  * Кастомная нижняя навигационная панель (Bottom Navigation Bar).
@@ -37,14 +36,12 @@ import com.backcube.economyapp.core.ui.theme.UltraGreen
  */
 @Composable
 fun BottomNavBar(
+    modifier: Modifier = Modifier,
     items: List<NavBarItem>,
-    navController: NavHostController,
-    modifier: Modifier = Modifier
+    currentRoute: String,
+    onItemClick: (NavBarItem) -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
-
-    val navBackStackEntry = navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry.value?.destination?.route
 
     NavigationBar(
         modifier = modifier,
@@ -84,11 +81,7 @@ fun BottomNavBar(
                     selected = selected,
                     onClick = {
                         if (currentRoute != it.route) {
-                            navController.navigate(it.route) {
-                                popUpTo(0)
-                                launchSingleTop = true
-                                restoreState = true
-                            }
+                            onItemClick(it)
                         }
                     },
                     colors = NavigationBarItemDefaults.colors(

@@ -22,9 +22,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.backcube.economyapp.R
 import com.backcube.economyapp.core.di.appComponent
+import com.backcube.economyapp.core.navigation.AppNavigationController
 import com.backcube.economyapp.core.ui.baseComponents.CustomTopBar
 import com.backcube.economyapp.core.ui.components.CustomListItem
 import com.backcube.economyapp.features.settings.models.SettingType
@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SettingsScreenRoot(
-    navController: NavController
+    navController: AppNavigationController
 ) {
     val context = LocalContext.current
     val viewModel = remember {
@@ -69,7 +69,7 @@ fun SettingsScreenRoot(
 @Composable
 fun SettingsScreen(
     modifier: Modifier,
-    navController: NavController,
+    navController: AppNavigationController,
     state: SettingsState,
     effects: Flow<SettingsEffect>,
     onIntent: (SettingsIntent) -> Unit
