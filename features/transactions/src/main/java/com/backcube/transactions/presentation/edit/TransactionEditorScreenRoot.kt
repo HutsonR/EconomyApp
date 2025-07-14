@@ -67,7 +67,8 @@ fun TransactionEditorScreenRoot(
         viewModelStoreOwner = owner,
         factory = TransactionEditorViewModelFactory(
             transactionComponent.transactionEditorViewModel,
-            transactionId = transactionId
+            transactionId = transactionId,
+            isIncome = isIncome
         )
     )
     val state by viewModel.state.collectAsStateWithLifecycle()

@@ -25,6 +25,7 @@ import java.time.ZoneId
 
 class TransactionEditorViewModel @AssistedInject constructor(
     @Assisted private val transactionId: Int,
+    @Assisted private val isIncome: Boolean,
     private val transactionUseCase: TransactionUseCase,
     private val categoryUseCase: CategoryUseCase,
     private val accountUseCase: AccountUseCase,
@@ -52,7 +53,8 @@ class TransactionEditorViewModel @AssistedInject constructor(
                 effect(TransactionEditorEffect.ShowFetchError)
             }
             categoriesResult.onSuccess { categories ->
-                modifyState { copy(categories = categories) }
+                val filteredCategories = categories.filter { it.isIncome == isIncome }
+                modifyState { copy(categories = filteredCategories) }
             }.onFailure {
                 it.printStackTrace()
                 effect(TransactionEditorEffect.ShowFetchError)
@@ -185,7 +187,7 @@ class TransactionEditorViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(transactionId: Int): TransactionEditorViewModel
+        fun create(transactionId: Int, isIncome: Boolean): TransactionEditorViewModel
     }
 
     companion object {
