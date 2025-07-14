@@ -10,4 +10,8 @@ sealed interface HistoryEffect {
     ) : HistoryEffect
 
     data object ShowClientError : HistoryEffect
+
+    data class NavigateToEditorTransaction(
+        val transactionId: String
+    ) : HistoryEffect
 }

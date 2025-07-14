@@ -1,5 +1,5 @@
 package com.backcube.settings.models
 
-sealed interface SettingsIntent {
+internal sealed interface SettingsIntent {
 
 }

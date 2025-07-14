@@ -103,7 +103,7 @@ fun TransactionEditorScreenRoot(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransactionEditorScreen(
+internal fun TransactionEditorScreen(
     modifier: Modifier,
     navController: AppNavigationController,
     state: TransactionEditorState,

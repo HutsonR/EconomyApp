@@ -4,6 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
 import com.backcube.transactions.presentation.histories.models.HistoryEffect
+import com.backcube.transactions.presentation.histories.models.HistoryEffect.GoBack
+import com.backcube.transactions.presentation.histories.models.HistoryEffect.NavigateToEditorTransaction
+import com.backcube.transactions.presentation.histories.models.HistoryEffect.ShowCalendar
 import com.backcube.transactions.presentation.histories.models.HistoryIntent
 import com.backcube.transactions.presentation.histories.models.HistoryState
 import com.backcube.ui.BaseViewModel
@@ -98,11 +101,12 @@ class HistoryViewModel @Inject constructor(
     }
 
 
-    fun handleIntent(intent: HistoryIntent) {
+    internal fun handleIntent(intent: HistoryIntent) {
         when(intent) {
-            HistoryIntent.GoBack -> effect(HistoryEffect.GoBack)
+            HistoryIntent.GoBack -> effect(GoBack)
             is HistoryIntent.UpdateDate -> updateDate(intent.dateMode, intent.date)
-            is HistoryIntent.ShowCalendar -> effect(HistoryEffect.ShowCalendar(intent.dateMode))
+            is HistoryIntent.ShowCalendar -> effect(ShowCalendar(intent.dateMode))
+            is HistoryIntent.EditTransaction -> effect(NavigateToEditorTransaction(intent.id.toString()))
         }
     }
 }

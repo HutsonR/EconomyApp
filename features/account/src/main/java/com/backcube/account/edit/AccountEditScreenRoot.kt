@@ -86,7 +86,7 @@ fun AccountEditScreenRoot(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AccountEditScreen(
+internal fun AccountEditScreen(
     modifier: Modifier,
     navController: AppNavigationController,
     state: AccountEditState,

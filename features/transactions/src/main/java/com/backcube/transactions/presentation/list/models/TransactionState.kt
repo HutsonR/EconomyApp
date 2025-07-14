@@ -1,4 +1,4 @@
-package com.backcube.economyapp.features.transactions.presentation.list.store.models
+package com.backcube.transactions.presentation.list.models
 
 import com.backcube.domain.models.transactions.TransactionResponseModel
 import java.math.BigDecimal

@@ -73,7 +73,7 @@ fun AccountScreenRoot(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AccountScreen(
+internal fun AccountScreen(
     modifier: Modifier,
     navController: AppNavigationController,
     state: AccountState,

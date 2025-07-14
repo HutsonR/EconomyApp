@@ -84,7 +84,7 @@ class TransactionEditorViewModel @AssistedInject constructor(
         }
     }
 
-    fun handleIntent(intent: TransactionEditorIntent) {
+    internal fun handleIntent(intent: TransactionEditorIntent) {
         when (intent) {
             is TransactionEditorIntent.OnAccountSelected -> updateTransactionAccount(intent.account)
             is TransactionEditorIntent.OnAmountChange -> updateTransactionAmount(intent.amount)

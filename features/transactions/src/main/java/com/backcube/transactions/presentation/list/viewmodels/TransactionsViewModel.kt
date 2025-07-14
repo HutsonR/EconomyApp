@@ -4,9 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
-import com.backcube.economyapp.features.transactions.presentation.list.store.models.TransactionEffect
-import com.backcube.economyapp.features.transactions.presentation.list.store.models.TransactionIntent
-import com.backcube.economyapp.features.transactions.presentation.list.store.models.TransactionState
+import com.backcube.transactions.presentation.list.models.TransactionEffect
+import com.backcube.transactions.presentation.list.models.TransactionIntent
+import com.backcube.transactions.presentation.list.models.TransactionState
 import com.backcube.ui.BaseViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -75,7 +75,7 @@ class TransactionsViewModel @AssistedInject constructor(
         }
     }
 
-    fun handleIntent(intent: TransactionIntent) {
+    internal fun handleIntent(intent: TransactionIntent) {
         when(intent) {
             TransactionIntent.GoToHistory -> effect(TransactionEffect.NavigateToHistory)
             TransactionIntent.AddTransaction -> effect(TransactionEffect.NavigateToEditorTransaction("-1"))

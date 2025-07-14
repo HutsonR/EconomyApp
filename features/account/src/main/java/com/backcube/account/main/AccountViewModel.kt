@@ -55,7 +55,7 @@ class AccountViewModel @Inject constructor(
         modifyState { copy(isLoading = false) }
     }
 
-    fun handleIntent(intent: AccountIntent) {
+    internal fun handleIntent(intent: AccountIntent) {
         when(intent) {
             is AccountIntent.OnCurrencySelected -> updateAccount(intent.isoCode)
             AccountIntent.OnOpenIsoCodeSheet -> effect(AccountEffect.ShowCurrencySheet)

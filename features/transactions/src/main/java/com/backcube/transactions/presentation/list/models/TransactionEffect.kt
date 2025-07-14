@@ -1,4 +1,4 @@
-package com.backcube.economyapp.features.transactions.presentation.list.store.models
+package com.backcube.transactions.presentation.list.models
 
 sealed interface TransactionEffect {
     data object NavigateToHistory : TransactionEffect

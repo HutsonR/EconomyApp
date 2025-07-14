@@ -3,7 +3,7 @@ package com.backcube.transactions.presentation.edit.models
 import com.backcube.domain.models.accounts.AccountModel
 import com.backcube.domain.models.categories.CategoryModel
 
-sealed interface TransactionEditorIntent {
+internal sealed interface TransactionEditorIntent {
     data class OnAmountChange(val amount: String) : TransactionEditorIntent
     data class OnDescriptionChange(val description: String) : TransactionEditorIntent
     data class OnDateSelected(val date: Long?) : TransactionEditorIntent

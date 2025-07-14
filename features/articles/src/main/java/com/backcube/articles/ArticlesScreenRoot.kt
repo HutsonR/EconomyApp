@@ -68,7 +68,7 @@ fun ArticlesScreenRoot(
 }
 
 @Composable
-fun ArticlesScreen(
+internal fun ArticlesScreen(
     modifier: Modifier,
     navController: AppNavigationController,
     state: ArticleState,

@@ -71,6 +71,7 @@ fun HistoryScreenRoot(
     ) { innerPadding ->
         HistoryScreen(
             modifier = Modifier.padding(innerPadding),
+            isIncome = isIncome,
             navController = navController,
             state = state,
             effects = effects,
@@ -80,8 +81,9 @@ fun HistoryScreenRoot(
 }
 
 @Composable
-fun HistoryScreen(
+internal fun HistoryScreen(
     modifier: Modifier,
+    isIncome: Boolean,
     navController: AppNavigationController,
     state: HistoryState,
     effects: Flow<HistoryEffect>,
@@ -95,6 +97,11 @@ fun HistoryScreen(
             HistoryEffect.GoBack -> navController.popBackStack()
             is HistoryEffect.ShowCalendar -> showDatePicker = Pair(effect.dateMode, true)
             HistoryEffect.ShowClientError -> isAlertVisible = true
+            is HistoryEffect.NavigateToEditorTransaction -> {
+                navController.navigate(com.backcube.navigation.model.Screens.TransactionEditScreen.createRoute(
+                    effect.transactionId, isIncome = isIncome)
+                )
+            }
         }
     }
 
@@ -172,7 +179,10 @@ fun HistoryScreen(
                     leadingEmojiOrText = item.category.emoji,
                     trailingText = item.amount.formatAsWholeThousands(),
                     currencyIsoCode = item.account.currency,
-                    trailingSubText = item.transactionDate.formatAsTransactionDate()
+                    trailingSubText = item.transactionDate.formatAsTransactionDate(),
+                    onItemClick = {
+                        onIntent(HistoryIntent.EditTransaction(item.id))
+                    }
                 )
             }
         }

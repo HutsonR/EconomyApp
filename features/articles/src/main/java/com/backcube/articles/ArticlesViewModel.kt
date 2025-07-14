@@ -46,7 +46,7 @@ class ArticlesViewModel @Inject constructor(
         }
     }
 
-    fun handleIntent(intent: ArticleIntent) {
+    internal fun handleIntent(intent: ArticleIntent) {
         when(intent) {
             is ArticleIntent.OnChangeQuery -> onChangeQueryAction(intent.text)
         }

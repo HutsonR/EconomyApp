@@ -46,7 +46,7 @@ class AccountEditViewModel @Inject constructor(
         }
     }
 
-    fun handleIntent(intent: AccountEditIntent) {
+    internal fun handleIntent(intent: AccountEditIntent) {
         when(intent) {
             is AccountEditIntent.OnAccountBalanceChange -> updateAccountBalance(intent.balance)
             is AccountEditIntent.OnAccountNameChange -> updateAccountName(intent.name)

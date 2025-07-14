@@ -23,7 +23,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun handleIntent(intent: SettingsIntent) {
+    internal fun handleIntent(intent: SettingsIntent) {
         // todo Дальше больше
         when(intent) {
             else -> Unit

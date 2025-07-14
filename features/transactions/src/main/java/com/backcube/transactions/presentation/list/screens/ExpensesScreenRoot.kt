@@ -24,13 +24,13 @@ import com.backcube.domain.utils.CurrencyIsoCode
 import com.backcube.domain.utils.formatAsWholeThousands
 import com.backcube.economyapp.core.ui.theme.LightGreen
 import com.backcube.economyapp.core.ui.utils.CollectEffect
-import com.backcube.economyapp.features.transactions.presentation.list.store.models.TransactionEffect
-import com.backcube.economyapp.features.transactions.presentation.list.store.models.TransactionIntent
-import com.backcube.economyapp.features.transactions.presentation.list.store.models.TransactionState
 import com.backcube.navigation.AppNavigationController
 import com.backcube.transactions.R
 import com.backcube.transactions.common.di.TransactionsComponentProvider
 import com.backcube.transactions.presentation.list.di.TransactionsViewModelFactory
+import com.backcube.transactions.presentation.list.models.TransactionEffect
+import com.backcube.transactions.presentation.list.models.TransactionIntent
+import com.backcube.transactions.presentation.list.models.TransactionState
 import com.backcube.transactions.presentation.list.viewmodels.TransactionsViewModel
 import com.backcube.ui.baseComponents.CustomTopBar
 import com.backcube.ui.components.AlertData
@@ -83,7 +83,7 @@ fun ExpensesScreenRoot(
 }
 
 @Composable
-fun ExpenseScreen(
+internal fun ExpenseScreen(
     modifier: Modifier,
     navController: AppNavigationController,
     state: TransactionState,

@@ -65,7 +65,7 @@ fun SettingsScreenRoot(
 }
 
 @Composable
-fun SettingsScreen(
+internal fun SettingsScreen(
     modifier: Modifier,
     navController: AppNavigationController,
     state: SettingsState,
