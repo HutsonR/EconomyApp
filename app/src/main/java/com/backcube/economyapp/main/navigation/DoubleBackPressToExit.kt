@@ -11,7 +11,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.backcube.economyapp.R
 import kotlinx.coroutines.delay
 
 /**
@@ -46,7 +45,7 @@ fun DoubleBackPressToExit(
                 onExit()
             } else {
                 backPressedOnce = true
-                Toast.makeText(context, context.getText(R.string.exit_double_tap), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getText(com.backcube.ui.R.string.exit_double_tap), Toast.LENGTH_SHORT).show()
             }
         }
 

@@ -2,7 +2,7 @@ package com.backcube.economyapp.main.navigation
 
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
-import com.backcube.economyapp.core.navigation.AppNavigationController
+import com.backcube.navigation.AppNavigationController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

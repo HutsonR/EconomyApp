@@ -26,15 +26,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.backcube.economyapp.App.Companion.appComponent
 import com.backcube.economyapp.R
-import com.backcube.economyapp.core.di.appComponent
-import com.backcube.economyapp.core.ui.baseComponents.BottomNavBar
 import com.backcube.economyapp.core.ui.theme.EconomyAppTheme
 import com.backcube.economyapp.main.navigation.AppNavHost
 import com.backcube.economyapp.main.navigation.DoubleBackPressToExit
-import com.backcube.economyapp.main.navigation.NavBarItem
 import com.backcube.economyapp.main.navigation.ProtectedNavController
 import com.backcube.economyapp.main.viewmodels.NetworkViewModel
+import com.backcube.ui.baseComponents.navbar.BottomNavBar
+import com.backcube.ui.baseComponents.navbar.NavBarItem
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
@@ -47,7 +47,8 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
+
+        applicationContext.appComponent.inject(this)
 
         setupWindow()
 
@@ -82,10 +83,9 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.fillMaxSize(),
             bottomBar = {
                 BottomNavBar(
-                    items = NavBarItem.all,
-                    currentRoute = currentRoute ?: NavBarItem.Expenses.route,
+                    currentRoute = currentRoute,
                     onItemClick = {
-                        navController.navigate(it.route) {
+                        navController.navigate(it) {
                             popUpTo(0)
                             launchSingleTop = true
                             restoreState = true

@@ -1,0 +1,7 @@
+<resources>
+    <!-- Account -->
+    <string name="account_title">Мой счет</string>
+    <string name="account_name">Название</string>
+    <string name="account_balance">Баланс</string>
+    <string name="account_currency">Валюта</string>
+</resources>
