@@ -1,13 +1,13 @@
 package com.backcube.economyapp
 
 import android.content.Context
-import com.backcube.economyapp.data.di.DataModule
-import com.backcube.economyapp.domain.di.DomainModule
-import com.backcube.economyapp.features.account.common.di.AccountComponent
-import com.backcube.economyapp.features.articles.di.ArticlesComponent
-import com.backcube.economyapp.features.settings.di.SettingComponent
-import com.backcube.economyapp.features.transactions.common.di.TransactionsComponent
+import com.backcube.account.common.di.AccountComponent
+import com.backcube.articles.di.ArticlesComponent
+import com.backcube.data.di.DataModule
+import com.backcube.domain.di.DomainModule
 import com.backcube.economyapp.main.MainActivity
+import com.backcube.settings.di.SettingComponent
+import com.backcube.transactions.common.di.TransactionsComponent
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

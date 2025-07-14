@@ -1,0 +1,5 @@
+<resources>
+    <!-- Articles -->
+    <string name="article_title">Мои статьи</string>
+    <string name="article_search">Найти статью</string>
+</resources>

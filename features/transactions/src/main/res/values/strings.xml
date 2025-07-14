@@ -1,0 +1,10 @@
+<resources>
+    <!-- Transactions -->
+    <string name="expense_title">Расходы сегодня</string>
+    <string name="my_expenses_title">Мои расходы</string>
+
+    <string name="income_title">Доходы сегодня</string>
+    <string name="my_incomes_title">Мои доходы</string>
+
+    <string name="history_title">Моя история</string>
+</resources>

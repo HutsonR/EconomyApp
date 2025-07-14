@@ -8,17 +8,16 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.backcube.economyapp.core.navigation.AppNavigationController
-import com.backcube.economyapp.core.navigation.Screens
-import com.backcube.economyapp.features.account.edit.AccountEditScreenRoot
-import com.backcube.economyapp.features.account.main.AccountScreenRoot
-import com.backcube.economyapp.features.articles.ArticlesScreenRoot
-import com.backcube.economyapp.features.settings.SettingsScreenRoot
-import com.backcube.economyapp.features.splash.SplashScreenRoot
-import com.backcube.economyapp.features.transactions.presentation.edit.TransactionEditorScreenRoot
-import com.backcube.economyapp.features.transactions.presentation.histories.HistoryScreenRoot
-import com.backcube.economyapp.features.transactions.presentation.list.screens.ExpensesScreenRoot
-import com.backcube.economyapp.features.transactions.presentation.list.screens.IncomesScreenRoot
+import com.backcube.account.edit.AccountEditScreenRoot
+import com.backcube.account.main.AccountScreenRoot
+import com.backcube.articles.ArticlesScreenRoot
+import com.backcube.navigation.AppNavigationController
+import com.backcube.navigation.model.Screens
+import com.backcube.settings.SettingsScreenRoot
+import com.backcube.transactions.presentation.edit.TransactionEditorScreenRoot
+import com.backcube.transactions.presentation.histories.HistoryScreenRoot
+import com.backcube.transactions.presentation.list.screens.ExpensesScreenRoot
+import com.backcube.transactions.presentation.list.screens.IncomesScreenRoot
 
 @Composable
 fun AppNavHost(
@@ -29,12 +28,9 @@ fun AppNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Screens.SplashScreen.route
+        startDestination = Screens.ExpensesScreen.route
     ) {
         // Main screens
-        composable(Screens.SplashScreen.route) {
-            SplashScreenRoot(navController)
-        }
         composable(Screens.AccountScreen.route) {
             AccountScreenRoot(protectedNavController)
         }
