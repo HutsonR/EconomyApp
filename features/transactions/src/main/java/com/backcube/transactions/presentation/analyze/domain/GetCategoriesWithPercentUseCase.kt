@@ -6,6 +6,13 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.inject.Inject
 
+/**
+ * UseCase для расчета процента транзакций для каждой категории и общей суммы, потраченной в каждой категории.
+ *
+ * Этот класс берет список транзакций, группирует их по категориям, а затем вычисляет
+ * процент транзакций, относящихся к каждой категории, по отношению к общему количеству транзакций.
+ * Он также суммирует общую сумму транзакций по каждой категории.
+ */
 class GetCategoriesWithPercentUseCase @Inject constructor() {
     operator fun invoke(transactions: List<TransactionResponseModel>): List<CategoryStats> {
         if (transactions.isEmpty()) return emptyList()
@@ -24,9 +31,7 @@ class GetCategoriesWithPercentUseCase @Inject constructor() {
             CategoryStats(
                 name = category.name,
                 emoji = category.emoji,
-                percent = BigDecimal(percentage.toDouble())
-                    .setScale(2, RoundingMode.HALF_UP)
-                    .toFloat(),
+                percent = percentage,
                 totalAmount = totalAmount.setScale(2, RoundingMode.HALF_UP)
             )
         }
