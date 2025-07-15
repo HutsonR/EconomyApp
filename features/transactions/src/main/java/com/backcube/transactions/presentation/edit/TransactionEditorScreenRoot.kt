@@ -28,10 +28,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.backcube.economyapp.core.ui.utils.CollectEffect
-import com.backcube.economyapp.core.ui.utils.formatAsSimpleDate
-import com.backcube.economyapp.core.ui.utils.formatAsSimpleTime
-import com.backcube.economyapp.core.ui.utils.toHourMinute
 import com.backcube.navigation.AppNavigationController
 import com.backcube.transactions.R
 import com.backcube.transactions.common.di.TransactionsComponentProvider
@@ -50,7 +46,11 @@ import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
 import com.backcube.ui.components.date.CustomDatePicker
 import com.backcube.ui.components.date.DateMode
+import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.formatAsSimpleDate
+import com.backcube.ui.utils.formatAsSimpleTime
 import com.backcube.ui.utils.toCurrency
+import com.backcube.ui.utils.toHourMinute
 import kotlinx.coroutines.flow.Flow
 
 @Composable

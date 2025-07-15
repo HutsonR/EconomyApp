@@ -26,13 +26,13 @@ import com.backcube.articles.di.ArticlesComponentProvider
 import com.backcube.articles.models.ArticleEffect
 import com.backcube.articles.models.ArticleIntent
 import com.backcube.articles.models.ArticleState
-import com.backcube.economyapp.core.ui.utils.CollectEffect
 import com.backcube.navigation.AppNavigationController
 import com.backcube.ui.baseComponents.CustomTopBar
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.CustomTextInput
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
+import com.backcube.ui.utils.CollectEffect
 import kotlinx.coroutines.flow.Flow
 
 @Composable

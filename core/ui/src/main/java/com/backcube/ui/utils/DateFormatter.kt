@@ -1,4 +1,4 @@
-package com.backcube.economyapp.core.ui.utils
+package com.backcube.ui.utils
 
 import java.time.Instant
 import java.time.ZoneId

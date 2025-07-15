@@ -14,4 +14,8 @@ sealed interface HistoryEffect {
     data class NavigateToEditorTransaction(
         val transactionId: String
     ) : HistoryEffect
+
+    data class NavigateToAnalyze(
+        val isIncome: Boolean
+    ) : HistoryEffect
 }

@@ -1,4 +1,4 @@
-package com.backcube.economyapp.core.ui.utils
+package com.backcube.ui.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

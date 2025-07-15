@@ -14,7 +14,11 @@ internal sealed interface HistoryIntent {
         val date: Long?
     ) : HistoryIntent
 
-    data class  EditTransaction(
+    data class EditTransaction(
         val id: Int
+    ) : HistoryIntent
+
+    data class GoAnalyze(
+        val isIncome: Boolean
     ) : HistoryIntent
 }

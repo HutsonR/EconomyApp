@@ -22,9 +22,8 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.domain.utils.CurrencyIsoCode
 import com.backcube.domain.utils.formatAsWholeThousands
-import com.backcube.economyapp.core.ui.theme.LightGreen
-import com.backcube.economyapp.core.ui.utils.CollectEffect
 import com.backcube.navigation.AppNavigationController
+import com.backcube.navigation.model.Screens
 import com.backcube.transactions.R
 import com.backcube.transactions.common.di.TransactionsComponentProvider
 import com.backcube.transactions.presentation.list.di.TransactionsViewModelFactory
@@ -38,6 +37,8 @@ import com.backcube.ui.components.CustomFloatingButton
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
+import com.backcube.ui.theme.LightGreen
+import com.backcube.ui.utils.CollectEffect
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -94,10 +95,10 @@ internal fun IncomeScreen(
 
     CollectEffect(effects) { effect ->
         when (effect) {
-            TransactionEffect.NavigateToHistory -> navController.navigate(com.backcube.navigation.model.Screens.HistoryScreen.createRoute(true))
+            TransactionEffect.NavigateToHistory -> navController.navigate(Screens.HistoryScreen.createRoute(true))
             TransactionEffect.ShowClientError -> isAlertVisible = true
             is TransactionEffect.NavigateToEditorTransaction -> {
-                navController.navigate(com.backcube.navigation.model.Screens.TransactionEditScreen.createRoute(effect.transactionId, true))
+                navController.navigate(Screens.TransactionEditScreen.createRoute(effect.transactionId, true))
             }
         }
     }
