@@ -30,7 +30,6 @@ import com.backcube.economyapp.features.account.common.components.SheetCurrencie
 import com.backcube.navigation.AppNavigationController
 import com.backcube.navigation.model.Screens
 import com.backcube.ui.baseComponents.CustomTopBar
-import com.backcube.ui.components.CustomFloatingButton
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
@@ -124,6 +123,7 @@ internal fun AccountScreen(
             .background(MaterialTheme.colorScheme.surface)
     ) {
         ShowProgressIndicator(state.isLoading)
+        if (state.isLoading) return@Column
         val item = state.item
         if (item != null) {
             Column {
@@ -155,8 +155,8 @@ internal fun AccountScreen(
                 )
             }
         }
-        CustomFloatingButton {
-            // todo add expense
-        }
+//        CustomFloatingButton {
+//            // todo add expense
+//        }
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
+import com.backcube.domain.utils.collectResult
 import com.backcube.transactions.presentation.list.models.TransactionEffect
 import com.backcube.transactions.presentation.list.models.TransactionIntent
 import com.backcube.transactions.presentation.list.models.TransactionState
@@ -31,18 +32,16 @@ class TransactionsViewModel @AssistedInject constructor(
 
     private suspend fun fetchData() {
         modifyState { copy(isLoading = true) }
-        val accountsResult = accountUseCase.getAccounts()
 
-        accountsResult.fold(
+        accountUseCase.getAccounts().collectResult(
             onSuccess = { accounts ->
                 val accountId = accounts.firstOrNull()?.id ?: 1
-                val transactionResult = transactionUseCase.getAccountTransactions(
+
+                transactionUseCase.getAccountTransactions(
                     accountId = accountId,
                     startDate = getState().incomeDate,
                     endDate = getState().incomeDate
-                )
-
-                transactionResult.fold(
+                ).collectResult(
                     onSuccess = { transactions ->
                         val filteredTransactions = transactions.filter { it.category.isIncome == isIncome }
                         val totalTransactionsSum = filteredTransactions.sumOf { it.amount }
@@ -50,7 +49,8 @@ class TransactionsViewModel @AssistedInject constructor(
                         modifyState {
                             copy(
                                 items = filteredTransactions,
-                                totalSum = totalTransactionsSum
+                                totalSum = totalTransactionsSum,
+                                isLoading = false
                             )
                         }
                     },

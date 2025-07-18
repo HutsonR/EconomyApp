@@ -5,27 +5,28 @@ import com.backcube.domain.models.accounts.AccountHistoryResponseModel
 import com.backcube.domain.models.accounts.AccountModel
 import com.backcube.domain.models.accounts.AccountResponseModel
 import com.backcube.domain.models.accounts.AccountUpdateRequestModel
+import kotlinx.coroutines.flow.Flow
 
 interface AccountRepository {
 
     /**
      * Возвращает список всех счетов текущего пользователя
      * */
-    suspend fun getAccounts(): List<AccountModel>
+    suspend fun getAccounts(): Flow<List<AccountModel>>
 
     /**
      * Создает новый счет для текущего пользователя
      *
      * @param request See [AccountCreateRequestModel]
      * */
-    suspend fun createAccount(request: AccountCreateRequestModel): AccountModel
+    suspend fun createAccount(request: AccountCreateRequestModel): Flow<AccountModel>
 
     /**
      * Возвращает информацию о конкретном счете, включая статистику
      *
      * @param id ID счета
      * */
-    suspend fun getAccountById(id: Int): AccountResponseModel?
+    suspend fun getAccountById(id: Int): Flow<AccountResponseModel?>
 
     /**
      * Обновляет данные существующего счета
@@ -36,13 +37,13 @@ interface AccountRepository {
     suspend fun updateAccount(
         id: Int,
         request: AccountUpdateRequestModel
-    ): AccountModel
+    ): Flow<AccountModel>
 
     /**
      * Возвращает историю изменений баланса и других параметров счета, произведенных вне транзакций (при создании или изменении счета)
      *
      * @param id ID счета
      * */
-    suspend fun getAccountHistory(id: Int): AccountHistoryResponseModel
+    suspend fun getAccountHistory(id: Int): Flow<AccountHistoryResponseModel>
 
 }

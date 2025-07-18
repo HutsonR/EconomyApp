@@ -6,6 +6,7 @@ import com.backcube.articles.models.ArticleEffect
 import com.backcube.articles.models.ArticleIntent
 import com.backcube.articles.models.ArticleState
 import com.backcube.domain.usecases.api.CategoryUseCase
+import com.backcube.domain.utils.collectResult
 import com.backcube.ui.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -27,12 +28,13 @@ class ArticlesViewModel @Inject constructor(
         viewModelScope.launch {
             modifyState { copy(isLoading = true) }
 
-            categoryUseCase.getCategories().fold(
+            categoryUseCase.getCategories().collectResult(
                 onSuccess = {
                     modifyState {
                         copy(
                             initialItems = it,
-                            filteredItems = it
+                            filteredItems = it,
+                            isLoading = false
                         )
                     }
                 },

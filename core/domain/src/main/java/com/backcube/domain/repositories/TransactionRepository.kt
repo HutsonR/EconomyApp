@@ -3,6 +3,7 @@ package com.backcube.domain.repositories
 import com.backcube.domain.models.transactions.TransactionModel
 import com.backcube.domain.models.transactions.TransactionRequestModel
 import com.backcube.domain.models.transactions.TransactionResponseModel
+import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 
 interface TransactionRepository {
@@ -11,14 +12,14 @@ interface TransactionRepository {
      *
      * @param request see [TransactionRequestModel]
      * */
-    suspend fun createTransaction(request: TransactionRequestModel): TransactionModel
+    suspend fun createTransaction(request: TransactionRequestModel): Flow<TransactionModel>
 
     /**
      * Возвращает детальную информацию о транзакции
      *
      * @param id ID транзакции
      * */
-    suspend fun getTransactionById(id: Int): TransactionResponseModel
+    suspend fun getTransactionById(id: Int): Flow<TransactionResponseModel>
 
     /**
      * Обновляет существующую транзакцию
@@ -29,14 +30,14 @@ interface TransactionRepository {
     suspend fun updateTransaction(
         id: Int,
         request: TransactionRequestModel
-    ): TransactionResponseModel
+    ): Flow<TransactionResponseModel>
 
     /**
      * Удаляет транзакцию с возможностью возврата средств на счет
      *
      * @param id ID транзакции
      * */
-    suspend fun deleteTransaction(id: Int): Boolean
+    suspend fun deleteTransaction(id: Int): Flow<Boolean>
 
     /**
      * Возвращает список транзакций для указанного счета за указанный период
@@ -49,5 +50,5 @@ interface TransactionRepository {
         accountId: Int,
         startDate: Instant?,
         endDate: Instant?
-    ): List<TransactionResponseModel>
+    ): Flow<List<TransactionResponseModel>>
 }

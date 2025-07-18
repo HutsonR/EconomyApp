@@ -1,8 +1,8 @@
 package com.backcube.data.remote.di
 
-import com.backcube.data.remote.utils.retry.DefaultRetryPolicy
-import com.backcube.data.remote.utils.retry.RetryHandler
-import com.backcube.data.remote.utils.retry.RetryPolicy
+import com.backcube.data.remote.impl.utils.retry.DefaultRetryPolicy
+import com.backcube.data.remote.impl.utils.retry.RetryHandler
+import com.backcube.data.remote.impl.utils.retry.RetryPolicy
 import com.backcube.domain.utils.qualifiers.IoDispatchers
 import dagger.Module
 import dagger.Provides

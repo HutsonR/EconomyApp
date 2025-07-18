@@ -1,9 +1,12 @@
 package com.backcube.transactions.presentation.analyze
 
 import androidx.lifecycle.viewModelScope
+import com.backcube.domain.models.accounts.AccountModel
+import com.backcube.domain.models.transactions.TransactionResponseModel
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
 import com.backcube.domain.utils.CurrencyIsoCode
+import com.backcube.domain.utils.collectResult
 import com.backcube.domain.utils.formatAsWholeThousands
 import com.backcube.transactions.presentation.analyze.domain.GetCategoriesWithPercentUseCase
 import com.backcube.transactions.presentation.analyze.models.AnalyzeEffect
@@ -48,50 +51,57 @@ class AnalyzeViewModel @AssistedInject constructor(
     private fun fetchData() {
         viewModelScope.launch(Dispatchers.Default) {
             modifyState { copy(isLoading = true) }
-            val accountsResult = accountUseCase.getAccounts()
-
-            accountsResult.fold(
+            accountUseCase.getAccounts().collectResult(
                 onSuccess = { accounts ->
                     val account = accounts.firstOrNull()
                     val accountId = account?.id ?: 1
-                    val transactionResult = transactionUseCase.getAccountTransactions(
+
+                    transactionUseCase.getAccountTransactions(
                         accountId = accountId,
                         startDate = getState().startAnalyzeDate,
                         endDate = getState().endAnalyzeDate
-                    )
-
-                    transactionResult.fold(
+                    ).collectResult(
                         onSuccess = { transactions ->
-                            val filteredTransactions = transactions.filter {
-                                it.category.isIncome == getState().isIncome
-                            }
-                            val items = getCategoriesWithPercentUseCase(filteredTransactions)
-                            val currentCurrencyIsoCode = account?.currency ?: CurrencyIsoCode.RUB
-                            val totalTransactionsSum = filteredTransactions.sumOf { it.amount }
-                            val formattedTotalSum = totalTransactionsSum.formatAsWholeThousands() + " " + currentCurrencyIsoCode.toCurrency()
-
-                            modifyState {
-                                copy(
-                                    items = items,
-                                    totalSum = formattedTotalSum,
-                                    currencyIsoCode = currentCurrencyIsoCode
-                                )
-                            }
+                            handleTransactionResult(
+                                account,
+                                transactions
+                            )
                         },
-                        onFailure = {
-                            it.printStackTrace()
-                            effect(AnalyzeEffect.ShowFetchError)
-                        }
+                        onFailure = { handleError(it) }
                     )
                 },
-                onFailure = {
-                    it.printStackTrace()
-                    effect(AnalyzeEffect.ShowFetchError)
-                }
+                onFailure = { handleError(it) }
             )
 
             modifyState { copy(isLoading = false) }
         }
+    }
+
+    private fun handleTransactionResult(
+        account: AccountModel?,
+        transactions: List<TransactionResponseModel>
+    ) {
+        val filteredTransactions = transactions.filter {
+            it.category.isIncome == getState().isIncome
+        }
+        val items = getCategoriesWithPercentUseCase(filteredTransactions)
+        val currentCurrencyIsoCode = account?.currency ?: CurrencyIsoCode.RUB
+        val totalTransactionsSum = filteredTransactions.sumOf { it.amount }
+        val formattedTotalSum = totalTransactionsSum.formatAsWholeThousands() + " " + currentCurrencyIsoCode.toCurrency()
+
+        modifyState {
+            copy(
+                items = items,
+                totalSum = formattedTotalSum,
+                currencyIsoCode = currentCurrencyIsoCode,
+                isLoading = false
+            )
+        }
+    }
+
+    private fun handleError(throwable: Throwable) {
+        throwable.printStackTrace()
+        effect(AnalyzeEffect.ShowFetchError)
     }
 
     private fun updateDate(mode: DateMode, newDate: Long?) {
