@@ -17,22 +17,23 @@ class GetCategoriesWithPercentUseCase @Inject constructor() {
     operator fun invoke(transactions: List<TransactionResponseModel>): List<CategoryStats> {
         if (transactions.isEmpty()) return emptyList()
 
-        val totalCategories = transactions.size.toFloat()
-
         val grouped = transactions.groupBy { it.category }
-        return grouped.map { (category, groupTransactions) ->
-            val count = groupTransactions.size
-            val percentage = (count.toFloat() / totalCategories) * 100
+        val totalAmount = transactions.fold(BigDecimal.ZERO) { acc, tx -> acc + tx.amount }
 
-            val totalAmount = groupTransactions.fold(BigDecimal.ZERO) { acc, tx ->
-                acc + tx.amount
+        return grouped.map { (category, groupTransactions) ->
+            val categoryAmount = groupTransactions.fold(BigDecimal.ZERO) { acc, tx -> acc + tx.amount }
+
+            val percentage = if (totalAmount != BigDecimal.ZERO) {
+                (categoryAmount.toDouble() / totalAmount.toDouble()) * 100
+            } else {
+                0.0
             }
 
             CategoryStats(
                 name = category.name,
                 emoji = category.emoji,
-                percent = percentage,
-                totalAmount = totalAmount.setScale(2, RoundingMode.HALF_UP)
+                percent = percentage.toFloat(),
+                totalAmount = categoryAmount.setScale(2, RoundingMode.HALF_UP)
             )
         }
     }
