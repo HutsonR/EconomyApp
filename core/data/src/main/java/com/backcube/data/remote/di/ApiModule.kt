@@ -1,9 +1,9 @@
 package com.backcube.data.remote.di
 
-import com.backcube.data.remote.api.AccountApi
-import com.backcube.data.remote.api.CategoriesApi
-import com.backcube.data.remote.api.TransactionsApi
-import com.backcube.data.remote.network.NetworkProvider
+import com.backcube.data.remote.impl.api.AccountApi
+import com.backcube.data.remote.impl.api.CategoriesApi
+import com.backcube.data.remote.impl.api.TransactionsApi
+import com.backcube.data.remote.impl.network.NetworkProvider
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

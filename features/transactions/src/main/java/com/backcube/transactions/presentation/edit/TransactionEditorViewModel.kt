@@ -8,6 +8,7 @@ import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.api.CategoryUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
+import com.backcube.domain.utils.collectResult
 import com.backcube.transactions.presentation.edit.models.TransactionEditorEffect
 import com.backcube.transactions.presentation.edit.models.TransactionEditorIntent
 import com.backcube.transactions.presentation.edit.models.TransactionEditorState
@@ -17,7 +18,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.Instant
@@ -40,44 +40,47 @@ class TransactionEditorViewModel @AssistedInject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             modifyState { copy(isLoading = true) }
 
-            val accountsDeferred = async { accountUseCase.getAccounts() }
-            val categoriesDeferred = async { categoryUseCase.getCategories() }
-
-            val accountsResult = accountsDeferred.await()
-            val categoriesResult = categoriesDeferred.await()
-
-            accountsResult.onSuccess { accounts ->
-                modifyState { copy(accounts = accounts) }
-            }.onFailure {
-                it.printStackTrace()
-                effect(TransactionEditorEffect.ShowFetchError)
-            }
-            categoriesResult.onSuccess { categories ->
-                val filteredCategories = categories.filter { it.isIncome == isIncome }
-                modifyState { copy(categories = filteredCategories) }
-            }.onFailure {
-                it.printStackTrace()
-                effect(TransactionEditorEffect.ShowFetchError)
-            }
-
-            if (transactionId != TRANSACTION_NOT_FOUND) {
-                val transactionResult = transactionUseCase.getTransactionById(transactionId)
-
-                transactionResult.onSuccess { transaction ->
-                    val selectedAccount = getState().accounts.singleOrNull { it.id == transaction.account.id }
-                    modifyState {
-                        copy(
-                            selectedAccount = selectedAccount,
-                            selectedCategory = transaction.category,
-                            amount = transaction.amount.toString(),
-                            selectedTransactionDate = transaction.transactionDate,
-                            comment = transaction.comment.orEmpty()
-                        )
-                    }
-                }.onFailure {
+            accountUseCase.getAccounts().collectResult(
+                onSuccess = { accounts ->
+                    modifyState { copy(accounts = accounts) }
+                },
+                onFailure = {
                     it.printStackTrace()
                     effect(TransactionEditorEffect.ShowFetchError)
                 }
+            )
+
+            categoryUseCase.getCategories().collectResult(
+                onSuccess = { categories ->
+                    val filteredCategories = categories.filter { it.isIncome == isIncome }
+                    modifyState { copy(categories = filteredCategories) }
+                },
+                onFailure = {
+                    it.printStackTrace()
+                    effect(TransactionEditorEffect.ShowFetchError)
+                }
+            )
+
+            if (transactionId != TRANSACTION_NOT_FOUND) {
+                transactionUseCase.getTransactionById(transactionId).collectResult(
+                    onSuccess = { transaction ->
+                        val selectedAccount = getState().accounts.singleOrNull { it.id == transaction.account.id }
+                        modifyState {
+                            copy(
+                                selectedAccount = selectedAccount,
+                                selectedCategory = transaction.category,
+                                amount = transaction.amount.toString(),
+                                selectedTransactionDate = transaction.transactionDate,
+                                comment = transaction.comment.orEmpty(),
+                                isLoading = false
+                            )
+                        }
+                    },
+                    onFailure = {
+                        it.printStackTrace()
+                        effect(TransactionEditorEffect.ShowFetchError)
+                    }
+                )
             }
 
             modifyState { copy(isLoading = false) }
@@ -165,8 +168,9 @@ class TransactionEditorViewModel @AssistedInject constructor(
                 transactionUseCase.updateTransaction(transactionId, requestTransactionModel)
             }
 
-            result.fold(
+            result.collectResult(
                 onSuccess = {
+                    updateNotifierUseCase.notifyAccountChanged()
                     effect(TransactionEditorEffect.GoBack)
                 },
                 onFailure = {
@@ -175,7 +179,6 @@ class TransactionEditorViewModel @AssistedInject constructor(
                     effect(TransactionEditorEffect.ShowClientError())
                 }
             )
-            updateNotifierUseCase.notifyAccountChanged()
         }
     }
 

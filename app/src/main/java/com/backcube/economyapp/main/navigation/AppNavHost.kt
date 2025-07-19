@@ -14,6 +14,7 @@ import com.backcube.articles.ArticlesScreenRoot
 import com.backcube.navigation.AppNavigationController
 import com.backcube.navigation.model.Screens
 import com.backcube.settings.SettingsScreenRoot
+import com.backcube.transactions.presentation.analyze.AnalyzeScreenRoot
 import com.backcube.transactions.presentation.edit.TransactionEditorScreenRoot
 import com.backcube.transactions.presentation.histories.HistoryScreenRoot
 import com.backcube.transactions.presentation.list.screens.ExpensesScreenRoot
@@ -82,6 +83,17 @@ fun AppNavHost(
             TransactionEditorScreenRoot(
                 transactionId = transactionId.toInt(),
                 isIncome = isIncome.toBoolean(),
+                navController = protectedNavController
+            )
+        }
+
+        composable(
+            route = Screens.AnalyzeScreen.route + "/{isIncome}",
+            arguments = listOf(navArgument("isIncome") { type = NavType.StringType })
+        ) { stackEntry ->
+            val isIncome = Uri.decode(stackEntry.arguments?.getString("isIncome"))
+            AnalyzeScreenRoot(
+                isIncome.toBoolean(),
                 navController = protectedNavController
             )
         }

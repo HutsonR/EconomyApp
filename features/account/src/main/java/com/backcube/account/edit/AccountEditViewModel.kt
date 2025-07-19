@@ -8,6 +8,7 @@ import com.backcube.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
 import com.backcube.domain.utils.CurrencyIsoCode
+import com.backcube.domain.utils.collectResult
 import com.backcube.ui.BaseViewModel
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -21,15 +22,14 @@ class AccountEditViewModel @Inject constructor(
     fun fetchData(accountId: Int) {
         viewModelScope.launch {
             modifyState { copy(isLoading = true) }
-            val accountResult = accountUseCase.getAccountById(accountId)
-
-            accountResult.fold(
+            accountUseCase.getAccountById(accountId).collectResult(
                 onSuccess = { account ->
                     modifyState {
                         if (account != null) {
                             copy(
                                 item = account,
-                                balance = account.balance.toPlainString()
+                                balance = account.balance.toPlainString(),
+                                isLoading = false
                             )
                         } else {
                             copy(isLoading = false)
@@ -88,7 +88,7 @@ class AccountEditViewModel @Inject constructor(
                     balance = updatedAccount.balance,
                     currency = updatedAccount.currency
                 )
-            ).fold(
+            ).collectResult(
                 onSuccess = {
                     updateNotifierUseCase.notifyAccountChanged()
                     effect(AccountEditEffect.GoBack)

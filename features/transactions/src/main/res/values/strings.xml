@@ -7,4 +7,8 @@
     <string name="my_incomes_title">Мои доходы</string>
 
     <string name="history_title">Моя история</string>
+
+    <string name="analyze_title">Анализ</string>
+    <string name="analyze_period_start">Период: начало</string>
+    <string name="analyze_period_end">Период: конец</string>
 </resources>

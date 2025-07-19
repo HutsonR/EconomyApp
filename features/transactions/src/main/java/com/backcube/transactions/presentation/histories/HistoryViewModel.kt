@@ -3,8 +3,10 @@ package com.backcube.transactions.presentation.histories
 import androidx.lifecycle.viewModelScope
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
+import com.backcube.domain.utils.collectResult
 import com.backcube.transactions.presentation.histories.models.HistoryEffect
 import com.backcube.transactions.presentation.histories.models.HistoryEffect.GoBack
+import com.backcube.transactions.presentation.histories.models.HistoryEffect.NavigateToAnalyze
 import com.backcube.transactions.presentation.histories.models.HistoryEffect.NavigateToEditorTransaction
 import com.backcube.transactions.presentation.histories.models.HistoryEffect.ShowCalendar
 import com.backcube.transactions.presentation.histories.models.HistoryIntent
@@ -36,18 +38,15 @@ class HistoryViewModel @Inject constructor(
     private fun fetchData() {
         viewModelScope.launch {
             modifyState { copy(isLoading = true) }
-            val accountsResult = accountUseCase.getAccounts()
-
-            accountsResult.fold(
+            accountUseCase.getAccounts().collectResult(
                 onSuccess = { accounts ->
                     val accountId = accounts.firstOrNull()?.id ?: 1
-                    val transactionResult = transactionUseCase.getAccountTransactions(
+
+                    transactionUseCase.getAccountTransactions(
                         accountId = accountId,
                         startDate = getState().startHistoryDate,
                         endDate = getState().endHistoryDate
-                    )
-
-                    transactionResult.fold(
+                    ).collectResult(
                         onSuccess = { transactions ->
                             val filteredTransactions = transactions.filter {
                                 it.category.isIncome == getState().isIncome
@@ -57,7 +56,8 @@ class HistoryViewModel @Inject constructor(
                             modifyState {
                                 copy(
                                     items = filteredTransactions,
-                                    totalSum = totalTransactionsSum
+                                    totalSum = totalTransactionsSum,
+                                    isLoading = false
                                 )
                             }
                         },
@@ -83,21 +83,34 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun updateDate(mode: DateMode, newDate: Long?) {
-        val newInstant = newDate?.let { Instant.ofEpochMilli(it) } ?: Instant.now()
+        val newInstant = newDate?.let(Instant::ofEpochMilli) ?: Instant.now()
+        var stateChanged = true
 
         modifyState {
             when (mode) {
-                DateMode.START -> copy(startHistoryDate = newInstant)
-                DateMode.END -> {
-                    if (newInstant != null && newInstant < startHistoryDate) {
-                        // Нельзя выбрать дату раньше начала
-                        return@modifyState this
+                DateMode.START -> {
+                    if (newInstant > endHistoryDate) {
+                        stateChanged = true
+                        copy(
+                            startHistoryDate = newInstant,
+                            endHistoryDate = newInstant
+                        )
+                    } else {
+                        copy(startHistoryDate = newInstant)
                     }
-                    copy(endHistoryDate = newInstant)
+                }
+                DateMode.END -> {
+                    if (newInstant < startHistoryDate) {
+                        stateChanged = false
+                        this
+                    } else {
+                        copy(endHistoryDate = newInstant)
+                    }
                 }
             }
         }
-        fetchData()
+
+        if (stateChanged) fetchData()
     }
 
 
@@ -107,6 +120,7 @@ class HistoryViewModel @Inject constructor(
             is HistoryIntent.UpdateDate -> updateDate(intent.dateMode, intent.date)
             is HistoryIntent.ShowCalendar -> effect(ShowCalendar(intent.dateMode))
             is HistoryIntent.EditTransaction -> effect(NavigateToEditorTransaction(intent.id.toString()))
+            is HistoryIntent.GoAnalyze -> effect(NavigateToAnalyze(intent.isIncome))
         }
     }
 }

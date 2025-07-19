@@ -28,13 +28,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.backcube.economyapp.App.Companion.appComponent
 import com.backcube.economyapp.R
-import com.backcube.economyapp.core.ui.theme.EconomyAppTheme
 import com.backcube.economyapp.main.navigation.AppNavHost
 import com.backcube.economyapp.main.navigation.DoubleBackPressToExit
 import com.backcube.economyapp.main.navigation.ProtectedNavController
 import com.backcube.economyapp.main.viewmodels.NetworkViewModel
 import com.backcube.ui.baseComponents.navbar.BottomNavBar
 import com.backcube.ui.baseComponents.navbar.NavBarItem
+import com.backcube.ui.theme.EconomyAppTheme
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {

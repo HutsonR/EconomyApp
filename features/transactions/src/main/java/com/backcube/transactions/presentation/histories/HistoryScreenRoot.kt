@@ -21,11 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.domain.utils.CurrencyIsoCode
 import com.backcube.domain.utils.formatAsWholeThousands
-import com.backcube.economyapp.core.ui.theme.LightGreen
-import com.backcube.economyapp.core.ui.utils.CollectEffect
-import com.backcube.economyapp.core.ui.utils.formatAsPeriodDate
-import com.backcube.economyapp.core.ui.utils.formatAsTransactionDate
 import com.backcube.navigation.AppNavigationController
+import com.backcube.navigation.model.Screens
 import com.backcube.transactions.R
 import com.backcube.transactions.common.di.TransactionsComponentProvider
 import com.backcube.transactions.presentation.histories.models.HistoryEffect
@@ -37,6 +34,10 @@ import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
 import com.backcube.ui.components.date.CustomDatePicker
 import com.backcube.ui.components.date.DateMode
+import com.backcube.ui.theme.LightGreen
+import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.formatAsPeriodDate
+import com.backcube.ui.utils.formatAsTransactionDate
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -64,7 +65,7 @@ fun HistoryScreenRoot(
                 leadingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_back),
                 onLeadingClick = { viewModel.handleIntent(HistoryIntent.GoBack) },
                 trailingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_clipboard),
-                onTrailingClick = {},
+                onTrailingClick = { viewModel.handleIntent(HistoryIntent.GoAnalyze(isIncome)) },
                 backgroundColor = MaterialTheme.colorScheme.primary
             )
         }
@@ -98,8 +99,13 @@ internal fun HistoryScreen(
             is HistoryEffect.ShowCalendar -> showDatePicker = Pair(effect.dateMode, true)
             HistoryEffect.ShowClientError -> isAlertVisible = true
             is HistoryEffect.NavigateToEditorTransaction -> {
-                navController.navigate(com.backcube.navigation.model.Screens.TransactionEditScreen.createRoute(
-                    effect.transactionId, isIncome = isIncome)
+                navController.navigate(
+                    Screens.TransactionEditScreen.createRoute(effect.transactionId, isIncome = isIncome)
+                )
+            }
+            is HistoryEffect.NavigateToAnalyze -> {
+                navController.navigate(
+                    Screens.AnalyzeScreen.createRoute(isIncome = effect.isIncome)
                 )
             }
         }

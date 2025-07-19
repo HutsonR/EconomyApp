@@ -43,6 +43,7 @@
     <string name="currency_rub">Российский рубль</string>
     <string name="currency_usd">Американский доллар</string>
     <string name="currency_eur">Евро</string>
+    <string name="empty">Пустовато тут</string>
 
     <!-- Alert -->
     <string name="alert_base_title">Ошибка</string>

@@ -1,7 +1,7 @@
 package com.backcube.data.remote.di
 
 import android.content.Context
-import com.backcube.data.remote.utils.NetworkConnectivityObserver
+import com.backcube.data.common.utils.NetworkConnectivityObserver
 import com.backcube.domain.utils.ConnectivityObserver
 import dagger.Module
 import dagger.Provides

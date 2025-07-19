@@ -1,4 +1,4 @@
-package com.backcube.economyapp.core.ui.theme
+package com.backcube.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

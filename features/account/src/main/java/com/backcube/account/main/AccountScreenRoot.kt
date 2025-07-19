@@ -26,16 +26,16 @@ import com.backcube.account.main.models.AccountEffect
 import com.backcube.account.main.models.AccountIntent
 import com.backcube.account.main.models.AccountState
 import com.backcube.domain.utils.formatAsWholeThousands
-import com.backcube.economyapp.core.ui.theme.LightGreen
-import com.backcube.economyapp.core.ui.theme.White
-import com.backcube.economyapp.core.ui.utils.CollectEffect
 import com.backcube.economyapp.features.account.common.components.SheetCurrencies
 import com.backcube.navigation.AppNavigationController
+import com.backcube.navigation.model.Screens
 import com.backcube.ui.baseComponents.CustomTopBar
-import com.backcube.ui.components.CustomFloatingButton
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
+import com.backcube.ui.theme.LightGreen
+import com.backcube.ui.theme.White
+import com.backcube.ui.utils.CollectEffect
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -88,7 +88,7 @@ internal fun AccountScreen(
         when (effect) {
             AccountEffect.ShowClientError -> isAlertVisible = true
             AccountEffect.ShowCurrencySheet -> isIsoCodeSheetOpen = !isIsoCodeSheetOpen
-            is AccountEffect.OpenEditScreen -> navController.navigate(com.backcube.navigation.model.Screens.AccountEditScreen.createRoute(effect.accountId.toString()))
+            is AccountEffect.OpenEditScreen -> navController.navigate(Screens.AccountEditScreen.createRoute(effect.accountId.toString()))
         }
     }
 
@@ -123,6 +123,7 @@ internal fun AccountScreen(
             .background(MaterialTheme.colorScheme.surface)
     ) {
         ShowProgressIndicator(state.isLoading)
+        if (state.isLoading) return@Column
         val item = state.item
         if (item != null) {
             Column {
@@ -154,8 +155,8 @@ internal fun AccountScreen(
                 )
             }
         }
-        CustomFloatingButton {
-            // todo add expense
-        }
+//        CustomFloatingButton {
+//            // todo add expense
+//        }
     }
 }

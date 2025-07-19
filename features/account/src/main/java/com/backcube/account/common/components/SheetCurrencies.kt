@@ -12,8 +12,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.backcube.domain.utils.CurrencyIsoCode
-import com.backcube.economyapp.core.ui.theme.EconomyAppTheme
 import com.backcube.ui.components.CustomListItem
+import com.backcube.ui.theme.EconomyAppTheme
 import com.backcube.ui.utils.toCurrency
 import com.backcube.ui.utils.toDisplayNameId
 import com.backcube.ui.utils.toImageSource

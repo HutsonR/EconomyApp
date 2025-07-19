@@ -19,8 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.backcube.economyapp.core.ui.theme.LightGreen
-import com.backcube.economyapp.core.ui.theme.UltraGreen
+import com.backcube.ui.theme.LightGreen
+import com.backcube.ui.theme.UltraGreen
 
 /**
  * Кастомная нижняя навигационная панель (Bottom Navigation Bar).

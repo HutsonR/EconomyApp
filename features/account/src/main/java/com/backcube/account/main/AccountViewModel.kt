@@ -8,6 +8,7 @@ import com.backcube.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
 import com.backcube.domain.utils.CurrencyIsoCode
+import com.backcube.domain.utils.collectResult
 import com.backcube.ui.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,28 +30,29 @@ class AccountViewModel @Inject constructor(
     private suspend fun fetchData() {
         modifyState { copy(isLoading = true) }
 
-        val accountsResult = accountUseCase.getAccounts()
-
-        accountsResult.fold(
-            onSuccess = { accounts ->
-                val accountId = accounts.firstOrNull()?.id ?: 1
-                val accountResult = accountUseCase.getAccountById(accountId)
-
-                accountResult.fold(
-                    onSuccess = { account ->
-                        modifyState { copy(item = account) }
-                    },
-                    onFailure = {
-                        it.printStackTrace()
-                        effect(AccountEffect.ShowClientError)
-                    }
-                )
-            },
-            onFailure = {
-                it.printStackTrace()
-                effect(AccountEffect.ShowClientError)
-            }
-        )
+       accountUseCase.getAccounts().collectResult (
+           onSuccess = { accounts ->
+               val accountId = accounts.firstOrNull()?.id ?: 1
+               accountUseCase.getAccountById(accountId).collectResult(
+                   onSuccess = { account ->
+                       modifyState {
+                           copy(
+                               item = account,
+                               isLoading = false
+                           )
+                       }
+                   },
+                   onFailure = {
+                       it.printStackTrace()
+                       effect(AccountEffect.ShowClientError)
+                   }
+               )
+           },
+           onFailure = {
+               it.printStackTrace()
+               effect(AccountEffect.ShowClientError)
+           }
+       )
 
         modifyState { copy(isLoading = false) }
     }
@@ -72,31 +74,39 @@ class AccountViewModel @Inject constructor(
 
     private fun updateAccount(isoCode: CurrencyIsoCode) {
         viewModelScope.launch {
-            try {
-                modifyState { copy(isLoading = true) }
-                val currentAccount = getState().item
-                if (currentAccount == null) {
-                    effect(AccountEffect.ShowClientError)
-                    return@launch
-                }
-                val updatedAccount = currentAccount.copy(currency = isoCode)
+            modifyState { copy(isLoading = true) }
 
-                accountUseCase.updateAccount(
-                    currentAccount.id,
-                    request = AccountUpdateRequestModel(
-                        name = updatedAccount.name,
-                        balance = updatedAccount.balance,
-                        currency = updatedAccount.currency
-                    )
-                )
-                updateNotifierUseCase.notifyAccountChanged()
-                modifyState { copy(item = updatedAccount) }
-            } catch (e: Exception) {
-                e.printStackTrace()
+            val currentAccount = getState().item
+            if (currentAccount == null) {
                 effect(AccountEffect.ShowClientError)
-            } finally {
-                modifyState { copy(isLoading = false) }
+                return@launch
             }
+            val updatedAccount = currentAccount.copy(currency = isoCode)
+
+            accountUseCase.updateAccount(
+                currentAccount.id,
+                request = AccountUpdateRequestModel(
+                    name = updatedAccount.name,
+                    balance = updatedAccount.balance,
+                    currency = updatedAccount.currency
+                )
+            ).collectResult(
+                onSuccess = {
+                    updateNotifierUseCase.notifyAccountChanged()
+                    modifyState {
+                        copy(
+                            item = updatedAccount,
+                            isLoading = false
+                        )
+                    }
+                },
+                onFailure = {
+                    it.printStackTrace()
+                    effect(AccountEffect.ShowClientError)
+                }
+            )
+
+            modifyState { copy(isLoading = false) }
         }
     }
 }

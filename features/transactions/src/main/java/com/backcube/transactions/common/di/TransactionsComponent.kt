@@ -1,5 +1,6 @@
 package com.backcube.transactions.common.di
 
+import com.backcube.transactions.presentation.analyze.AnalyzeViewModel
 import com.backcube.transactions.presentation.edit.TransactionEditorViewModel
 import com.backcube.transactions.presentation.histories.HistoryViewModel
 import com.backcube.transactions.presentation.list.viewmodels.TransactionsViewModel
@@ -15,4 +16,5 @@ interface TransactionsComponent {
     val transactionsViewModel: TransactionsViewModel.Factory
     val transactionEditorViewModel: TransactionEditorViewModel.Factory
     val historyViewModel: HistoryViewModel
+    val analyzeViewModel: AnalyzeViewModel.Factory
 }

@@ -34,7 +34,6 @@ import com.backcube.account.common.di.AccountComponentProvider
 import com.backcube.account.edit.models.AccountEditEffect
 import com.backcube.account.edit.models.AccountEditIntent
 import com.backcube.account.edit.models.AccountEditState
-import com.backcube.economyapp.core.ui.utils.CollectEffect
 import com.backcube.economyapp.features.account.common.components.SheetCurrencies
 import com.backcube.navigation.AppNavigationController
 import com.backcube.ui.baseComponents.CustomTopBar
@@ -42,6 +41,7 @@ import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.CustomTextInput
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
+import com.backcube.ui.utils.CollectEffect
 import kotlinx.coroutines.flow.Flow
 
 @Composable
