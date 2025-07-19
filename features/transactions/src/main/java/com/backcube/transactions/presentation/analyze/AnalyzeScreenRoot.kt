@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -93,7 +92,6 @@ fun AnalyzeScreenRoot(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AnalyzeScreen(
     modifier: Modifier,
@@ -180,6 +178,17 @@ internal fun AnalyzeScreen(
                 onIntent(AnalyzeIntent.ShowCalendar(DateMode.END))
             }
         )
+
+        if (state.items.isEmpty()) {
+            Text(
+                modifier = Modifier.padding(top = 16.dp),
+                text = stringResource(com.backcube.ui.R.string.empty),
+                color = colors.onSurface,
+                fontSize = 16.sp
+            )
+            return@Column
+        }
+
         LazyColumn {
             item {
                 CustomListItem(

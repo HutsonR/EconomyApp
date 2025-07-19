@@ -21,7 +21,14 @@ class NetworkConnectivityObserver(
 
         val callback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
-                trySend(true)
+                val capabilities = connectivityManager.getNetworkCapabilities(network)
+                val isValid = capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) == true
+                trySend(isValid)
+            }
+
+            override fun onCapabilitiesChanged(network: Network, capabilities: NetworkCapabilities) {
+                val isValid = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+                trySend(isValid)
             }
 
             override fun onLost(network: Network) {
@@ -33,7 +40,10 @@ class NetworkConnectivityObserver(
             }
         }
 
-        val request = NetworkRequest.Builder().build()
+        val request = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .build()
+
         connectivityManager.registerNetworkCallback(request, callback)
 
         awaitClose {
@@ -41,7 +51,7 @@ class NetworkConnectivityObserver(
         }
     }.distinctUntilChanged()
 
-     override fun isInternetAvailable(): Boolean {
+    override fun isInternetAvailable(): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
