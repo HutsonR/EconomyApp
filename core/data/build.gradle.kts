@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
+    alias(libs.plugins.kotlin.plugin.serialization)
 }
 
 val tokenApiKey: String by lazy {
@@ -47,7 +48,15 @@ dependencies {
     implementation(projects.core.domain)
 
     kapt(libs.dagger.compiler)
+    implementation(libs.kotlinx.serialization.json)
+
+    // remote
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.json)
+
+    // local
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
 }

@@ -2,6 +2,7 @@ package com.backcube.data.remote.impl.models.response.accounts
 
 import com.backcube.domain.models.accounts.AccountResponseModel
 import com.backcube.domain.utils.toCurrencyIsoCode
+import kotlinx.serialization.Serializable
 import java.time.Instant
 
 /**
@@ -16,6 +17,7 @@ import java.time.Instant
  * @property createdAt Дата создания
  * @property updatedAt Дата последнего обновления
  */
+@Serializable
 data class AccountResponseApiModel(
     val id: Int,
     val name: String,

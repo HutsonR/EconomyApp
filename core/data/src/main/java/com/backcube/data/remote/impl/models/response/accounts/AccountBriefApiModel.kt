@@ -2,6 +2,7 @@ package com.backcube.data.remote.impl.models.response.accounts
 
 import com.backcube.domain.models.accounts.AccountBriefModel
 import com.backcube.domain.utils.toCurrencyIsoCode
+import kotlinx.serialization.Serializable
 
 /**
  * Краткая модель счета (для отображения в списках и вложенных структурах)
@@ -11,6 +12,7 @@ import com.backcube.domain.utils.toCurrencyIsoCode
  * @property balance Баланс
  * @property currency Валюта счета
  */
+@Serializable
 data class AccountBriefApiModel(
     val id: Int,
     val name: String,

@@ -5,6 +5,7 @@ import com.backcube.data.remote.impl.models.response.accounts.toDomain
 import com.backcube.data.remote.impl.models.response.categories.CategoryApiModel
 import com.backcube.data.remote.impl.models.response.categories.toDomain
 import com.backcube.domain.models.transactions.TransactionResponseModel
+import kotlinx.serialization.Serializable
 import java.time.Instant
 
 /**
@@ -19,6 +20,7 @@ import java.time.Instant
  * @property createdAt Дата создания
  * @property updatedAt Дата последнего обновления
  */
+@Serializable
 data class TransactionResponseApiModel(
     val id: Int,
     val account: AccountBriefApiModel,

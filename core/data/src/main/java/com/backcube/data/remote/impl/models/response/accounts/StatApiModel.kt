@@ -1,6 +1,7 @@
 package com.backcube.data.remote.impl.models.response.accounts
 
 import com.backcube.domain.models.accounts.StatModel
+import kotlinx.serialization.Serializable
 
 /**
  * Модель статистики по категории
@@ -10,6 +11,7 @@ import com.backcube.domain.models.accounts.StatModel
  * @property emoji Эмодзи, ассоциированное с категорией
  * @property amount Сумма по категории
  */
+@Serializable
 data class StatApiModel(
     val categoryId: Int,
     val categoryName: String,

@@ -1,4 +1,4 @@
-package com.backcube.data.remote.impl.repositories.fake
+package com.backcube.data.common.repositories.fake
 
 //class FakeCategoryRepositoryImpl @Inject constructor(): CategoryRepository {
 //    override suspend fun getCategories(): List<CategoryModel> = withContext(Dispatchers.IO) {

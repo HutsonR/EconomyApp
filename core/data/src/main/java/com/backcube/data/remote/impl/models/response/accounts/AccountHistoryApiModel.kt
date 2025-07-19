@@ -1,6 +1,7 @@
 package com.backcube.data.remote.impl.models.response.accounts
 
 import com.backcube.domain.models.accounts.AccountHistoryModel
+import kotlinx.serialization.Serializable
 import java.time.Instant
 
 /**
@@ -14,6 +15,7 @@ import java.time.Instant
  * @property changeTimestamp Дата и время изменения
  * @property createdAt Дата создания записи в системе
  */
+@Serializable
 data class AccountHistoryApiModel(
     val id: Int,
     val accountId: Long,

@@ -2,6 +2,7 @@ package com.backcube.data.remote.impl.models.response.accounts
 
 import com.backcube.domain.models.accounts.AccountHistoryResponseModel
 import com.backcube.domain.utils.toCurrencyIsoCode
+import kotlinx.serialization.Serializable
 
 /**
  * Ответ API с историей изменений счета
@@ -12,6 +13,7 @@ import com.backcube.domain.utils.toCurrencyIsoCode
  * @property currentBalance Текущий баланс
  * @property history Список изменений счета
  */
+@Serializable
 data class AccountHistoryResponseApiModel(
     val accountId: Int,
     val accountName: String,

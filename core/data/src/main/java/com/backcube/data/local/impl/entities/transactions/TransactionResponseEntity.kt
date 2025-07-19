@@ -1,0 +1,43 @@
+package com.backcube.data.local.impl.entities.transactions
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.backcube.domain.models.transactions.TransactionResponseModel
+import java.time.Instant
+
+@Entity(tableName = "transactions_response")
+data class TransactionResponseEntity(
+    @PrimaryKey val id: Int,
+    val accountId: Int,
+    val account: AccountBriefSerialEntity,
+    val category: CategorySerialEntity,
+    val amount: String,
+    val transactionDate: String,
+    val comment: String?,
+    val createdAt: String,
+    val updatedAt: String
+) {
+    fun toDomain() = TransactionResponseModel(
+        id = id,
+        account = account.toDomain(),
+        category = category.toDomain(),
+        amount = amount.toBigDecimal(),
+        transactionDate = Instant.parse(transactionDate),
+        comment = comment,
+        createdAt = Instant.parse(createdAt),
+        updatedAt = Instant.parse(updatedAt)
+    )
+    companion object {
+        fun toEntity(transactionResponseModel: TransactionResponseModel) = TransactionResponseEntity(
+            id = transactionResponseModel.id,
+            accountId = transactionResponseModel.account.id,
+            account = AccountBriefSerialEntity.toEntity(transactionResponseModel.account),
+            category = CategorySerialEntity.toEntity(transactionResponseModel.category),
+            amount = transactionResponseModel.amount.toPlainString(),
+            transactionDate = transactionResponseModel.transactionDate.toString(),
+            comment = transactionResponseModel.comment,
+            createdAt = transactionResponseModel.createdAt.toString(),
+            updatedAt = transactionResponseModel.updatedAt.toString()
+        )
+    }
+}

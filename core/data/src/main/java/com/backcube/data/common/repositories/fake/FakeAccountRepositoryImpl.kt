@@ -1,4 +1,4 @@
-package com.backcube.data.remote.impl.repositories.fake
+package com.backcube.data.common.repositories.fake
 
 //class FakeAccountRepositoryImpl @Inject constructor() : AccountRepository {
 //    override suspend fun getAccounts(): List<AccountModel> = withContext(Dispatchers.IO) {

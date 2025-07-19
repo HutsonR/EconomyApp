@@ -2,6 +2,7 @@ package com.backcube.data.remote.impl.models.response.accounts
 
 import com.backcube.domain.models.accounts.AccountStateModel
 import com.backcube.domain.utils.toCurrencyIsoCode
+import kotlinx.serialization.Serializable
 
 /**
  * Модель состояния счета (используется в истории изменений)
@@ -11,6 +12,7 @@ import com.backcube.domain.utils.toCurrencyIsoCode
  * @property balance Баланс счета
  * @property currency Валюта счета
  */
+@Serializable
 data class AccountStateApiModel(
     val id: Int,
     val name: String,

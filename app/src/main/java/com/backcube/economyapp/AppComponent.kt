@@ -3,7 +3,7 @@ package com.backcube.economyapp
 import android.content.Context
 import com.backcube.account.common.di.AccountComponent
 import com.backcube.articles.di.ArticlesComponent
-import com.backcube.data.di.DataModule
+import com.backcube.data.common.di.DataModule
 import com.backcube.domain.di.DomainModule
 import com.backcube.economyapp.main.MainActivity
 import com.backcube.settings.di.SettingComponent

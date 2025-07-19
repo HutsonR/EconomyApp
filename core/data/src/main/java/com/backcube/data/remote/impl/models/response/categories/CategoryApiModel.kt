@@ -1,6 +1,7 @@
 package com.backcube.data.remote.impl.models.response.categories
 
 import com.backcube.domain.models.categories.CategoryModel
+import kotlinx.serialization.Serializable
 
 /**
  * Модель категории доходов или расходов
@@ -10,6 +11,7 @@ import com.backcube.domain.models.categories.CategoryModel
  * @property emoji Эмодзи категории
  * @property isIncome Признак дохода (true — доход, false — расход)
  */
+@Serializable
 data class CategoryApiModel(
     val id: Int,
     val name: String,

@@ -1,4 +1,4 @@
-package com.backcube.data.remote.impl.repositories.fake
+package com.backcube.data.common.repositories.fake
 
 //class FakeTransactionRepositoryImpl @Inject constructor(): TransactionRepository {
 //    override suspend fun createTransaction(request: TransactionRequestModel): TransactionModel = withContext(Dispatchers.IO) {

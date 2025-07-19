@@ -1,4 +1,4 @@
-package com.backcube.data.remote.impl.repositories.mappers
+package com.backcube.data.common.repositories.mappers
 
 import java.time.Instant
 import java.time.ZoneId
