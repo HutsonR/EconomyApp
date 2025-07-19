@@ -1,6 +1,7 @@
 package com.backcube.ui.baseComponents.navbar
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.backcube.ui.baseComponents.NetworkStatusBanner
 import com.backcube.ui.theme.LightGreen
 import com.backcube.ui.theme.UltraGreen
 
@@ -28,65 +30,70 @@ import com.backcube.ui.theme.UltraGreen
  * Отображает список навигационных элементов с иконками и подписями. Использует цвета темы Material и собственные цвета выделения.
  *
  * @param modifier [Modifier] для кастомизации внешнего вида панели.
+ * @param isInternetConnected Флаг, указывающий на наличие интернета.
  * @param currentRoute Текущая активная route навигации.
  * @param onItemClick Callback для обработки нажатия на элемент навигации.
  */
 @Composable
 fun BottomNavBar(
     modifier: Modifier = Modifier,
+    isInternetConnected: Boolean = true,
     currentRoute: String?,
     onItemClick: (String) -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
     val items = NavBarItem.all
 
-    NavigationBar(
-        modifier = modifier,
-        containerColor = colors.surfaceContainer
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+    Column {
+        NetworkStatusBanner(isInternetConnected)
+        NavigationBar(
+            modifier = modifier,
+            containerColor = colors.surfaceContainer
         ) {
-            items.forEach {
-                val selected = currentRoute == it.route
-                val activeBackground = LightGreen
-                val activeIconColor = UltraGreen
-                val inactiveIconColor = colors.onSurfaceVariant
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                items.forEach {
+                    val selected = currentRoute == it.route
+                    val activeBackground = LightGreen
+                    val activeIconColor = UltraGreen
+                    val inactiveIconColor = colors.onSurfaceVariant
 
-                NavigationBarItem(
-                    icon = {
-                        Icon(
-                            painter = painterResource(it.icon),
-                            contentDescription = stringResource(id = it.label),
-                            tint = if (selected) activeIconColor else inactiveIconColor
+                    NavigationBarItem(
+                        icon = {
+                            Icon(
+                                painter = painterResource(it.icon),
+                                contentDescription = stringResource(id = it.label),
+                                tint = if (selected) activeIconColor else inactiveIconColor
+                            )
+                        },
+                        label = {
+                            Text(
+                                text = stringResource(id = it.label),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                style = MaterialTheme.typography.labelMedium,
+                                color = colors.onSurfaceVariant,
+                                fontWeight = FontWeight.Medium,
+                                modifier = Modifier.widthIn(max = 80.dp)
+                            )
+                        },
+                        selected = selected,
+                        onClick = {
+                            if (currentRoute != it.route) {
+                                onItemClick(it.route)
+                            }
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = activeIconColor,
+                            unselectedIconColor = inactiveIconColor,
+                            indicatorColor = if (selected) activeBackground else Color.Transparent
                         )
-                    },
-                    label = {
-                        Text(
-                            text = stringResource(id = it.label),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.labelMedium,
-                            color = colors.onSurfaceVariant,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier.widthIn(max = 80.dp)
-                        )
-                    },
-                    selected = selected,
-                    onClick = {
-                        if (currentRoute != it.route) {
-                            onItemClick(it.route)
-                        }
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = activeIconColor,
-                        unselectedIconColor = inactiveIconColor,
-                        indicatorColor = if (selected) activeBackground else Color.Transparent
                     )
-                )
+                }
             }
         }
     }

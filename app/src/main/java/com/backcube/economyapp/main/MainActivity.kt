@@ -8,18 +8,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -27,7 +22,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.backcube.economyapp.App.Companion.appComponent
-import com.backcube.economyapp.R
 import com.backcube.economyapp.main.navigation.AppNavHost
 import com.backcube.economyapp.main.navigation.DoubleBackPressToExit
 import com.backcube.economyapp.main.navigation.ProtectedNavController
@@ -64,6 +58,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun AppScreen() {
         val context = LocalContext.current
+        val isConnected by networkViewModel.isConnected.collectAsStateWithLifecycle()
         val navController = rememberNavController()
         val navigator = remember {
             ProtectedNavController(navController)
@@ -83,6 +78,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.fillMaxSize(),
             bottomBar = {
                 BottomNavBar(
+                    isInternetConnected = isConnected,
                     currentRoute = currentRoute,
                     onItemClick = {
                         navController.navigate(it) {
@@ -100,23 +96,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
             )
         }
-
-        NetworkSnackbar(networkViewModel)
     }
-
-    @Composable
-    fun NetworkSnackbar(viewModel: NetworkViewModel) {
-        val isConnected by viewModel.isConnected.collectAsStateWithLifecycle()
-
-        if (!isConnected) {
-            Snackbar(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 16.dp)
-            ) {
-                Text(stringResource(R.string.no_internet_connection))
-            }
-        }
-    }
-
 
     private fun setupWindow() {
         enableEdgeToEdge()
