@@ -11,6 +11,7 @@ import com.backcube.domain.models.transactions.TransactionRequestModel
 import com.backcube.domain.models.transactions.TransactionResponseModel
 import com.backcube.domain.repositories.TransactionRepository
 import com.backcube.domain.utils.ConnectivityObserver
+import com.backcube.domain.utils.NoInternetConnectionException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.time.Instant
@@ -23,6 +24,7 @@ class TransactionRepositoryImpl @Inject constructor(
 ) : TransactionRepository {
 
     override suspend fun createTransaction(request: TransactionRequestModel): Flow<TransactionModel> = flow {
+        // todo сделать добавление в локальное
         emit(transactionsRemoteDataSource.createTransaction(request.toApiModel()).toDomain())
     }
 
@@ -43,14 +45,17 @@ class TransactionRepositoryImpl @Inject constructor(
         id: Int,
         request: TransactionRequestModel
     ): Flow<TransactionResponseModel> = flow {
+        if (!connectivityObserver.isInternetAvailable()) throw NoInternetConnectionException()
         transactionsRemoteDataSource.updateTransaction(id, request.toApiModel()).toDomain().let {
-            transactionsLocalDataSource.updateTransaction(it)
             emit(it)
         }
     }
 
     override suspend fun deleteTransaction(id: Int): Flow<Boolean> = flow {
-        transactionsLocalDataSource.deleteTransaction(id)
+        val isLocalDelete = transactionsLocalDataSource.deleteTransaction(id)
+        emit(isLocalDelete)
+
+        if (!connectivityObserver.isInternetAvailable()) throw NoInternetConnectionException()
         emit(transactionsRemoteDataSource.deleteTransaction(id))
     }
 

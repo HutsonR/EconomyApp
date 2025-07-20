@@ -37,6 +37,7 @@ import com.backcube.account.edit.models.AccountEditState
 import com.backcube.economyapp.features.account.common.components.SheetCurrencies
 import com.backcube.navigation.AppNavigationController
 import com.backcube.ui.baseComponents.CustomTopBar
+import com.backcube.ui.components.AlertData
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.CustomTextInput
 import com.backcube.ui.components.ShowAlertDialog
@@ -117,13 +118,17 @@ internal fun AccountEditScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isIsoCodeSheetOpen by rememberSaveable { mutableStateOf(false) }
     var isAlertVisible by remember { mutableStateOf(false) }
+    var alertData by remember { mutableStateOf(AlertData()) }
 
     val queryAccountName = state.item?.name ?: ""
     val queryBalanceRaw = state.balance
 
     CollectEffect(effects) { effect ->
         when (effect) {
-            AccountEditEffect.ShowClientError -> isAlertVisible = true
+            is AccountEditEffect.ShowError -> {
+                isAlertVisible = true
+                alertData = effect.alertData
+            }
             AccountEditEffect.ShowCurrencySheet -> isIsoCodeSheetOpen = !isIsoCodeSheetOpen
             AccountEditEffect.GoBack -> navController.popBackStack()
         }
@@ -131,6 +136,7 @@ internal fun AccountEditScreen(
 
     if (isAlertVisible) {
         ShowAlertDialog(
+            alertData = alertData,
             onActionButtonClick = {
                 isAlertVisible = false
             }

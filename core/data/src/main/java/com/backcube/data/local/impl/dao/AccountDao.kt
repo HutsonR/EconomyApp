@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import com.backcube.data.local.impl.entities.accounts.AccountEntity
 import com.backcube.data.local.impl.entities.accounts.AccountResponseEntity
 
@@ -19,9 +18,6 @@ interface AccountDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAccount(account: AccountEntity)
-
-    @Update
-    suspend fun updateAccount(entity: AccountEntity)
 
     @Query("DELETE FROM accounts_api")
     suspend fun clearAccounts()

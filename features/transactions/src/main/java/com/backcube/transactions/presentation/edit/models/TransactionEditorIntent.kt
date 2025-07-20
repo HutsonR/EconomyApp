@@ -17,4 +17,5 @@ internal sealed interface TransactionEditorIntent {
     data object OnOpenDatePickerModal : TransactionEditorIntent
     data object OnOpenTimePickerModal : TransactionEditorIntent
     data object Refresh : TransactionEditorIntent
+    data object OnDeleteClick : TransactionEditorIntent
 }

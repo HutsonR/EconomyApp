@@ -1,14 +1,19 @@
 package com.backcube.transactions.presentation.edit
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -24,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
@@ -93,6 +100,7 @@ fun TransactionEditorScreenRoot(
     ) { innerPadding ->
         TransactionEditorScreen(
             modifier = Modifier.padding(innerPadding),
+            isIncome = isIncome,
             navController = navController,
             state = state,
             effects = effects,
@@ -105,6 +113,7 @@ fun TransactionEditorScreenRoot(
 @Composable
 internal fun TransactionEditorScreen(
     modifier: Modifier,
+    isIncome: Boolean,
     navController: AppNavigationController,
     state: TransactionEditorState,
     effects: Flow<TransactionEditorEffect>,
@@ -300,7 +309,46 @@ internal fun TransactionEditorScreen(
                 capitalizeFirstLetter = true,
                 isSmallItem = false
             )
+
+            val deleteButtonText = if (isIncome) {
+                R.string.income_delete
+            } else {
+                R.string.expense_delete
+            }
+            DeleteButton(
+                modifier = Modifier
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .align(Alignment.CenterHorizontally),
+                text = deleteButtonText,
+                buttonBackground = colors.errorContainer,
+                buttonTextColor = colors.onErrorContainer,
+                onClick = {
+                    onIntent(TransactionEditorIntent.OnDeleteClick)
+                }
+            )
         }
+    }
+}
+
+@Composable
+fun DeleteButton(
+    modifier: Modifier = Modifier,
+    @StringRes text: Int,
+    buttonBackground: Color,
+    buttonTextColor: Color,
+    onClick: () -> Unit,
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = buttonBackground
+        ),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = stringResource(text),
+            color = buttonTextColor
+        )
     }
 }
 

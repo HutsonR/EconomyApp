@@ -8,5 +8,6 @@ data class TransactionState(
     val isLoading: Boolean = false,
     val items: List<TransactionResponseModel> = emptyList(),
     val totalSum: BigDecimal = BigDecimal(0),
-    val incomeDate: Instant = Instant.now()
+    val transactionStartDate: Instant = Instant.now(),
+    val transactionEndDate: Instant = Instant.now()
 )

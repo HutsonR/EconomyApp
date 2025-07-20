@@ -1,5 +1,6 @@
 package com.backcube.data.local.impl.entities.transactions
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.backcube.domain.models.transactions.TransactionResponseModel
@@ -8,10 +9,12 @@ import java.time.Instant
 @Entity(tableName = "transactions_response")
 data class TransactionResponseEntity(
     @PrimaryKey val id: Int,
+    @ColumnInfo(name = "account_id")
     val accountId: Int,
     val account: AccountBriefSerialEntity,
     val category: CategorySerialEntity,
     val amount: String,
+    @ColumnInfo(name = "transaction_date")
     val transactionDate: String,
     val comment: String?,
     val createdAt: String,

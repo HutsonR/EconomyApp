@@ -8,6 +8,7 @@ import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.api.CategoryUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
+import com.backcube.domain.utils.NoInternetConnectionException
 import com.backcube.domain.utils.collectResult
 import com.backcube.transactions.presentation.edit.models.TransactionEditorEffect
 import com.backcube.transactions.presentation.edit.models.TransactionEditorIntent
@@ -102,6 +103,7 @@ class TransactionEditorViewModel @AssistedInject constructor(
             TransactionEditorIntent.OnCancelClick -> effect(TransactionEditorEffect.GoBack)
             TransactionEditorIntent.OnSaveClick -> updateTransaction()
             TransactionEditorIntent.Refresh -> fetchData()
+            TransactionEditorIntent.OnDeleteClick -> deleteTransaction()
         }
     }
 
@@ -135,6 +137,24 @@ class TransactionEditorViewModel @AssistedInject constructor(
             .withNano(0)
 
         modifyState { copy(selectedTransactionDate = newDateTime.toInstant()) }
+    }
+
+    private fun deleteTransaction() {
+        viewModelScope.launch {
+            transactionUseCase.deleteTransaction(transactionId).collectResult(
+                onSuccess = {
+                    if (it) {
+                        updateNotifierUseCase.notifyAccountChanged()
+                        effect(TransactionEditorEffect.GoBack)
+                    } else {
+                        effect(TransactionEditorEffect.ShowClientError())
+                    }
+                },
+                onFailure = {
+                    handleClientError(it)
+                }
+            )
+        }
     }
 
     private fun updateTransaction() {
@@ -174,9 +194,8 @@ class TransactionEditorViewModel @AssistedInject constructor(
                     effect(TransactionEditorEffect.GoBack)
                 },
                 onFailure = {
-                    it.printStackTrace()
                     modifyState { copy(isLoading = false) }
-                    effect(TransactionEditorEffect.ShowClientError())
+                    handleClientError(it)
                 }
             )
         }
@@ -186,6 +205,20 @@ class TransactionEditorViewModel @AssistedInject constructor(
         return balance.takeIf { it.isNotBlank() }?.let {
             BigDecimal(it.replace(',', '.'))
         } ?: BigDecimal.ZERO
+    }
+
+    private fun handleClientError(e: Throwable) {
+        e.printStackTrace()
+        when (e) {
+            is NoInternetConnectionException -> {
+                effect(
+                    TransactionEditorEffect.ShowClientError(
+                        AlertData(message = com.backcube.ui.R.string.no_internet_connection)
+                    )
+                )
+            }
+            else -> effect(TransactionEditorEffect.ShowClientError())
+        }
     }
 
     @AssistedFactory

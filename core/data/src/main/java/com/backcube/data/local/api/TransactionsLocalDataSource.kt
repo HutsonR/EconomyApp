@@ -12,6 +12,5 @@ interface TransactionsLocalDataSource {
     ): List<TransactionResponseModel>
     suspend fun insertTransactions(transactions: List<TransactionResponseModel>)
     suspend fun insertTransaction(transaction: TransactionResponseModel)
-    suspend fun deleteTransaction(id: Int)
-    suspend fun updateTransaction(transaction: TransactionResponseModel)
+    suspend fun deleteTransaction(id: Int): Boolean
 }

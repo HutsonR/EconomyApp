@@ -13,6 +13,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.ZoneId
 
 class TransactionsViewModel @AssistedInject constructor(
     private val transactionUseCase: TransactionUseCase,
@@ -23,6 +25,13 @@ class TransactionsViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
+            val startOfDay = LocalDate.now()
+                .atStartOfDay(ZoneId.systemDefault())
+                .plusHours(3)
+                .toInstant()
+
+            modifyState { copy(transactionStartDate = startOfDay) }
+
             fetchData()
             updateNotifierUseCase.refreshTrigger.collect {
                 fetchData()
@@ -39,8 +48,8 @@ class TransactionsViewModel @AssistedInject constructor(
 
                 transactionUseCase.getAccountTransactions(
                     accountId = accountId,
-                    startDate = getState().incomeDate,
-                    endDate = getState().incomeDate
+                    startDate = getState().transactionStartDate,
+                    endDate = getState().transactionEndDate
                 ).collectResult(
                     onSuccess = { transactions ->
                         val filteredTransactions = transactions.filter { it.category.isIncome == isIncome }

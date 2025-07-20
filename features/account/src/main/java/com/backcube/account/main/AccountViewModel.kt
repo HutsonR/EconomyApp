@@ -8,8 +8,10 @@ import com.backcube.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
 import com.backcube.domain.utils.CurrencyIsoCode
+import com.backcube.domain.utils.NoInternetConnectionException
 import com.backcube.domain.utils.collectResult
 import com.backcube.ui.BaseViewModel
+import com.backcube.ui.components.AlertData
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,16 +44,10 @@ class AccountViewModel @Inject constructor(
                            )
                        }
                    },
-                   onFailure = {
-                       it.printStackTrace()
-                       effect(AccountEffect.ShowClientError)
-                   }
+                   onFailure = { handleError(it) }
                )
            },
-           onFailure = {
-               it.printStackTrace()
-               effect(AccountEffect.ShowClientError)
-           }
+           onFailure = { handleError(it) }
        )
 
         modifyState { copy(isLoading = false) }
@@ -64,7 +60,7 @@ class AccountViewModel @Inject constructor(
             is AccountIntent.OnOpenEditScreen -> {
                 val accountId = getState().item?.id
                 if (accountId == null) {
-                    effect(AccountEffect.ShowClientError)
+                    effect(AccountEffect.ShowError())
                     return
                 }
                 effect(AccountEffect.OpenEditScreen(accountId))
@@ -78,7 +74,7 @@ class AccountViewModel @Inject constructor(
 
             val currentAccount = getState().item
             if (currentAccount == null) {
-                effect(AccountEffect.ShowClientError)
+                effect(AccountEffect.ShowError())
                 return@launch
             }
             val updatedAccount = currentAccount.copy(currency = isoCode)
@@ -100,13 +96,24 @@ class AccountViewModel @Inject constructor(
                         )
                     }
                 },
-                onFailure = {
-                    it.printStackTrace()
-                    effect(AccountEffect.ShowClientError)
-                }
+                onFailure = { handleError(it) }
             )
 
             modifyState { copy(isLoading = false) }
+        }
+    }
+
+    private fun handleError(e: Throwable) {
+        e.printStackTrace()
+        when (e) {
+            is NoInternetConnectionException -> {
+                effect(
+                    AccountEffect.ShowError(
+                        AlertData(message = com.backcube.ui.R.string.no_internet_connection)
+                    )
+                )
+            }
+            else -> effect(AccountEffect.ShowError())
         }
     }
 }

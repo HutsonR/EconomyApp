@@ -25,7 +25,7 @@ import com.backcube.data.local.impl.entities.transactions.TransactionResponseEnt
         TransactionEntity::class,
         TransactionResponseEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(

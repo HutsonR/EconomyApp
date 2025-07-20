@@ -33,7 +33,7 @@ interface TransactionDao {
     suspend fun insertResponses(responses: List<TransactionResponseEntity>)
 
     @Query("DELETE FROM transactions_response WHERE id = :id")
-    suspend fun deleteResponseById(id: Int)
+    suspend fun deleteResponseById(id: Int): Int
 
     @Query("SELECT * FROM transactions_response WHERE id = :id")
     suspend fun getResponseById(id: Int): TransactionResponseEntity
@@ -43,8 +43,8 @@ interface TransactionDao {
 
     @Query("""
         SELECT * FROM transactions_response
-        WHERE accountId = :accountId
-        AND transactionDate BETWEEN :startDate AND :endDate
+        WHERE account_id = :accountId
+        AND transaction_date BETWEEN :startDate AND :endDate
     """)
     suspend fun getResponsesByAccountAndPeriod(
         accountId: Int,

@@ -20,10 +20,6 @@ class AccountLocalDataSourceImpl @Inject constructor(
         return accountDao.getAccountDetails(id)?.toDomain()
     }
 
-    override suspend fun updateAccount(account: AccountModel) {
-        return accountDao.updateAccount(AccountEntity.toEntity(account))
-    }
-
     override suspend fun insertAccounts(accounts: List<AccountModel>) {
         accountDao.insertAccounts(accounts.map { AccountEntity.toEntity(it) })
     }

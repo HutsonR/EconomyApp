@@ -12,6 +12,7 @@ import com.backcube.domain.models.accounts.AccountResponseModel
 import com.backcube.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.domain.repositories.AccountRepository
 import com.backcube.domain.utils.ConnectivityObserver
+import com.backcube.domain.utils.NoInternetConnectionException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class AccountRepositoryImpl @Inject constructor(
     private val accountLocalDataSource: AccountLocalDataSource,
     private val accountRemoteDataSource: AccountRemoteDataSource,
-    private val connectivityObserver: ConnectivityObserver // todo еще добавить SyncManager
+    private val connectivityObserver: ConnectivityObserver
 ) : AccountRepository {
 
     override suspend fun getAccounts(): Flow<List<AccountModel>> = flow {
@@ -35,6 +36,7 @@ class AccountRepositoryImpl @Inject constructor(
         }
     }
 
+    // Заготовка на будущее. По ТЗ не нужно было
     override suspend fun createAccount(request: AccountCreateRequestModel): Flow<AccountModel> = flow {
         emit(accountRemoteDataSource.createAccount(request.toApi()).toDomain())
     }
@@ -56,8 +58,8 @@ class AccountRepositoryImpl @Inject constructor(
         id: Int,
         request: AccountUpdateRequestModel
     ): Flow<AccountModel> = flow {
+        if (!connectivityObserver.isInternetAvailable()) throw NoInternetConnectionException()
         val updatedAccount = (accountRemoteDataSource.updateAccount(id, request.toApi())).toDomain()
-        accountLocalDataSource.updateAccount(updatedAccount)
         emit(updatedAccount)
     }
 

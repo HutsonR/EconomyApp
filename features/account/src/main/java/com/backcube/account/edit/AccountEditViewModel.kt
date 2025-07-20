@@ -8,8 +8,10 @@ import com.backcube.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
 import com.backcube.domain.utils.CurrencyIsoCode
+import com.backcube.domain.utils.NoInternetConnectionException
 import com.backcube.domain.utils.collectResult
 import com.backcube.ui.BaseViewModel
+import com.backcube.ui.components.AlertData
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -36,10 +38,7 @@ class AccountEditViewModel @Inject constructor(
                         }
                     }
                 },
-                onFailure = {
-                    it.printStackTrace()
-                    effect(AccountEditEffect.ShowClientError)
-                }
+                onFailure = { handleError(it) }
             )
 
             modifyState { copy(isLoading = false) }
@@ -77,7 +76,7 @@ class AccountEditViewModel @Inject constructor(
             val updatedAccount = getState().item
 
             if (updatedAccount == null) {
-                effect(AccountEditEffect.ShowClientError)
+                effect(AccountEditEffect.ShowError())
                 return@launch
             }
 
@@ -94,9 +93,8 @@ class AccountEditViewModel @Inject constructor(
                     effect(AccountEditEffect.GoBack)
                 },
                 onFailure = {
-                    it.printStackTrace()
                     modifyState { copy(isLoading = false) }
-                    effect(AccountEditEffect.ShowClientError)
+                    handleError(it)
                 }
             )
         }
@@ -108,5 +106,19 @@ class AccountEditViewModel @Inject constructor(
         }
 
         modifyState { copy(item = item?.copy(balance = newBalance ?: BigDecimal.ZERO)) }
+    }
+
+    private fun handleError(e: Throwable) {
+        e.printStackTrace()
+        when (e) {
+            is NoInternetConnectionException -> {
+                effect(
+                    AccountEditEffect.ShowError(
+                        AlertData(message = com.backcube.ui.R.string.no_internet_connection)
+                    )
+                )
+            }
+            else -> effect(AccountEditEffect.ShowError())
+        }
     }
 }

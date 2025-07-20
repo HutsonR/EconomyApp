@@ -38,12 +38,8 @@ class TransactionsLocalDataSourceImpl @Inject constructor(
         transactionDao.insertResponse(TransactionResponseEntity.toEntity(transaction))
     }
 
-    override suspend fun deleteTransaction(id: Int) {
-        transactionDao.deleteResponseById(id)
-    }
-
-    override suspend fun updateTransaction(transaction: TransactionResponseModel) {
-        transactionDao.insertResponse(TransactionResponseEntity.toEntity(transaction))
+    override suspend fun deleteTransaction(id: Int): Boolean {
+        return transactionDao.deleteResponseById(id) > 0
     }
 
 }

@@ -30,6 +30,7 @@ import com.backcube.economyapp.features.account.common.components.SheetCurrencie
 import com.backcube.navigation.AppNavigationController
 import com.backcube.navigation.model.Screens
 import com.backcube.ui.baseComponents.CustomTopBar
+import com.backcube.ui.components.AlertData
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
@@ -83,10 +84,14 @@ internal fun AccountScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isIsoCodeSheetOpen by rememberSaveable { mutableStateOf(false) }
     var isAlertVisible by remember { mutableStateOf(false) }
+    var alertData by remember { mutableStateOf(AlertData()) }
 
     CollectEffect(effects) { effect ->
         when (effect) {
-            AccountEffect.ShowClientError -> isAlertVisible = true
+            is AccountEffect.ShowError -> {
+                isAlertVisible = true
+                alertData = effect.alertData
+            }
             AccountEffect.ShowCurrencySheet -> isIsoCodeSheetOpen = !isIsoCodeSheetOpen
             is AccountEffect.OpenEditScreen -> navController.navigate(Screens.AccountEditScreen.createRoute(effect.accountId.toString()))
         }
@@ -94,6 +99,7 @@ internal fun AccountScreen(
 
     if (isAlertVisible) {
         ShowAlertDialog(
+            alertData = alertData,
             onActionButtonClick = {
                 isAlertVisible = false
             }
