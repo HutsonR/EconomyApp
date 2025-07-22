@@ -7,7 +7,9 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.backcube.data.local.impl.dao.AccountDao
 import com.backcube.data.local.impl.dao.CategoryDao
+import com.backcube.data.local.impl.dao.SyncQueueDao
 import com.backcube.data.local.impl.dao.TransactionDao
+import com.backcube.data.local.impl.entities.SyncQueueEntity
 import com.backcube.data.local.impl.entities.accounts.AccountEntity
 import com.backcube.data.local.impl.entities.accounts.AccountResponseEntity
 import com.backcube.data.local.impl.entities.categories.CategoryEntity
@@ -23,9 +25,10 @@ import com.backcube.data.local.impl.entities.transactions.TransactionResponseEnt
         AccountResponseEntity::class,
         CategoryEntity::class,
         TransactionEntity::class,
-        TransactionResponseEntity::class
+        TransactionResponseEntity::class,
+        SyncQueueEntity::class
     ],
-    version = 4,
+    version = 7,
     exportSchema = false
 )
 @TypeConverters(
@@ -38,6 +41,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao
     abstract fun categoryDao(): CategoryDao
     abstract fun transactionDao(): TransactionDao
+    abstract fun syncQueueDao(): SyncQueueDao
 
     companion object {
         private const val DB_NAME = "FinanceAppDatabase"

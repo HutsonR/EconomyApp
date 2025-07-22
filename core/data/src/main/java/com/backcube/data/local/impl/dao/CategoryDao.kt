@@ -15,6 +15,9 @@ interface CategoryDao {
     @Query("SELECT * FROM categories WHERE isIncome = :isIncome")
     suspend fun getCategoriesByType(isIncome: Boolean): List<CategoryEntity>
 
+    @Query("SELECT * FROM categories WHERE id = :id")
+    suspend fun getCategoryById(id: Int): CategoryEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategories(list: List<CategoryEntity>)
 }

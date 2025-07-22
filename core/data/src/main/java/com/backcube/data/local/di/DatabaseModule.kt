@@ -29,4 +29,9 @@ class DatabaseModule {
     fun provideTransactionDao(appDatabase: AppDatabase) =
         appDatabase.transactionDao()
 
+    @Provides
+    @Singleton
+    fun provideSyncQueueDao(appDatabase: AppDatabase) =
+        appDatabase.syncQueueDao()
+
 }

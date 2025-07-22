@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
-import com.backcube.domain.utils.collectResult
 import com.backcube.transactions.presentation.list.models.TransactionEffect
 import com.backcube.transactions.presentation.list.models.TransactionIntent
 import com.backcube.transactions.presentation.list.models.TransactionState
@@ -42,7 +41,7 @@ class TransactionsViewModel @AssistedInject constructor(
     private suspend fun fetchData() {
         modifyState { copy(isLoading = true) }
 
-        accountUseCase.getAccounts().collectResult(
+        accountUseCase.getAccounts().fold(
             onSuccess = { accounts ->
                 val accountId = accounts.firstOrNull()?.id ?: 1
 
@@ -50,7 +49,7 @@ class TransactionsViewModel @AssistedInject constructor(
                     accountId = accountId,
                     startDate = getState().transactionStartDate,
                     endDate = getState().transactionEndDate
-                ).collectResult(
+                ).fold(
                     onSuccess = { transactions ->
                         val filteredTransactions = transactions.filter { it.category.isIncome == isIncome }
                         val totalTransactionsSum = filteredTransactions.sumOf { it.amount }

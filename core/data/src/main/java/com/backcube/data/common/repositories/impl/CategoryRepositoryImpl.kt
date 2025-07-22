@@ -7,8 +7,6 @@ import com.backcube.data.remote.impl.models.response.categories.toDomain
 import com.backcube.domain.models.categories.CategoryModel
 import com.backcube.domain.repositories.CategoryRepository
 import com.backcube.domain.utils.ConnectivityObserver
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class CategoryRepositoryImpl @Inject constructor(
@@ -17,29 +15,29 @@ class CategoryRepositoryImpl @Inject constructor(
     private val connectivityObserver: ConnectivityObserver
 ) : CategoryRepository {
 
-    override suspend fun getCategories(): Flow<List<CategoryModel>> = flow {
-        val cachedCategories = categoriesLocalDataSource.getCategories().also {
-            emit(it)
-        }
-
-        if (!connectivityObserver.isInternetAvailable()) return@flow
-        val remoteCategories = categoriesRemoteDataSource.getCategories().map { it.toDomain() }
-        if (cachedCategories notSameContentWith remoteCategories) {
-            categoriesLocalDataSource.insertCategories(remoteCategories)
-            emit(remoteCategories)
+    override suspend fun getCategories(): List<CategoryModel> {
+        val cachedCategories = categoriesLocalDataSource.getCategories()
+        return if (!connectivityObserver.isInternetAvailable()) {
+            cachedCategories
+        } else {
+            val remoteCategories = categoriesRemoteDataSource.getCategories().map { it.toDomain() }
+            if (cachedCategories notSameContentWith remoteCategories) {
+                categoriesLocalDataSource.insertCategories(remoteCategories)
+            }
+            remoteCategories
         }
     }
 
-    override suspend fun getCategoriesByType(isIncome: Boolean): Flow<List<CategoryModel>> = flow {
-        val cachedCategories = categoriesLocalDataSource.getCategoriesByType(isIncome).also {
-            emit(it)
-        }
-
-        if (!connectivityObserver.isInternetAvailable()) return@flow
-        val remoteCategories = categoriesRemoteDataSource.getCategoriesByType(isIncome).map { it.toDomain() }
-        if (cachedCategories notSameContentWith remoteCategories) {
-            categoriesLocalDataSource.insertCategories(remoteCategories)
-            emit(remoteCategories)
+    override suspend fun getCategoriesByType(isIncome: Boolean): List<CategoryModel> {
+        val cachedCategories = categoriesLocalDataSource.getCategoriesByType(isIncome)
+        return if (!connectivityObserver.isInternetAvailable()) {
+            cachedCategories
+        } else {
+            val remoteCategories = categoriesRemoteDataSource.getCategoriesByType(isIncome).map { it.toDomain() }
+            if (cachedCategories notSameContentWith remoteCategories) {
+                categoriesLocalDataSource.insertCategories(remoteCategories)
+            }
+            remoteCategories
         }
     }
 }

@@ -10,7 +10,7 @@ class UpdateNotifierUseCase @Inject constructor() {
     private val _refreshTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1, replay = 1)
     val refreshTrigger: SharedFlow<Unit> = _refreshTrigger
 
-    fun notifyAccountChanged() {
+    fun notifyDataChanged() {
         _refreshTrigger.tryEmit(Unit)
     }
 }

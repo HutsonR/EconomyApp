@@ -9,7 +9,6 @@ import com.backcube.domain.usecases.api.CategoryUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
 import com.backcube.domain.utils.NoInternetConnectionException
-import com.backcube.domain.utils.collectResult
 import com.backcube.transactions.presentation.edit.models.TransactionEditorEffect
 import com.backcube.transactions.presentation.edit.models.TransactionEditorIntent
 import com.backcube.transactions.presentation.edit.models.TransactionEditorState
@@ -19,6 +18,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.Instant
@@ -39,9 +39,20 @@ class TransactionEditorViewModel @AssistedInject constructor(
 
     private fun fetchData() {
         viewModelScope.launch(Dispatchers.Default) {
-            modifyState { copy(isLoading = true) }
+            modifyState {
+                copy(
+                    isLoading = true,
+                    isEditMode = transactionId != TRANSACTION_NOT_EXIST
+                )
+            }
 
-            accountUseCase.getAccounts().collectResult(
+            val accountsDeferred = async { accountUseCase.getAccounts() }
+            val categoriesDeferred = async { categoryUseCase.getCategories() }
+
+            val accountsResult = accountsDeferred.await()
+            val categoriesResult = categoriesDeferred.await()
+
+            accountsResult.fold(
                 onSuccess = { accounts ->
                     modifyState { copy(accounts = accounts) }
                 },
@@ -51,7 +62,7 @@ class TransactionEditorViewModel @AssistedInject constructor(
                 }
             )
 
-            categoryUseCase.getCategories().collectResult(
+            categoriesResult.fold(
                 onSuccess = { categories ->
                     val filteredCategories = categories.filter { it.isIncome == isIncome }
                     modifyState { copy(categories = filteredCategories) }
@@ -62,8 +73,8 @@ class TransactionEditorViewModel @AssistedInject constructor(
                 }
             )
 
-            if (transactionId != TRANSACTION_NOT_FOUND) {
-                transactionUseCase.getTransactionById(transactionId).collectResult(
+            if (transactionId != TRANSACTION_NOT_EXIST) {
+                transactionUseCase.getTransactionById(transactionId).fold(
                     onSuccess = { transaction ->
                         val selectedAccount = getState().accounts.singleOrNull { it.id == transaction.account.id }
                         modifyState {
@@ -141,10 +152,10 @@ class TransactionEditorViewModel @AssistedInject constructor(
 
     private fun deleteTransaction() {
         viewModelScope.launch {
-            transactionUseCase.deleteTransaction(transactionId).collectResult(
+            transactionUseCase.deleteTransaction(transactionId).fold(
                 onSuccess = {
                     if (it) {
-                        updateNotifierUseCase.notifyAccountChanged()
+                        updateNotifierUseCase.notifyDataChanged()
                         effect(TransactionEditorEffect.GoBack)
                     } else {
                         effect(TransactionEditorEffect.ShowClientError())
@@ -182,15 +193,15 @@ class TransactionEditorViewModel @AssistedInject constructor(
                 comment = getState().comment,
             )
 
-            val result = if (transactionId == TRANSACTION_NOT_FOUND) {
+            val result = if (transactionId == TRANSACTION_NOT_EXIST) {
                 transactionUseCase.createTransaction(requestTransactionModel)
             } else {
                 transactionUseCase.updateTransaction(transactionId, requestTransactionModel)
             }
 
-            result.collectResult(
+            result.fold(
                 onSuccess = {
-                    updateNotifierUseCase.notifyAccountChanged()
+                    updateNotifierUseCase.notifyDataChanged()
                     effect(TransactionEditorEffect.GoBack)
                 },
                 onFailure = {
@@ -227,7 +238,7 @@ class TransactionEditorViewModel @AssistedInject constructor(
     }
 
     companion object {
-        private const val TRANSACTION_NOT_FOUND = -1
+        private const val TRANSACTION_NOT_EXIST = -1
     }
 
 }

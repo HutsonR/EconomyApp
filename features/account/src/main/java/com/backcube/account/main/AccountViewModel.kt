@@ -9,7 +9,6 @@ import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.impl.common.UpdateNotifierUseCase
 import com.backcube.domain.utils.CurrencyIsoCode
 import com.backcube.domain.utils.NoInternetConnectionException
-import com.backcube.domain.utils.collectResult
 import com.backcube.ui.BaseViewModel
 import com.backcube.ui.components.AlertData
 import kotlinx.coroutines.launch
@@ -32,10 +31,10 @@ class AccountViewModel @Inject constructor(
     private suspend fun fetchData() {
         modifyState { copy(isLoading = true) }
 
-       accountUseCase.getAccounts().collectResult (
+       accountUseCase.getAccounts().fold (
            onSuccess = { accounts ->
                val accountId = accounts.firstOrNull()?.id ?: 1
-               accountUseCase.getAccountById(accountId).collectResult(
+               accountUseCase.getAccountById(accountId).fold(
                    onSuccess = { account ->
                        modifyState {
                            copy(
@@ -86,9 +85,9 @@ class AccountViewModel @Inject constructor(
                     balance = updatedAccount.balance,
                     currency = updatedAccount.currency
                 )
-            ).collectResult(
+            ).fold(
                 onSuccess = {
-                    updateNotifierUseCase.notifyAccountChanged()
+                    updateNotifierUseCase.notifyDataChanged()
                     modifyState {
                         copy(
                             item = updatedAccount,

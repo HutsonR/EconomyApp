@@ -13,8 +13,6 @@ import com.backcube.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.domain.repositories.AccountRepository
 import com.backcube.domain.utils.ConnectivityObserver
 import com.backcube.domain.utils.NoInternetConnectionException
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AccountRepositoryImpl @Inject constructor(
@@ -23,47 +21,46 @@ class AccountRepositoryImpl @Inject constructor(
     private val connectivityObserver: ConnectivityObserver
 ) : AccountRepository {
 
-    override suspend fun getAccounts(): Flow<List<AccountModel>> = flow {
-        val cachedData = accountLocalDataSource.getAccounts().also {
-            emit(it)
-        }
-
-        if (!connectivityObserver.isInternetAvailable()) return@flow
-        val remoteData = accountRemoteDataSource.getAccounts().map { it.toDomain() }
-        if (cachedData notSameContentWith remoteData) {
-            accountLocalDataSource.insertAccounts(remoteData)
-            emit(remoteData)
+    override suspend fun getAccounts(): List<AccountModel> {
+        val cachedData = accountLocalDataSource.getAccounts()
+        return if (!connectivityObserver.isInternetAvailable()) {
+            cachedData
+        } else {
+            val remoteData = accountRemoteDataSource.getAccounts().map { it.toDomain() }
+            if (cachedData notSameContentWith remoteData) {
+                accountLocalDataSource.insertAccounts(remoteData)
+            }
+            remoteData
         }
     }
 
     // Заготовка на будущее. По ТЗ не нужно было
-    override suspend fun createAccount(request: AccountCreateRequestModel): Flow<AccountModel> = flow {
-        emit(accountRemoteDataSource.createAccount(request.toApi()).toDomain())
+    override suspend fun createAccount(request: AccountCreateRequestModel): AccountModel {
+        return accountRemoteDataSource.createAccount(request.toApi()).toDomain()
     }
 
-    override suspend fun getAccountById(id: Int): Flow<AccountResponseModel?> = flow {
-        val cachedData = accountLocalDataSource.getAccountById(id).also {
-            emit(it)
-        }
-
-        if (!connectivityObserver.isInternetAvailable()) return@flow
-        val remoteData = accountRemoteDataSource.getAccountById(id)?.toDomain()
-        if (remoteData != null && cachedData != remoteData) {
-            accountLocalDataSource.insertAccountDetails(remoteData)
-            emit(remoteData)
+    override suspend fun getAccountById(id: Int): AccountResponseModel? {
+        val cachedData = accountLocalDataSource.getAccountById(id)
+        return if (!connectivityObserver.isInternetAvailable()) {
+            cachedData
+        } else {
+            val remoteData = accountRemoteDataSource.getAccountById(id)?.toDomain()
+            if (remoteData != null && cachedData != remoteData) {
+                accountLocalDataSource.insertAccountDetails(remoteData)
+            }
+            remoteData
         }
     }
 
     override suspend fun updateAccount(
         id: Int,
         request: AccountUpdateRequestModel
-    ): Flow<AccountModel> = flow {
+    ): AccountModel {
         if (!connectivityObserver.isInternetAvailable()) throw NoInternetConnectionException()
-        val updatedAccount = (accountRemoteDataSource.updateAccount(id, request.toApi())).toDomain()
-        emit(updatedAccount)
+        return accountRemoteDataSource.updateAccount(id, request.toApi()).toDomain()
     }
 
-    override suspend fun getAccountHistory(id: Int): Flow<AccountHistoryResponseModel> = flow {
-        emit(accountRemoteDataSource.getAccountHistory(id).toDomain())
+    override suspend fun getAccountHistory(id: Int): AccountHistoryResponseModel {
+        return accountRemoteDataSource.getAccountHistory(id).toDomain()
     }
 }

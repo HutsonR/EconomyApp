@@ -310,22 +310,24 @@ internal fun TransactionEditorScreen(
                 isSmallItem = false
             )
 
-            val deleteButtonText = if (isIncome) {
-                R.string.income_delete
-            } else {
-                R.string.expense_delete
-            }
-            DeleteButton(
-                modifier = Modifier
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-                    .align(Alignment.CenterHorizontally),
-                text = deleteButtonText,
-                buttonBackground = colors.errorContainer,
-                buttonTextColor = colors.onErrorContainer,
-                onClick = {
-                    onIntent(TransactionEditorIntent.OnDeleteClick)
+            if (state.isEditMode) {
+                val deleteButtonText = if (isIncome) {
+                    R.string.income_delete
+                } else {
+                    R.string.expense_delete
                 }
-            )
+                DeleteButton(
+                    modifier = Modifier
+                        .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                        .align(Alignment.CenterHorizontally),
+                    text = deleteButtonText,
+                    buttonBackground = colors.errorContainer,
+                    buttonTextColor = colors.onErrorContainer,
+                    onClick = {
+                        onIntent(TransactionEditorIntent.OnDeleteClick)
+                    }
+                )
+            }
         }
     }
 }

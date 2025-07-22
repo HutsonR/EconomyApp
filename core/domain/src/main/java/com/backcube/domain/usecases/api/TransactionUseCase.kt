@@ -3,7 +3,6 @@ package com.backcube.domain.usecases.api
 import com.backcube.domain.models.transactions.TransactionModel
 import com.backcube.domain.models.transactions.TransactionRequestModel
 import com.backcube.domain.models.transactions.TransactionResponseModel
-import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 
 interface TransactionUseCase {
@@ -12,14 +11,14 @@ interface TransactionUseCase {
      *
      * @param request see [TransactionRequestModel]
      * */
-    suspend fun createTransaction(request: TransactionRequestModel): Flow<Result<TransactionModel>>
+    suspend fun createTransaction(request: TransactionRequestModel): Result<TransactionModel>
 
     /**
      * Возвращает детальную информацию о транзакции
      *
      * @param id ID транзакции
      * */
-    suspend fun getTransactionById(id: Int): Flow<Result<TransactionResponseModel>>
+    suspend fun getTransactionById(id: Int): Result<TransactionResponseModel>
 
     /**
      * Обновляет существующую транзакцию
@@ -30,14 +29,14 @@ interface TransactionUseCase {
     suspend fun updateTransaction(
         id: Int,
         request: TransactionRequestModel
-    ): Flow<Result<TransactionResponseModel>>
+    ): Result<TransactionResponseModel>
 
     /**
      * Удаляет транзакцию с возможностью возврата средств на счет
      *
      * @param id ID транзакции
      * */
-    suspend fun deleteTransaction(id: Int): Flow<Result<Boolean>>
+    suspend fun deleteTransaction(id: Int): Result<Boolean>
 
     /**
      * Возвращает список транзакций для указанного счета за указанный период
@@ -50,5 +49,5 @@ interface TransactionUseCase {
         accountId: Int,
         startDate: Instant?,
         endDate: Instant?
-    ): Flow<Result<List<TransactionResponseModel>>>
+    ): Result<List<TransactionResponseModel>>
 }

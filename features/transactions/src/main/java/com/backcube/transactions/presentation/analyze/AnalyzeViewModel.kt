@@ -6,7 +6,6 @@ import com.backcube.domain.models.transactions.TransactionResponseModel
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
 import com.backcube.domain.utils.CurrencyIsoCode
-import com.backcube.domain.utils.collectResult
 import com.backcube.domain.utils.formatAsWholeThousands
 import com.backcube.transactions.presentation.analyze.domain.GetCategoriesWithPercentUseCase
 import com.backcube.transactions.presentation.analyze.models.AnalyzeEffect
@@ -37,6 +36,7 @@ class AnalyzeViewModel @AssistedInject constructor(
             .withDayOfMonth(1)
             .toLocalDate()
             .atStartOfDay(ZoneId.systemDefault())
+            .plusHours(3)
             .toInstant()
 
         modifyState {
@@ -51,7 +51,7 @@ class AnalyzeViewModel @AssistedInject constructor(
     private fun fetchData() {
         viewModelScope.launch(Dispatchers.Default) {
             modifyState { copy(isLoading = true) }
-            accountUseCase.getAccounts().collectResult(
+            accountUseCase.getAccounts().fold(
                 onSuccess = { accounts ->
                     val account = accounts.firstOrNull()
                     val accountId = account?.id ?: 1
@@ -60,7 +60,7 @@ class AnalyzeViewModel @AssistedInject constructor(
                         accountId = accountId,
                         startDate = getState().startAnalyzeDate,
                         endDate = getState().endAnalyzeDate
-                    ).collectResult(
+                    ).fold(
                         onSuccess = { transactions ->
                             handleTransactionResult(
                                 account,

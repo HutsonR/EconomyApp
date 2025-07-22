@@ -48,8 +48,8 @@ interface TransactionDao {
     """)
     suspend fun getResponsesByAccountAndPeriod(
         accountId: Int,
-        startDate: String,
-        endDate: String
+        startDate: Long,
+        endDate: Long
     ): List<TransactionResponseEntity>
 }
 

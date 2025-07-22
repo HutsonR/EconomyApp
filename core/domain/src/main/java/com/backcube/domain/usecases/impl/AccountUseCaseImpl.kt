@@ -7,38 +7,35 @@ import com.backcube.domain.models.accounts.AccountResponseModel
 import com.backcube.domain.models.accounts.AccountUpdateRequestModel
 import com.backcube.domain.repositories.AccountRepository
 import com.backcube.domain.usecases.api.AccountUseCase
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AccountUseCaseImpl @Inject constructor(
     private val accountRepository: AccountRepository
 ): AccountUseCase {
 
-    override suspend fun getAccounts(): Flow<Result<List<AccountModel>>> =
-        accountRepository.getAccounts()
-            .map { Result.success(it) }
-            .catch { emit(Result.failure(it)) }
+    override suspend fun getAccounts(): Result<List<AccountModel>> =
+        runCatching {
+            accountRepository.getAccounts()
+        }
 
-    override suspend fun createAccount(request: AccountCreateRequestModel): Flow<Result<AccountModel>> =
-        accountRepository.createAccount(request)
-            .map { Result.success(it) }
-            .catch { emit(Result.failure(it)) }
+    override suspend fun createAccount(request: AccountCreateRequestModel): Result<AccountModel> =
+        runCatching {
+            accountRepository.createAccount(request)
+        }
 
-    override suspend fun getAccountById(id: Int): Flow<Result<AccountResponseModel?>> =
-        accountRepository.getAccountById(id)
-            .map { Result.success(it) }
-            .catch { emit(Result.failure(it)) }
+    override suspend fun getAccountById(id: Int): Result<AccountResponseModel?> =
+        runCatching {
+            accountRepository.getAccountById(id)
+        }
 
-    override suspend fun updateAccount(id: Int, request: AccountUpdateRequestModel): Flow<Result<AccountModel>> =
-        accountRepository.updateAccount(id, request)
-            .map { Result.success(it) }
-            .catch { emit(Result.failure(it)) }
+    override suspend fun updateAccount(id: Int, request: AccountUpdateRequestModel): Result<AccountModel> =
+        runCatching {
+            accountRepository.updateAccount(id, request)
+        }
 
-    override suspend fun getAccountHistory(id: Int): Flow<Result<AccountHistoryResponseModel>> =
-        accountRepository.getAccountHistory(id)
-            .map { Result.success(it) }
-            .catch { emit(Result.failure(it)) }
+    override suspend fun getAccountHistory(id: Int): Result<AccountHistoryResponseModel> =
+        runCatching {
+            accountRepository.getAccountHistory(id)
+        }
 
 }

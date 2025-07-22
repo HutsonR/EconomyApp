@@ -20,5 +20,8 @@ interface SyncQueueDao {
     suspend fun remove(entry: SyncQueueEntity)
 
     @Query("DELETE FROM sync_queue WHERE id = :id")
-    suspend fun removeById(id: Long)
+    suspend fun removeById(id: Int)
+
+    @Query("DELETE FROM sync_queue WHERE targetId = :id")
+    suspend fun removeByTargetId(id: Int)
 }

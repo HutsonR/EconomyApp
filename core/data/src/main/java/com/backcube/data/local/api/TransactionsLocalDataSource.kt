@@ -7,8 +7,8 @@ interface TransactionsLocalDataSource {
     suspend fun getTransactionByAccount(accountId: Int): TransactionResponseModel
     suspend fun getTransactionsByPeriod(
         accountId: Int,
-        startDate: String?,
-        endDate: String?
+        startDate: Long?,
+        endDate: Long?
     ): List<TransactionResponseModel>
     suspend fun insertTransactions(transactions: List<TransactionResponseModel>)
     suspend fun insertTransaction(transaction: TransactionResponseModel)

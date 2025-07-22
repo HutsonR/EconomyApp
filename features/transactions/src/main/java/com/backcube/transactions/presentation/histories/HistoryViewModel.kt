@@ -3,7 +3,6 @@ package com.backcube.transactions.presentation.histories
 import androidx.lifecycle.viewModelScope
 import com.backcube.domain.usecases.api.AccountUseCase
 import com.backcube.domain.usecases.api.TransactionUseCase
-import com.backcube.domain.utils.collectResult
 import com.backcube.transactions.presentation.histories.models.HistoryEffect
 import com.backcube.transactions.presentation.histories.models.HistoryEffect.GoBack
 import com.backcube.transactions.presentation.histories.models.HistoryEffect.NavigateToAnalyze
@@ -30,6 +29,7 @@ class HistoryViewModel @Inject constructor(
             .withDayOfMonth(1)
             .toLocalDate()
             .atStartOfDay(ZoneId.systemDefault())
+            .plusHours(3)
             .toInstant()
 
         modifyState { copy(startHistoryDate = startOfMonth) }
@@ -38,7 +38,7 @@ class HistoryViewModel @Inject constructor(
     private fun fetchData() {
         viewModelScope.launch {
             modifyState { copy(isLoading = true) }
-            accountUseCase.getAccounts().collectResult(
+            accountUseCase.getAccounts().fold(
                 onSuccess = { accounts ->
                     val accountId = accounts.firstOrNull()?.id ?: 1
 
@@ -46,7 +46,7 @@ class HistoryViewModel @Inject constructor(
                         accountId = accountId,
                         startDate = getState().startHistoryDate,
                         endDate = getState().endHistoryDate
-                    ).collectResult(
+                    ).fold(
                         onSuccess = { transactions ->
                             val filteredTransactions = transactions.filter {
                                 it.category.isIncome == getState().isIncome

@@ -6,6 +6,7 @@ import java.time.Instant
 
 data class TransactionEditorState (
     val isLoading: Boolean = false,
+    val isEditMode: Boolean = false,
     val accounts: List<AccountModel> = emptyList(),
     val categories: List<CategoryModel> = emptyList(),
     val selectedAccount: AccountModel? = null,

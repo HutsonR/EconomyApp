@@ -14,3 +14,11 @@ data class AccountResponseModel(
     val createdAt: Instant,
     val updatedAt: Instant
 )
+
+fun AccountResponseModel.mapToAccountBrief(): AccountBriefModel =
+    AccountBriefModel(
+        id = this.id,
+        name = this.name,
+        balance = this.balance,
+        currency = this.currency
+    )

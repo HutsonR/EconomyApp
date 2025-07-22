@@ -15,7 +15,7 @@ data class TransactionResponseEntity(
     val category: CategorySerialEntity,
     val amount: String,
     @ColumnInfo(name = "transaction_date")
-    val transactionDate: String,
+    val transactionDate: Long,
     val comment: String?,
     val createdAt: String,
     val updatedAt: String
@@ -25,7 +25,7 @@ data class TransactionResponseEntity(
         account = account.toDomain(),
         category = category.toDomain(),
         amount = amount.toBigDecimal(),
-        transactionDate = Instant.parse(transactionDate),
+        transactionDate = Instant.ofEpochMilli(transactionDate),
         comment = comment,
         createdAt = Instant.parse(createdAt),
         updatedAt = Instant.parse(updatedAt)
@@ -37,7 +37,7 @@ data class TransactionResponseEntity(
             account = AccountBriefSerialEntity.toEntity(transactionResponseModel.account),
             category = CategorySerialEntity.toEntity(transactionResponseModel.category),
             amount = transactionResponseModel.amount.toPlainString(),
-            transactionDate = transactionResponseModel.transactionDate.toString(),
+            transactionDate = transactionResponseModel.transactionDate.toEpochMilli(),
             comment = transactionResponseModel.comment,
             createdAt = transactionResponseModel.createdAt.toString(),
             updatedAt = transactionResponseModel.updatedAt.toString()

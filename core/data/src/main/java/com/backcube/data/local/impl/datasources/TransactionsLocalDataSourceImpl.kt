@@ -20,13 +20,13 @@ class TransactionsLocalDataSourceImpl @Inject constructor(
 
     override suspend fun getTransactionsByPeriod(
         accountId: Int,
-        startDate: String?,
-        endDate: String?
+        startDate: Long?,
+        endDate: Long?
     ): List<TransactionResponseModel> {
         return transactionDao.getResponsesByAccountAndPeriod(
             accountId,
-            startDate ?: Instant.now().toString(),
-            endDate ?: Instant.now().toString()
+            startDate ?: Instant.now().toEpochMilli(),
+            endDate ?: Instant.now().toEpochMilli()
         ).map { it.toDomain() }
     }
 

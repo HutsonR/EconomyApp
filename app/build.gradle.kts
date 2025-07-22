@@ -21,7 +21,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -40,6 +40,7 @@ android {
     }
 }
 
+// Modules
 dependencies {
     kapt(libs.dagger.compiler)
 
@@ -60,9 +61,12 @@ dependencies {
     }
 }
 
+// Libraries
 dependencies {
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.work.runtime.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

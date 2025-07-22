@@ -6,6 +6,7 @@ import com.backcube.articles.di.ArticlesComponent
 import com.backcube.data.common.di.DataModule
 import com.backcube.domain.di.DomainModule
 import com.backcube.economyapp.main.MainActivity
+import com.backcube.economyapp.workmanager.CustomWorkerFactory
 import com.backcube.settings.di.SettingComponent
 import com.backcube.transactions.common.di.TransactionsComponent
 import dagger.BindsInstance
@@ -30,6 +31,7 @@ interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
 
+    fun createCustomWorkerFactory(): CustomWorkerFactory
     fun createAccountComponent(): AccountComponent.Factory
     fun createArticlesComponent(): ArticlesComponent.Factory
     fun createTransactionsComponent(): TransactionsComponent.Factory
