@@ -3,8 +3,8 @@ package com.backcube.transactions.presentation.analyze
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -46,6 +46,7 @@ import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
 import com.backcube.ui.components.date.CustomDatePicker
 import com.backcube.ui.components.date.DateMode
+import com.backcube.ui.components.graphics.DonutChart
 import com.backcube.ui.utils.CollectEffect
 import com.backcube.ui.utils.formatAsPeriodDate
 import com.backcube.ui.utils.toCurrency
@@ -202,7 +203,11 @@ internal fun AnalyzeScreen(
 
             item {
                 Column {
-                    Spacer(modifier = Modifier.padding(vertical = 16.dp))
+                    DonutChart(
+                        modifier = Modifier.padding(vertical = 40.dp).height(200.dp),
+                        items = state.itemsDonutUiModel
+                    )
+
                     HorizontalDivider(
                         thickness = 1.dp,
                         color = colors.outlineVariant

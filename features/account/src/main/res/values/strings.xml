@@ -4,4 +4,6 @@
     <string name="account_name">Название</string>
     <string name="account_balance">Баланс</string>
     <string name="account_currency">Валюта</string>
+
+    <string name="account_change_graphics_button">Изменить тип графика</string>
 </resources>

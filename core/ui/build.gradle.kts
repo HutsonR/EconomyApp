@@ -46,4 +46,5 @@ dependencies {
     api(libs.material.icon.extended)
     api(libs.compose.animation)
     api(libs.androidx.lifecycle.viewmodel.compose.android)
+    debugImplementation(libs.ui.tooling)
 }

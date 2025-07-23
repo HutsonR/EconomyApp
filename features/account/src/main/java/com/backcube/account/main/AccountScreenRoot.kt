@@ -1,13 +1,20 @@
 package com.backcube.account.main
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,9 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.account.R
 import com.backcube.account.common.di.AccountComponentProvider
@@ -34,6 +43,7 @@ import com.backcube.ui.components.AlertData
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
+import com.backcube.ui.components.graphics.AnimatedChartView
 import com.backcube.ui.theme.LightGreen
 import com.backcube.ui.theme.White
 import com.backcube.ui.utils.CollectEffect
@@ -161,8 +171,46 @@ internal fun AccountScreen(
                 )
             }
         }
-//        CustomFloatingButton {
-//            // todo add expense
-//        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        AnimatedChartView(
+            points = state.chartPoints,
+            chartType = state.chartType,
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface)
+        )
+
+        ChangeButton(
+            modifier = Modifier.padding(20.dp),
+            text = R.string.account_change_graphics_button,
+            buttonBackground = MaterialTheme.colorScheme.primary,
+            buttonTextColor = MaterialTheme.colorScheme.onPrimary,
+            onClick = { onIntent(AccountIntent.OnChangeGraphType) }
+        )
+    }
+}
+
+@Composable
+fun ChangeButton(
+    modifier: Modifier = Modifier,
+    @StringRes text: Int,
+    buttonBackground: Color,
+    buttonTextColor: Color,
+    onClick: () -> Unit,
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = buttonBackground
+        ),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = stringResource(text),
+            color = buttonTextColor
+        )
     }
 }
