@@ -9,7 +9,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class ApiModule {
+internal class ApiModule {
     @Provides
     @Singleton
     fun provideAccountApi(): AccountApi {

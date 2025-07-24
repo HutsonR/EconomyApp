@@ -15,7 +15,7 @@ import com.backcube.domain.utils.ConnectivityObserver
 import com.backcube.domain.utils.NoInternetConnectionException
 import javax.inject.Inject
 
-class AccountRepositoryImpl @Inject constructor(
+internal class AccountRepositoryImpl @Inject constructor(
     private val accountLocalDataSource: AccountLocalDataSource,
     private val accountRemoteDataSource: AccountRemoteDataSource,
     private val connectivityObserver: ConnectivityObserver

@@ -23,7 +23,7 @@ import com.backcube.domain.utils.NoInternetConnectionException
 import java.time.Instant
 import javax.inject.Inject
 
-class TransactionRepositoryImpl @Inject constructor(
+internal class TransactionRepositoryImpl @Inject constructor(
     private val transactionsLocalDataSource: TransactionsLocalDataSource,
     private val transactionsRemoteDataSource: TransactionsRemoteDataSource,
     private val categoriesLocalDataSource: CategoriesLocalDataSource,

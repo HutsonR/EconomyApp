@@ -36,7 +36,7 @@ import com.backcube.data.local.impl.entities.transactions.TransactionResponseEnt
     AccountBriefEntityConverter::class,
     CategorySerialEntityConverter::class
 )
-abstract class AppDatabase : RoomDatabase() {
+internal abstract class AppDatabase : RoomDatabase() {
 
     abstract fun accountDao(): AccountDao
     abstract fun categoryDao(): CategoryDao

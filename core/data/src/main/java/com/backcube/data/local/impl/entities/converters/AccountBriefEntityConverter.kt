@@ -6,12 +6,12 @@ import kotlinx.serialization.json.Json
 
 class AccountBriefEntityConverter {
     @TypeConverter
-    fun fromAccount(account: AccountBriefSerialEntity): String {
+    internal fun fromAccount(account: AccountBriefSerialEntity): String {
         return Json.encodeToString(AccountBriefSerialEntity.serializer(), account)
     }
 
     @TypeConverter
-    fun toAccount(json: String): AccountBriefSerialEntity {
+    internal fun toAccount(json: String): AccountBriefSerialEntity {
         return Json.decodeFromString(AccountBriefSerialEntity.serializer(), json)
     }
 }

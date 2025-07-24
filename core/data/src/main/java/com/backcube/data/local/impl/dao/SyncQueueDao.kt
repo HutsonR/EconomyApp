@@ -8,7 +8,7 @@ import androidx.room.Query
 import com.backcube.data.local.impl.entities.SyncQueueEntity
 
 @Dao
-interface SyncQueueDao {
+internal interface SyncQueueDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun enqueue(entry: SyncQueueEntity)

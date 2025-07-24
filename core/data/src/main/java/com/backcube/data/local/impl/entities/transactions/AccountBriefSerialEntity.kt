@@ -5,20 +5,20 @@ import com.backcube.domain.utils.toCurrencyIsoCode
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AccountBriefSerialEntity(
+internal data class AccountBriefSerialEntity(
     val id: Int,
     val name: String,
     val balance: String,
     val currency: String
 ) {
-    fun toDomain() = AccountBriefModel(
+    internal fun toDomain() = AccountBriefModel(
         id = id,
         name = name,
         balance = balance.toBigDecimal(),
         currency = currency.toCurrencyIsoCode()
     )
     companion object {
-        fun toEntity(accountBriefModel: AccountBriefModel) = AccountBriefSerialEntity(
+        internal fun toEntity(accountBriefModel: AccountBriefModel) = AccountBriefSerialEntity(
             id = accountBriefModel.id,
             name = accountBriefModel.name,
             balance = accountBriefModel.balance.toPlainString(),

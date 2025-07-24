@@ -8,7 +8,7 @@ import com.backcube.domain.models.accounts.AccountModel
 import com.backcube.domain.models.accounts.AccountResponseModel
 import javax.inject.Inject
 
-class AccountLocalDataSourceImpl @Inject constructor(
+internal class AccountLocalDataSourceImpl @Inject constructor(
     private val accountDao: AccountDao
 ) : AccountLocalDataSource {
 

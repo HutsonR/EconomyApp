@@ -15,10 +15,6 @@ class GetSettingsListUseCase @Inject constructor() {
                 type = SettingType.LINK
             ),
             SettingsUiModel(
-                name = "Звуки",
-                type = SettingType.LINK
-            ),
-            SettingsUiModel(
                 name = "Хаптики",
                 type = SettingType.LINK
             ),

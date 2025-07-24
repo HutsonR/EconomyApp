@@ -7,7 +7,7 @@ import com.backcube.domain.utils.toCurrencyIsoCode
 import java.time.Instant
 
 @Entity(tableName = "accounts_api")
-data class AccountEntity(
+internal data class AccountEntity(
     @PrimaryKey val id: Int,
     val userId: Int,
     val name: String,
@@ -16,7 +16,7 @@ data class AccountEntity(
     val createdAt: String,
     val updatedAt: String
 ) {
-    fun toDomain() = AccountModel(
+    internal fun toDomain() = AccountModel(
         id = id,
         userId = userId,
         name = name,
@@ -26,7 +26,7 @@ data class AccountEntity(
         updatedAt = Instant.parse(updatedAt)
     )
     companion object {
-        fun toEntity(accountModel: AccountModel) = AccountEntity(
+        internal fun toEntity(accountModel: AccountModel) = AccountEntity(
             id = accountModel.id,
             userId = accountModel.userId,
             name = accountModel.name,

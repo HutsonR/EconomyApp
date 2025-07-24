@@ -9,7 +9,7 @@ import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
-object RetryModule {
+internal object RetryModule {
     @Provides
     fun provideRetryPolicy(): RetryPolicy = DefaultRetryPolicy(
         maxRetries = 3,

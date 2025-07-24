@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.backcube.data.local.impl.entities.categories.CategoryEntity
 
 @Dao
-interface CategoryDao {
+internal interface CategoryDao {
 
     @Query("SELECT * FROM categories")
     suspend fun getAllCategories(): List<CategoryEntity>

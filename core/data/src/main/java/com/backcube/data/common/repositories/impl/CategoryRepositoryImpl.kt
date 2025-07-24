@@ -9,7 +9,7 @@ import com.backcube.domain.repositories.CategoryRepository
 import com.backcube.domain.utils.ConnectivityObserver
 import javax.inject.Inject
 
-class CategoryRepositoryImpl @Inject constructor(
+internal class CategoryRepositoryImpl @Inject constructor(
     private val categoriesLocalDataSource: CategoriesLocalDataSource,
     private val categoriesRemoteDataSource: CategoriesRemoteDataSource,
     private val connectivityObserver: ConnectivityObserver

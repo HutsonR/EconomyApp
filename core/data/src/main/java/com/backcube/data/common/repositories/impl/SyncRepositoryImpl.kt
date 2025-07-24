@@ -1,7 +1,7 @@
 package com.backcube.data.common.repositories.impl
 
 import com.backcube.data.local.api.SyncLocalDataSource
-import com.backcube.data.local.impl.datasources.TransactionsLocalDataSourceImpl
+import com.backcube.data.local.api.TransactionsLocalDataSource
 import com.backcube.data.remote.api.TransactionsRemoteDataSource
 import com.backcube.data.remote.impl.models.request.transactions.TransactionRequestApiModel
 import com.backcube.domain.models.sync.SyncEntityType
@@ -11,9 +11,9 @@ import com.backcube.domain.repositories.SyncRepository
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class SyncRepositoryImpl @Inject constructor(
+internal class SyncRepositoryImpl @Inject constructor(
     private val syncLocalDataSource: SyncLocalDataSource,
-    private val transactionsLocalDataSourceImpl: TransactionsLocalDataSourceImpl,
+    private val transactionsLocalDataSource: TransactionsLocalDataSource,
     private val transactionsRemoteDataSource: TransactionsRemoteDataSource,
 ) : SyncRepository {
 
@@ -52,6 +52,7 @@ class SyncRepositoryImpl @Inject constructor(
         when (entry.operation) {
             SyncOperationType.CREATE -> {
                 val model = Json.decodeFromString<TransactionRequestApiModel>(entry.payload)
+                transactionsLocalDataSource.deleteTransaction(entry.id)
                 transactionsRemoteDataSource.createTransaction(model)
             }
 
@@ -60,7 +61,7 @@ class SyncRepositoryImpl @Inject constructor(
                 if (id >= 0) {
                     transactionsRemoteDataSource.deleteTransaction(id)
                 } else {
-                    transactionsLocalDataSourceImpl.deleteTransaction(id)
+                    transactionsLocalDataSource.deleteTransaction(id)
                 }
             }
         }

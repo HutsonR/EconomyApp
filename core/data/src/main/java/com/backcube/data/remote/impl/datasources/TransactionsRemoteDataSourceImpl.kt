@@ -9,7 +9,7 @@ import com.backcube.data.remote.impl.utils.getOrThrow
 import com.backcube.data.remote.impl.utils.retry.RetryHandler
 import javax.inject.Inject
 
-class TransactionsRemoteDataSourceImpl @Inject constructor(
+internal class TransactionsRemoteDataSourceImpl @Inject constructor(
     private val transactionsApi: TransactionsApi,
     private val retryHandler: RetryHandler
 ) : TransactionsRemoteDataSource {

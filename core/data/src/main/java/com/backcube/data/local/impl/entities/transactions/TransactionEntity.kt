@@ -6,7 +6,7 @@ import com.backcube.domain.models.transactions.TransactionModel
 import java.time.Instant
 
 @Entity(tableName = "transactions_api")
-data class TransactionEntity(
+internal data class TransactionEntity(
     @PrimaryKey val id: Int,
     val accountId: Int,
     val categoryId: Int,
@@ -16,7 +16,7 @@ data class TransactionEntity(
     val createdAt: String,
     val updatedAt: String
 ) {
-    fun toDomain() = TransactionModel(
+    internal fun toDomain() = TransactionModel(
         id = id,
         accountId = accountId,
         categoryId = categoryId,
@@ -27,7 +27,7 @@ data class TransactionEntity(
         updatedAt = Instant.parse(updatedAt)
     )
     companion object {
-        fun toEntity(transactionModel: TransactionModel) = TransactionEntity(
+        internal fun toEntity(transactionModel: TransactionModel) = TransactionEntity(
             id = transactionModel.id,
             accountId = transactionModel.accountId,
             categoryId = transactionModel.categoryId,

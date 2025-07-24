@@ -12,7 +12,7 @@ import dagger.Binds
 import dagger.Module
 
 @Module
-interface RepositoryModule {
+internal interface RepositoryModule {
 
     @Binds
     fun bindAccountRepository(accountRepositoryImpl: AccountRepositoryImpl): AccountRepository

@@ -1,4 +1,11 @@
 <resources>
     <!-- Settings -->
     <string name="settings_title">Настройки</string>
+    <string name="settings_dark_theme">Темная тема</string>
+    <string name="settings_main_color">Основной цвет</string>
+    <string name="settings_vibrate">Хаптики</string>
+    <string name="settings_password">Код пароль</string>
+    <string name="settings_sync">Синхронизация</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_about">О программе</string>
 </resources>
