@@ -1,13 +1,19 @@
 package com.backcube.data.local.di
 
 import android.content.Context
+import com.backcube.data.local.impl.datastore.DataStoreManager
 import com.backcube.data.local.impl.db.AppDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-internal class DatabaseModule {
+internal class StorageModule {
+
+    @Provides
+    @Singleton
+    fun provideDatastore(context: Context): DataStoreManager =
+        DataStoreManager(context)
 
     @Provides
     @Singleton
