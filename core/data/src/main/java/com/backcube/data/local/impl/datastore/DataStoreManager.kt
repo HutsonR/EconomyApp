@@ -16,7 +16,7 @@ import javax.inject.Singleton
 private val Context.dataStore by preferencesDataStore("finance_blackcube_app_prefs")
 
 @Singleton
-class DataStoreManager @Inject constructor(
+internal class DataStoreManager @Inject constructor(
     private val context: Context
 ) {
     companion object {

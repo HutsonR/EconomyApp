@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PreferencesRepositoryImpl @Inject constructor(
+internal class PreferencesRepositoryImpl @Inject constructor(
     private val dataStoreManager: DataStoreManager
 ) : PreferencesRepository {
     override val themeFlow: Flow<AppTheme> = dataStoreManager.themeFlow
