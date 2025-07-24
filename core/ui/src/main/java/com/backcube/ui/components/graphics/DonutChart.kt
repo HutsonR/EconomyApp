@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.sp
 import com.backcube.ui.R
 import java.util.Locale
 
+private const val MAX_CATEGORY_TEXT_LENGTH = 25
+
 @Composable
 fun DonutChart(
     modifier: Modifier = Modifier,
@@ -97,9 +99,13 @@ fun DonutChart(
                         shape = CircleShape,
                         color = item.color
                     ) {}
+
                     Spacer(Modifier.width(4.dp))
+
+                    val rawText = "${String.format(Locale.getDefault(), "%.1f", item.percentage)}% ${item.title}"
+                    val displayText = if (rawText.length > MAX_CATEGORY_TEXT_LENGTH) rawText.take(MAX_CATEGORY_TEXT_LENGTH) + "…" else rawText
                     Text(
-                        text = "${String.format(Locale.getDefault(), "%.1f", item.percentage)}% ${item.title}",
+                        text = displayText,
                         color = colors.onSurface,
                         fontSize = 9.sp
                     )
