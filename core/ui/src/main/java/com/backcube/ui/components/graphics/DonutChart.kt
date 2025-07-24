@@ -90,7 +90,6 @@ fun DonutChart(
         ) {
             resultItems
                 .sortedByDescending { it.percentage }
-                .take(5)
                 .forEach { item ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Surface(
@@ -154,7 +153,7 @@ private fun createListForStats(
     items: List<CategorySpendingDonutUiModel>,
     lastItemText: String
 ): List<CategorySpendingDonutUiModel> {
-    if (items.size < 5) return items
+    if (items.size <= 5) return items
 
     val sortedItems = items.sortedByDescending { it.percentage }
     val biggestItems = sortedItems.take(4)
