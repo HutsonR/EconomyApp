@@ -7,7 +7,7 @@ import com.backcube.data.common.di.DataModule
 import com.backcube.domain.di.DomainModule
 import com.backcube.economyapp.main.MainActivity
 import com.backcube.economyapp.workmanager.CustomWorkerFactory
-import com.backcube.settings.di.SettingComponent
+import com.backcube.settings.common.di.SettingComponent
 import com.backcube.transactions.common.di.TransactionsComponent
 import dagger.BindsInstance
 import dagger.Component

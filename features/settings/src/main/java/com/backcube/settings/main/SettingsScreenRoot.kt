@@ -1,5 +1,6 @@
-package com.backcube.settings
+package com.backcube.settings.main
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,7 +15,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,13 +23,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.navigation.AppNavigationController
-import com.backcube.settings.di.SettingComponentProvider
-import com.backcube.settings.models.SettingsEffect
-import com.backcube.settings.models.SettingsIntent
-import com.backcube.settings.models.SettingsState
-import com.backcube.settings.models.ui.SettingType
+import com.backcube.navigation.model.Screens
+import com.backcube.settings.R
+import com.backcube.settings.common.di.SettingComponentProvider
+import com.backcube.settings.main.models.SettingsEffect
+import com.backcube.settings.main.models.SettingsIntent
+import com.backcube.settings.main.models.SettingsState
+import com.backcube.settings.main.models.ui.SettingType
 import com.backcube.ui.baseComponents.CustomTopBar
 import com.backcube.ui.components.CustomListItem
+import com.backcube.ui.utils.CollectEffect
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -49,7 +52,6 @@ fun SettingsScreenRoot(
         topBar = {
             CustomTopBar(
                 title = stringResource(R.string.settings_title),
-                onTrailingClick = {},
                 backgroundColor = MaterialTheme.colorScheme.primary
             )
         }
@@ -72,8 +74,19 @@ internal fun SettingsScreen(
     effects: Flow<SettingsEffect>,
     onIntent: (SettingsIntent) -> Unit
 ) {
+    val context = LocalContext.current
     val colors = MaterialTheme.colorScheme
-    val checked = remember { mutableStateOf(false) }
+
+    CollectEffect(effects) { effect ->
+        when (effect) {
+            SettingsEffect.NavigateToAbout -> navController.navigate(Screens.SettingAboutScreen.route)
+            SettingsEffect.NavigateToColor -> navController.navigate(Screens.SettingMainColorScreen.route)
+            SettingsEffect.NavigateToHaptics -> navController.navigate(Screens.SettingVibrateScreen.route)
+            SettingsEffect.NavigateToLanguage -> navController.navigate(Screens.SettingLanguageScreen.route)
+            SettingsEffect.NavigateToPasscode -> Toast.makeText(context, "Будет добавлено позже", Toast.LENGTH_SHORT).show()
+            SettingsEffect.NavigateToSync -> Toast.makeText(context, "Будет добавлено позже", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = modifier
@@ -83,11 +96,11 @@ internal fun SettingsScreen(
         LazyColumn {
             items(
                 items = state.items,
-                key = { it.name }
+                key = { it.id }
             ) { item ->
                 when (item.type) {
                     SettingType.SWITCH -> CustomListItem(
-                        title = item.name,
+                        title = stringResource(item.nameRes),
                         isSmallItem = true,
                         showLeading = false,
                         trailingContent = {
@@ -95,15 +108,16 @@ internal fun SettingsScreen(
                                 modifier = Modifier
                                     .height(32.dp)
                                     .width(52.dp),
-                                checked = checked.value, onCheckedChange = {
-                                    checked.value = it
+                                checked = state.isDarkTheme,
+                                onCheckedChange = {
+                                    onIntent(SettingsIntent.ToggleDarkTheme(it))
                                 }
                             )
                         }
                     )
 
                     SettingType.LINK -> CustomListItem(
-                        title = item.name,
+                        title = stringResource(item.nameRes),
                         isSmallItem = true,
                         showLeading = false,
                         trailingContent = {
@@ -111,7 +125,8 @@ internal fun SettingsScreen(
                                 painter = painterResource(com.backcube.ui.R.drawable.ic_arrow_solid),
                                 contentDescription = null
                             )
-                        }
+                        },
+                        onItemClick = { onIntent(SettingsIntent.ItemClicked(item.id)) }
                     )
                 }
             }

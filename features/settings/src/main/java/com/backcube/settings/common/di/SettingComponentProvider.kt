@@ -1,4 +1,4 @@
-package com.backcube.settings.di
+package com.backcube.settings.common.di
 
 interface SettingComponentProvider {
     fun provideSettingComponent(): SettingComponent

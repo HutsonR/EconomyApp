@@ -7,5 +7,8 @@
     <string name="settings_password">Код пароль</string>
     <string name="settings_sync">Синхронизация</string>
     <string name="settings_language">Язык</string>
+
     <string name="settings_about">О программе</string>
+    <string name="settings_about_version">Версия: %1$s (%2$s)</string>
+    <string name="settings_about_last_update">Последнее обновление: %1$s</string>
 </resources>
