@@ -176,22 +176,25 @@ internal fun AccountScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        AnimatedChartView(
-            points = state.chartPoints,
-            chartType = state.chartType,
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
-        )
+        val chartPoints = state.chartPoints
+        if (!chartPoints.isNullOrEmpty()) {
+            AnimatedChartView(
+                points = chartPoints,
+                chartType = state.chartType,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface)
+            )
 
-        ChangeButton(
-            modifier = Modifier.padding(20.dp),
-            text = R.string.account_change_graphics_button,
-            buttonBackground = MaterialTheme.colorScheme.primary,
-            buttonTextColor = MaterialTheme.colorScheme.onPrimary,
-            onClick = { onIntent(AccountIntent.OnChangeGraphType) }
-        )
+            ChangeButton(
+                modifier = Modifier.padding(20.dp),
+                text = R.string.account_change_graphics_button,
+                buttonBackground = MaterialTheme.colorScheme.primary,
+                buttonTextColor = MaterialTheme.colorScheme.onPrimary,
+                onClick = { onIntent(AccountIntent.OnChangeGraphType) }
+            )
+        }
     }
 }
 

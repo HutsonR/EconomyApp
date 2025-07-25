@@ -33,7 +33,7 @@ class AccountUseCaseImpl @Inject constructor(
             accountRepository.updateAccount(id, request)
         }
 
-    override suspend fun getAccountHistory(id: Int): Result<AccountHistoryResponseModel> =
+    override suspend fun getAccountHistory(id: Int): Result<AccountHistoryResponseModel?> =
         runCatching {
             accountRepository.getAccountHistory(id)
         }

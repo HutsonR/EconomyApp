@@ -43,6 +43,6 @@ interface AccountRepository {
      *
      * @param id ID счета
      * */
-    suspend fun getAccountHistory(id: Int): AccountHistoryResponseModel
+    suspend fun getAccountHistory(id: Int): AccountHistoryResponseModel?
 
 }

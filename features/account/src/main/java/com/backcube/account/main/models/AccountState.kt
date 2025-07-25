@@ -9,6 +9,6 @@ data class AccountState(
     val isLoading: Boolean = false,
     val item: AccountResponseModel? = null,
     val currencies: List<CurrencyIsoCode> = CurrencyIsoCode.entries,
-    val chartPoints: List<ChartPoint> = emptyList(),
+    val chartPoints: List<ChartPoint>? = null,
     val chartType: ChartType = ChartType.Bar
 )

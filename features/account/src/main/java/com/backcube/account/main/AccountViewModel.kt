@@ -67,7 +67,7 @@ class AccountViewModel @Inject constructor(
     private suspend fun handleAccountHistory(accountId: Int) {
         accountUseCase.getAccountHistory(accountId).fold(
             onSuccess = { history ->
-                val chartPoints = history.toChartPoints()
+                val chartPoints = history?.toChartPoints()
                 modifyState {
                     copy(chartPoints = chartPoints)
                 }

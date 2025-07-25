@@ -11,10 +11,12 @@ import com.backcube.data.local.impl.dao.SyncQueueDao
 import com.backcube.data.local.impl.dao.TransactionDao
 import com.backcube.data.local.impl.entities.SyncQueueEntity
 import com.backcube.data.local.impl.entities.accounts.AccountEntity
+import com.backcube.data.local.impl.entities.accounts.AccountHistoryEntity
 import com.backcube.data.local.impl.entities.accounts.AccountResponseEntity
 import com.backcube.data.local.impl.entities.categories.CategoryEntity
 import com.backcube.data.local.impl.entities.converters.AccountBriefEntityConverter
 import com.backcube.data.local.impl.entities.converters.CategorySerialEntityConverter
+import com.backcube.data.local.impl.entities.converters.HistoryListConverter
 import com.backcube.data.local.impl.entities.converters.StatListConverter
 import com.backcube.data.local.impl.entities.transactions.TransactionEntity
 import com.backcube.data.local.impl.entities.transactions.TransactionResponseEntity
@@ -26,15 +28,17 @@ import com.backcube.data.local.impl.entities.transactions.TransactionResponseEnt
         CategoryEntity::class,
         TransactionEntity::class,
         TransactionResponseEntity::class,
-        SyncQueueEntity::class
+        SyncQueueEntity::class,
+        AccountHistoryEntity::class
     ],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 @TypeConverters(
     StatListConverter::class,
     AccountBriefEntityConverter::class,
-    CategorySerialEntityConverter::class
+    CategorySerialEntityConverter::class,
+    HistoryListConverter::class
 )
 internal abstract class AppDatabase : RoomDatabase() {
 
