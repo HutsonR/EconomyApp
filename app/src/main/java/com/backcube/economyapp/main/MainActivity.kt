@@ -8,7 +8,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -16,7 +19,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,6 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.backcube.domain.models.entities.AppLocale
 import com.backcube.domain.models.entities.AppTheme
+import com.backcube.domain.models.entities.ThemeColor
 import com.backcube.domain.repositories.PreferencesRepository
 import com.backcube.economyapp.App
 import com.backcube.economyapp.App.Companion.appComponent
@@ -62,6 +65,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val locale by preferencesRepository.localeFlow.collectAsStateWithLifecycle(AppLocale.RU)
             val theme by preferencesRepository.themeFlow.collectAsStateWithLifecycle(AppTheme.LIGHT)
+            val primaryColor = preferencesRepository.colorFlow.collectAsStateWithLifecycle(ThemeColor.GREEN)
 
             val localizedContext = remember(locale) {
                 LocaleManager.updateContextLocale(this@MainActivity, locale.name.lowercase())
@@ -70,7 +74,10 @@ class MainActivity : ComponentActivity() {
             navController = rememberNavController()
 
             CompositionLocalProvider(LocalAppContext provides localizedContext) {
-                EconomyAppTheme(isDarkTheme = theme == AppTheme.DARK) {
+                EconomyAppTheme(
+                    isDarkTheme = theme == AppTheme.DARK,
+                    primaryColor = primaryColor.value
+                ) {
                     AppScreen()
                 }
             }
@@ -121,10 +128,12 @@ class MainActivity : ComponentActivity() {
                 )
             }
         ) { innerPadding ->
+            val systemNavBarBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+            val resultPadding = innerPadding.calculateBottomPadding() - systemNavBarBottomPadding
             AppNavHost(
                 navController = navController,
                 protectedNavController = navigator,
-                modifier = Modifier.padding(bottom = 10.dp)
+                modifier = Modifier.padding(bottom = resultPadding)
             )
         }
     }

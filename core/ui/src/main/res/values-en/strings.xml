@@ -48,6 +48,13 @@
     <string name="empty">Empty there</string>
     <string name="other">Other</string>
 
+    <!--  Colors  -->
+    <string name="color_green">Green</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_pink">Pink</string>
+
     <!-- Alert -->
     <string name="alert_base_title">Error</string>
     <string name="alert_base_description">An unexpected error occurred. Please try again later</string>

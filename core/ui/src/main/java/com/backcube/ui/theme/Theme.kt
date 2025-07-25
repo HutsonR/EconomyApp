@@ -4,9 +4,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import com.backcube.domain.models.entities.ThemeColor
 
-private val LightColorScheme = lightColorScheme(
-    primary = PointGreen,
+private fun generateLightColorScheme(
+    primary: Color = PointGreen
+) = lightColorScheme(
+    primary = primary,
     onPrimary = White,
     surface = SurfaceMain,
     onSurface = TextTitle,
@@ -19,8 +23,10 @@ private val LightColorScheme = lightColorScheme(
     onErrorContainer = White
 )
 
-private val DarkColorScheme = darkColorScheme(
-    primary = DarkPointGreen,
+private fun generateDarkColorScheme(
+    primary: Color = DarkPointGreen
+) = darkColorScheme(
+    primary = primary,
     onPrimary = DarkWhite,
     surface = DarkSurfaceMain,
     onSurface = DarkTextTitle,
@@ -36,9 +42,15 @@ private val DarkColorScheme = darkColorScheme(
 @Composable
 fun EconomyAppTheme(
     isDarkTheme: Boolean = false,
+    primaryColor: ThemeColor,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme
+    val primary = ColorPresets.fromThemeColor(primaryColor)
+    val colorScheme = if (isDarkTheme) {
+        generateDarkColorScheme(primary)
+    } else {
+        generateLightColorScheme(primary)
+    }
 
     MaterialTheme(
         colorScheme = colorScheme,

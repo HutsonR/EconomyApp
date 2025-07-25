@@ -47,6 +47,13 @@
     <string name="empty">Пустовато тут</string>
     <string name="other">Прочее</string>
 
+    <!--  Colors  -->
+    <string name="color_green">Зеленый</string>
+    <string name="color_blue">Синий</string>
+    <string name="color_orange">Оранжевый</string>
+    <string name="color_purple">Фиолетовый</string>
+    <string name="color_pink">Розовый</string>
+
     <!-- Alert -->
     <string name="alert_base_title">Ошибка</string>
     <string name="alert_base_description">Произошла непредвиденная ошибка. Попробуйте, пожалуйста, позже</string>

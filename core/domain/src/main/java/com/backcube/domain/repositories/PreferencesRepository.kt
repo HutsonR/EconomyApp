@@ -3,14 +3,15 @@ package com.backcube.domain.repositories
 import com.backcube.domain.models.entities.AppLocale
 import com.backcube.domain.models.entities.AppTheme
 import com.backcube.domain.models.entities.HapticEffect
+import com.backcube.domain.models.entities.ThemeColor
 import kotlinx.coroutines.flow.Flow
 
 interface PreferencesRepository {
     val themeFlow: Flow<AppTheme>
     suspend fun setTheme(theme: AppTheme)
 
-    val colorFlow: Flow<Int>
-    suspend fun setColor(color: Int)
+    val colorFlow: Flow<ThemeColor>
+    suspend fun setColor(color: ThemeColor)
 
     val vibrationEnabledFlow: Flow<Boolean>
     suspend fun setVibrationEnabled(enabled: Boolean)

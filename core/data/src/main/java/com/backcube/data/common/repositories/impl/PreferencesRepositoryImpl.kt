@@ -4,6 +4,7 @@ import com.backcube.data.local.impl.datastore.DataStoreManager
 import com.backcube.domain.models.entities.AppLocale
 import com.backcube.domain.models.entities.AppTheme
 import com.backcube.domain.models.entities.HapticEffect
+import com.backcube.domain.models.entities.ThemeColor
 import com.backcube.domain.repositories.PreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -16,8 +17,8 @@ internal class PreferencesRepositoryImpl @Inject constructor(
     override val themeFlow: Flow<AppTheme> = dataStoreManager.themeFlow
     override suspend fun setTheme(theme: AppTheme) = dataStoreManager.setTheme(theme)
 
-    override val colorFlow: Flow<Int> = dataStoreManager.colorFlow
-    override suspend fun setColor(color: Int) = dataStoreManager.setColor(color)
+    override val colorFlow: Flow<ThemeColor> = dataStoreManager.colorFlow
+    override suspend fun setColor(color: ThemeColor) = dataStoreManager.setColor(color)
 
     override val vibrationEnabledFlow: Flow<Boolean> = dataStoreManager.vibrationEnabledFlow
     override suspend fun setVibrationEnabled(enabled: Boolean) = dataStoreManager.setVibrationEnabled(enabled)

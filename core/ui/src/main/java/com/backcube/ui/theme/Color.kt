@@ -21,7 +21,7 @@ val DarkPointGreen = Color(0xFF00C16A)
 val DarkLightGreen = Color(0xFF1F3F33)
 val DarkSurfaceMain = Color(0xFF121212)
 val DarkGrayNight = Color(0xFF2C2C2E)
-val DarkRedBackground = Color(0xFFB00020)
+val DarkRedBackground = Color(0xFF540613)
 
 val DarkTextTitle = Color(0xFFECE6F0)
 val DarkTextSubtitle = Color(0xFFB0AAB8)

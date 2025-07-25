@@ -8,12 +8,12 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.backcube.domain.utils.CurrencyIsoCode
 import com.backcube.ui.R
 import com.backcube.ui.components.CustomListItem
-import com.backcube.ui.theme.EconomyAppTheme
 import com.backcube.ui.utils.LocalAppContext
 import com.backcube.ui.utils.toCurrency
 import com.backcube.ui.utils.toDisplayNameId
@@ -38,7 +38,8 @@ fun SheetCurrencies(
                 leadingContent = {
                     Image(
                         painter = painterResource(currency.toImageSource()),
-                        contentDescription = null
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant)
                     )
                 },
                 showTrailingIcon = false,
@@ -69,11 +70,9 @@ fun SheetCurrencies(
 @Preview
 @Composable
 fun SheetCurrenciesPreview() {
-    EconomyAppTheme {
-        SheetCurrencies(
-            currencies = CurrencyIsoCode.entries,
-            onCurrencyClick = {  },
-            onCancel = {  }
-        )
-    }
+    SheetCurrencies(
+        currencies = CurrencyIsoCode.entries,
+        onCurrencyClick = {  },
+        onCancel = {  }
+    )
 }
