@@ -33,7 +33,6 @@ import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
 import com.backcube.ui.components.date.CustomDatePicker
 import com.backcube.ui.components.date.DateMode
-import com.backcube.ui.theme.LightGreen
 import com.backcube.ui.utils.CollectEffect
 import com.backcube.ui.utils.LocalAppContext
 import com.backcube.ui.utils.formatAsPeriodDate
@@ -92,6 +91,7 @@ internal fun HistoryScreen(
     onIntent: (HistoryIntent) -> Unit
 ) {
     val context = LocalAppContext.current
+    val colors = MaterialTheme.colorScheme
     var isAlertVisible by remember { mutableStateOf(false) }
     var showDatePicker by remember { mutableStateOf<Pair<DateMode, Boolean>?>(null) }
 
@@ -142,7 +142,7 @@ internal fun HistoryScreen(
             .background(MaterialTheme.colorScheme.surface)
     ) {
         CustomListItem(
-            modifier = Modifier.background(LightGreen),
+            modifier = Modifier.background(colors.surfaceVariant),
             title = context.getString(com.backcube.ui.R.string.start),
             isSmallItem = true,
             showLeading = false,
@@ -153,7 +153,7 @@ internal fun HistoryScreen(
             }
         )
         CustomListItem(
-            modifier = Modifier.background(LightGreen),
+            modifier = Modifier.background(colors.surfaceVariant),
             title = context.getString(com.backcube.ui.R.string.end),
             isSmallItem = true,
             showLeading = false,
@@ -167,7 +167,7 @@ internal fun HistoryScreen(
         LazyColumn {
             item {
                 CustomListItem(
-                    modifier = Modifier.background(LightGreen),
+                    modifier = Modifier.background(colors.surfaceVariant),
                     title = context.getString(com.backcube.ui.R.string.amount),
                     isSmallItem = true,
                     showLeading = false,

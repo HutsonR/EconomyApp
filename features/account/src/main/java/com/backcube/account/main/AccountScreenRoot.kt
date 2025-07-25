@@ -43,8 +43,6 @@ import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
 import com.backcube.ui.components.graphics.AnimatedChartView
-import com.backcube.ui.theme.LightGreen
-import com.backcube.ui.theme.White
 import com.backcube.ui.utils.CollectEffect
 import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.flow.Flow
@@ -93,6 +91,7 @@ internal fun AccountScreen(
     onIntent: (AccountIntent) -> Unit
 ) {
     val context = LocalAppContext.current
+    val colors = MaterialTheme.colorScheme
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isIsoCodeSheetOpen by rememberSaveable { mutableStateOf(false) }
     var isAlertVisible by remember { mutableStateOf(false) }
@@ -121,7 +120,7 @@ internal fun AccountScreen(
     if (isIsoCodeSheetOpen) {
         ModalBottomSheet(
             sheetState = sheetState,
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = colors.surface,
             onDismissRequest = { isIsoCodeSheetOpen = !isIsoCodeSheetOpen }
         ) {
             SheetCurrencies(
@@ -138,7 +137,7 @@ internal fun AccountScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(colors.surface)
     ) {
         ShowProgressIndicator(state.isLoading)
         if (state.isLoading) return@Column
@@ -146,7 +145,7 @@ internal fun AccountScreen(
         if (item != null) {
             Column {
                 CustomListItem(
-                    modifier = Modifier.background(LightGreen),
+                    modifier = Modifier.background(colors.surfaceVariant),
                     title = context.getString(R.string.account_name),
                     isSmallItem = true,
                     trailingText = state.item.name,
@@ -154,16 +153,16 @@ internal fun AccountScreen(
                     showTrailingIcon = false
                 )
                 CustomListItem(
-                    modifier = Modifier.background(LightGreen),
+                    modifier = Modifier.background(colors.surfaceVariant),
                     title = context.getString(R.string.account_balance),
-                    leadingBackground = White,
+                    leadingBackground = colors.onPrimary,
                     leadingEmojiOrText = "\uD83D\uDCB0",
                     isSmallItem = true,
                     trailingText = state.item.balance.formatAsWholeThousands(showDecimals = true),
                     currencyIsoCode = state.item.currency,
                 )
                 CustomListItem(
-                    modifier = Modifier.background(LightGreen),
+                    modifier = Modifier.background(colors.surfaceVariant),
                     title = context.getString(R.string.account_currency),
                     isSmallItem = true,
                     showLeading = false,

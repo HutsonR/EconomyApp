@@ -16,6 +16,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,6 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.backcube.domain.models.entities.AppLocale
+import com.backcube.domain.models.entities.AppTheme
 import com.backcube.domain.repositories.PreferencesRepository
 import com.backcube.economyapp.App
 import com.backcube.economyapp.App.Companion.appComponent
@@ -59,6 +61,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val locale by preferencesRepository.localeFlow.collectAsStateWithLifecycle(AppLocale.RU)
+            val theme by preferencesRepository.themeFlow.collectAsStateWithLifecycle(AppTheme.LIGHT)
+
             val localizedContext = remember(locale) {
                 LocaleManager.updateContextLocale(this@MainActivity, locale.name.lowercase())
             }
@@ -66,7 +70,7 @@ class MainActivity : ComponentActivity() {
             navController = rememberNavController()
 
             CompositionLocalProvider(LocalAppContext provides localizedContext) {
-                EconomyAppTheme {
+                EconomyAppTheme(isDarkTheme = theme == AppTheme.DARK) {
                     AppScreen()
                 }
             }
@@ -120,7 +124,7 @@ class MainActivity : ComponentActivity() {
             AppNavHost(
                 navController = navController,
                 protectedNavController = navigator,
-                modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
+                modifier = Modifier.padding(bottom = 10.dp)
             )
         }
     }

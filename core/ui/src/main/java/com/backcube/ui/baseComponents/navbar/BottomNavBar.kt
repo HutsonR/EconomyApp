@@ -20,8 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.backcube.ui.baseComponents.NetworkStatusBanner
-import com.backcube.ui.theme.LightGreen
-import com.backcube.ui.theme.UltraGreen
 import com.backcube.ui.utils.LocalAppContext
 
 /**
@@ -59,8 +57,8 @@ fun BottomNavBar(
             ) {
                 items.forEach {
                     val selected = currentRoute == it.route
-                    val activeBackground = LightGreen
-                    val activeIconColor = UltraGreen
+                    val activeBackground = colors.surfaceVariant
+                    val activeIconColor = colors.primary
                     val inactiveIconColor = colors.onSurfaceVariant
 
                     NavigationBarItem(

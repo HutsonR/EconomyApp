@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.backcube.domain.utils.CurrencyIsoCode
 import com.backcube.ui.R
-import com.backcube.ui.theme.LightGreen
 import com.backcube.ui.utils.toCurrency
 
 private val BASE_HEIGHT = 70.dp
@@ -48,7 +47,7 @@ fun CustomListItem(
     leadingEmojiOrText: String? = null,
     leadingContent: @Composable (() -> Unit)? = null,
     showLeading: Boolean = true,
-    leadingBackground: Color = LightGreen,
+    leadingBackground: Color = MaterialTheme.colorScheme.surfaceVariant,
     trailingText: String? = null,
     trailingSubText: String? = null,
     trailingContent: @Composable (() -> Unit)? = null,

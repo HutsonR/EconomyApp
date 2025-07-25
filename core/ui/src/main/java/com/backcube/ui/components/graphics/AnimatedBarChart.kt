@@ -1,7 +1,7 @@
 package com.backcube.ui.components.graphics
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -51,10 +51,15 @@ fun AnimatedChartView(
 ) {
     if (points.isEmpty()) return
 
-    val animProgress by animateFloatAsState(
-        targetValue = 1f,
-        animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
-    )
+    val animProgress = remember { Animatable(0f) }
+
+    LaunchedEffect(points) {
+        animProgress.snapTo(0f)
+        animProgress.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
+        )
+    }
 
     val labelIndices = remember(points.size) {
         when (points.size) {
@@ -79,7 +84,7 @@ fun AnimatedChartView(
             val spacing = w / (count * 1f)
             val barWidth = spacing * 0.6f
 
-            // Рисуем горизонтальные сеточные линии
+            // Горизонтальные сеточные линии
             val gridLines = 4
             for (i in 0..gridLines) {
                 val y = h - (h / gridLines) * i
@@ -111,7 +116,7 @@ fun AnimatedChartView(
                     points.forEachIndexed { idx, pt ->
                         val x = spacing * idx + spacing / 2
                         val targetBarHeight = (pt.value / maxVal) * h
-                        val animatedHeight = targetBarHeight * animProgress
+                        val animatedHeight = targetBarHeight * animProgress.value
 
                         drawRoundRect(
                             color = pt.color,
@@ -132,7 +137,7 @@ fun AnimatedChartView(
                     val pathMeasure = android.graphics.PathMeasure(path.asAndroidPath(), false)
                     val segmentPath = androidx.compose.ui.graphics.Path()
                     val length = pathMeasure.length
-                    pathMeasure.getSegment(0f, length * animProgress, segmentPath.asAndroidPath(), true)
+                    pathMeasure.getSegment(0f, length * animProgress.value, segmentPath.asAndroidPath(), true)
                     drawPath(
                         path = segmentPath,
                         color = Color(0xFF3F51B5),
@@ -161,7 +166,7 @@ fun AnimatedChartView(
                         h + 20.dp.toPx(),
                         android.graphics.Paint().apply {
                             textSize = 9.sp.toPx()
-                            color = android.graphics.Color.BLACK
+                            color = android.graphics.Color.DKGRAY
                             textAlign = android.graphics.Paint.Align.CENTER
                         }
                     )

@@ -4,11 +4,17 @@ import androidx.compose.ui.graphics.Color
 import com.backcube.domain.models.accounts.AccountHistoryResponseModel
 import com.backcube.ui.components.graphics.ChartPoint
 import java.math.BigDecimal
+import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 fun AccountHistoryResponseModel.toChartPoints(): List<ChartPoint> {
+    val currentDate = Instant.now()
+    val historyStartDate = currentDate.minus(14, ChronoUnit.DAYS)
+
     return history
+        .filter { it.changeTimestamp.isAfter(historyStartDate) }
         .sortedBy { it.changeTimestamp }
         .filterNot { historyItem ->
             // Исключаем, если баланс не изменился, но изменился только currency

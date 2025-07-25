@@ -36,7 +36,6 @@ import com.backcube.ui.components.CustomFloatingButton
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
-import com.backcube.ui.theme.LightGreen
 import com.backcube.ui.utils.CollectEffect
 import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.flow.Flow
@@ -126,7 +125,7 @@ internal fun ExpenseScreen(
         LazyColumn {
             item {
                 CustomListItem(
-                    modifier = Modifier.background(LightGreen),
+                    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
                     title = context.getString(com.backcube.ui.R.string.total),
                     isSmallItem = true,
                     showLeading = false,
