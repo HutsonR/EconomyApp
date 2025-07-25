@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_title">My account</string>
+    <string name="account_name">Name</string>
+    <string name="account_balance">Balance</string>
+    <string name="account_currency">Currency</string>
+
+    <string name="account_change_graphics_button">Change graphic type</string>
+</resources>

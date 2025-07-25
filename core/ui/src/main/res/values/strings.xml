@@ -39,6 +39,7 @@
     <string name="understand">Понятно</string>
     <string name="repeat">Повторить</string>
     <string name="exit_double_tap">Нажмите назад ещё раз, чтобы выйти</string>
+    <string name="will_be_add">Будет добавлено позже</string>
     
     <string name="currency_rub">Российский рубль</string>
     <string name="currency_usd">Американский доллар</string>

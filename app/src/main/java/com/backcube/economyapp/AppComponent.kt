@@ -5,6 +5,7 @@ import com.backcube.account.common.di.AccountComponent
 import com.backcube.articles.di.ArticlesComponent
 import com.backcube.data.common.di.DataModule
 import com.backcube.domain.di.DomainModule
+import com.backcube.domain.repositories.PreferencesRepository
 import com.backcube.economyapp.main.MainActivity
 import com.backcube.economyapp.workmanager.CustomWorkerFactory
 import com.backcube.settings.common.di.SettingComponent
@@ -31,6 +32,7 @@ interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
 
+    fun preferencesRepository(): PreferencesRepository
     fun createCustomWorkerFactory(): CustomWorkerFactory
     fun createAccountComponent(): AccountComponent.Factory
     fun createArticlesComponent(): ArticlesComponent.Factory

@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.backcube.domain.models.entities.AppLocale
 import com.backcube.domain.models.entities.AppTheme
 import com.backcube.domain.models.entities.HapticEffect
 import kotlinx.coroutines.flow.Flow
@@ -61,10 +62,12 @@ internal class DataStoreManager @Inject constructor(
         context.dataStore.edit { prefs -> prefs[HAPTIC_EFFECT_KEY] = effect.name }
     }
 
-    val localeFlow: Flow<String> = context.dataStore.data
-        .map { prefs -> prefs[LOCALE_KEY] ?: "ru" }
+    val localeFlow: Flow<AppLocale> = context.dataStore.data
+        .map { prefs ->
+            prefs[LOCALE_KEY]?.let { AppLocale.valueOf(it) } ?: AppLocale.RU
+        }
 
-    suspend fun setLocale(locale: String) {
-        context.dataStore.edit { prefs -> prefs[LOCALE_KEY] = locale }
+    suspend fun setLocale(locale: AppLocale) {
+        context.dataStore.edit { prefs -> prefs[LOCALE_KEY] = locale.name }
     }
 }

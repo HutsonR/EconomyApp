@@ -12,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.navigation.AppNavigationController
 import com.backcube.settings.R
@@ -22,12 +21,14 @@ import com.backcube.settings.main_color.models.SettingMainColorIntent
 import com.backcube.settings.main_color.models.SettingMainColorState
 import com.backcube.ui.baseComponents.CustomTopBar
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SettingMainColorScreenRoot(
     navController: AppNavigationController
 ) {
+    val context = LocalAppContext.current
     val applicationContext = LocalContext.current.applicationContext
     val settingComponent = (applicationContext as SettingComponentProvider).provideSettingComponent()
     val viewModel = remember {
@@ -40,7 +41,7 @@ fun SettingMainColorScreenRoot(
     Scaffold(
         topBar = {
             CustomTopBar(
-                title = stringResource(R.string.settings_main_color),
+                title = context.getString(R.string.settings_main_color),
                 leadingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_close),
                 onLeadingClick = { viewModel.handleIntent(SettingMainColorIntent.GoBack) },
                 backgroundColor = MaterialTheme.colorScheme.primary

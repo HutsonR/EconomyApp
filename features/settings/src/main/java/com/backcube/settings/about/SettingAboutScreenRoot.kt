@@ -15,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.navigation.AppNavigationController
@@ -26,6 +25,7 @@ import com.backcube.settings.about.models.SettingAboutState
 import com.backcube.settings.common.di.SettingComponentProvider
 import com.backcube.ui.baseComponents.CustomTopBar
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.flow.Flow
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -35,6 +35,7 @@ import java.util.Locale
 fun SettingAboutScreenRoot(
     navController: AppNavigationController
 ) {
+    val context = LocalAppContext.current
     val applicationContext = LocalContext.current.applicationContext
     val settingComponent = (applicationContext as SettingComponentProvider).provideSettingComponent()
     val viewModel = remember {
@@ -47,7 +48,7 @@ fun SettingAboutScreenRoot(
     Scaffold(
         topBar = {
             CustomTopBar(
-                title = stringResource(R.string.settings_about),
+                title = context.getString(R.string.settings_about),
                 leadingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_close),
                 onLeadingClick = { viewModel.handleIntent(SettingAboutIntent.GoBack) },
                 backgroundColor = MaterialTheme.colorScheme.primary
@@ -73,7 +74,7 @@ internal fun SettingAboutScreen(
     onIntent: (SettingAboutIntent) -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
-    val context = LocalContext.current
+    val context = LocalAppContext.current
 
     CollectEffect(effects) { effect ->
         when (effect) {
@@ -89,6 +90,7 @@ internal fun SettingAboutScreen(
     val versionName: String = try {
         context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "1.0"
     } catch (e: Exception) {
+        e.printStackTrace()
         "1.0"
     }
     val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -112,12 +114,12 @@ internal fun SettingAboutScreen(
             .padding(16.dp)
     ) {
         Text(
-            text = stringResource(R.string.settings_about_version, versionName, versionCode),
+            text = context.getString(R.string.settings_about_version, versionName, versionCode),
             color = colors.onSurface
         )
         Spacer(modifier = Modifier.padding(8.dp))
         Text(
-            text = stringResource(R.string.settings_about_last_update, formattedDate),
+            text = context.getString(R.string.settings_about_last_update, formattedDate),
             color = colors.onSurface
         )
     }

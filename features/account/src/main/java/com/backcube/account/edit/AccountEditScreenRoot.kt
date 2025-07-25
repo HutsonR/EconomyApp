@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,11 +29,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.account.R
+import com.backcube.account.common.components.SheetCurrencies
 import com.backcube.account.common.di.AccountComponentProvider
 import com.backcube.account.edit.models.AccountEditEffect
 import com.backcube.account.edit.models.AccountEditIntent
 import com.backcube.account.edit.models.AccountEditState
-import com.backcube.economyapp.features.account.common.components.SheetCurrencies
 import com.backcube.navigation.AppNavigationController
 import com.backcube.ui.baseComponents.CustomTopBar
 import com.backcube.ui.components.AlertData
@@ -43,6 +42,7 @@ import com.backcube.ui.components.CustomTextInput
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -50,6 +50,7 @@ fun AccountEditScreenRoot(
     accountId: Int,
     navController: AppNavigationController
 ) {
+    val context = LocalAppContext.current
     val applicationContext = LocalContext.current.applicationContext
     val accountComponent = (applicationContext as AccountComponentProvider).provideAccountComponent()
     val viewModel = remember {
@@ -66,7 +67,7 @@ fun AccountEditScreenRoot(
     Scaffold(
         topBar = {
             CustomTopBar(
-                title = stringResource(R.string.account_title),
+                title = context.getString(R.string.account_title),
                 leadingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_close),
                 onLeadingClick = { viewModel.handleIntent(AccountEditIntent.OnCancelClick) },
                 trailingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_check),
@@ -94,6 +95,7 @@ internal fun AccountEditScreen(
     effects: Flow<AccountEditEffect>,
     onIntent: (AccountEditIntent) -> Unit
 ) {
+    val context = LocalAppContext.current
     val colors = MaterialTheme.colorScheme
     val defaultTextFieldColors = OutlinedTextFieldDefaults.colors(
         focusedTextColor = colors.onSurface,
@@ -174,7 +176,7 @@ internal fun AccountEditScreen(
                     onValueChange = {
                         onIntent(AccountEditIntent.OnAccountNameChange(it))
                     },
-                    leadingText = stringResource(id = R.string.account_name),
+                    leadingText = context.getString(R.string.account_name),
                     textStyle = defaultMainTextStyle,
                     leadingTextStyles = defaultLeadingTextStyle,
                     colors = defaultTextFieldColors
@@ -188,12 +190,12 @@ internal fun AccountEditScreen(
                     },
                     textStyle = defaultMainTextStyle,
                     leadingTextStyles = defaultLeadingTextStyle,
-                    leadingText = stringResource(id = R.string.account_balance),
+                    leadingText = context.getString(R.string.account_balance),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     colors = defaultTextFieldColors
                 )
                 CustomListItem(
-                    title = stringResource(R.string.account_currency),
+                    title = context.getString(R.string.account_currency),
                     isSmallItem = true,
                     showLeading = false,
                     currencyIsoCode = state.item.currency,

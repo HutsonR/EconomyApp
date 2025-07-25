@@ -23,12 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.backcube.ui.R
+import com.backcube.ui.utils.LocalAppContext
 import java.util.Locale
 
 private const val MAX_CATEGORY_TEXT_LENGTH = 25
@@ -39,7 +39,7 @@ fun DonutChart(
     items: List<CategorySpendingDonutUiModel>,
     animationDuration: Int = 1000
 ) {
-    val context = LocalContext.current
+    val context = LocalAppContext.current
     val colors = MaterialTheme.colorScheme
     val resultItems = createListForStats(
         items,

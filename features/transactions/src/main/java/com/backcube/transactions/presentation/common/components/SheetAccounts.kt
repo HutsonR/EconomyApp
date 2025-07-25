@@ -8,10 +8,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.backcube.domain.models.accounts.AccountModel
 import com.backcube.ui.components.CustomListItem
+import com.backcube.ui.utils.LocalAppContext
 
 @Composable
 fun SheetAccounts(
@@ -19,7 +19,7 @@ fun SheetAccounts(
     onCurrencyClick: (AccountModel) -> Unit,
     onCancel: () -> Unit
 ) {
-    val context = LocalContext.current
+    val context = LocalAppContext.current
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()

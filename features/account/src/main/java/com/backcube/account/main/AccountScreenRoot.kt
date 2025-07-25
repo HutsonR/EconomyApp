@@ -26,16 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.account.R
+import com.backcube.account.common.components.SheetCurrencies
 import com.backcube.account.common.di.AccountComponentProvider
 import com.backcube.account.main.models.AccountEffect
 import com.backcube.account.main.models.AccountIntent
 import com.backcube.account.main.models.AccountState
 import com.backcube.domain.utils.formatAsWholeThousands
-import com.backcube.economyapp.features.account.common.components.SheetCurrencies
 import com.backcube.navigation.AppNavigationController
 import com.backcube.navigation.model.Screens
 import com.backcube.ui.baseComponents.CustomTopBar
@@ -47,12 +46,14 @@ import com.backcube.ui.components.graphics.AnimatedChartView
 import com.backcube.ui.theme.LightGreen
 import com.backcube.ui.theme.White
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun AccountScreenRoot(
     navController: AppNavigationController
 ) {
+    val context = LocalAppContext.current
     val applicationContext = LocalContext.current.applicationContext
     val accountComponent = (applicationContext as AccountComponentProvider).provideAccountComponent()
     val viewModel = remember {
@@ -65,7 +66,7 @@ fun AccountScreenRoot(
     Scaffold(
         topBar = {
             CustomTopBar(
-                title = stringResource(R.string.account_title),
+                title = context.getString(R.string.account_title),
                 trailingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_edit),
                 onTrailingClick = { viewModel.handleIntent(AccountIntent.OnOpenEditScreen) },
                 backgroundColor = MaterialTheme.colorScheme.primary
@@ -91,6 +92,7 @@ internal fun AccountScreen(
     effects: Flow<AccountEffect>,
     onIntent: (AccountIntent) -> Unit
 ) {
+    val context = LocalAppContext.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isIsoCodeSheetOpen by rememberSaveable { mutableStateOf(false) }
     var isAlertVisible by remember { mutableStateOf(false) }
@@ -145,7 +147,7 @@ internal fun AccountScreen(
             Column {
                 CustomListItem(
                     modifier = Modifier.background(LightGreen),
-                    title = stringResource(R.string.account_name),
+                    title = context.getString(R.string.account_name),
                     isSmallItem = true,
                     trailingText = state.item.name,
                     showLeading = false,
@@ -153,7 +155,7 @@ internal fun AccountScreen(
                 )
                 CustomListItem(
                     modifier = Modifier.background(LightGreen),
-                    title = stringResource(R.string.account_balance),
+                    title = context.getString(R.string.account_balance),
                     leadingBackground = White,
                     leadingEmojiOrText = "\uD83D\uDCB0",
                     isSmallItem = true,
@@ -162,7 +164,7 @@ internal fun AccountScreen(
                 )
                 CustomListItem(
                     modifier = Modifier.background(LightGreen),
-                    title = stringResource(R.string.account_currency),
+                    title = context.getString(R.string.account_currency),
                     isSmallItem = true,
                     showLeading = false,
                     currencyIsoCode = state.item.currency,
@@ -201,6 +203,7 @@ fun ChangeButton(
     buttonTextColor: Color,
     onClick: () -> Unit,
 ) {
+    val context = LocalAppContext.current
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
@@ -209,7 +212,7 @@ fun ChangeButton(
         modifier = modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(text),
+            text = context.getString(text),
             color = buttonTextColor
         )
     }

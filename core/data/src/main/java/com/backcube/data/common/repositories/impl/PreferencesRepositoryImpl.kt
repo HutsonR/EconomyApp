@@ -1,6 +1,7 @@
 package com.backcube.data.common.repositories.impl
 
 import com.backcube.data.local.impl.datastore.DataStoreManager
+import com.backcube.domain.models.entities.AppLocale
 import com.backcube.domain.models.entities.AppTheme
 import com.backcube.domain.models.entities.HapticEffect
 import com.backcube.domain.repositories.PreferencesRepository
@@ -24,6 +25,6 @@ internal class PreferencesRepositoryImpl @Inject constructor(
     override val hapticEffectFlow: Flow<HapticEffect> = dataStoreManager.hapticEffectFlow
     override suspend fun setHapticEffect(effect: HapticEffect) = dataStoreManager.setHapticEffect(effect)
 
-    override val localeFlow: Flow<String> = dataStoreManager.localeFlow
-    override suspend fun setLocale(locale: String) = dataStoreManager.setLocale(locale)
+    override val localeFlow: Flow<AppLocale> = dataStoreManager.localeFlow
+    override suspend fun setLocale(locale: AppLocale) = dataStoreManager.setLocale(locale)
 }

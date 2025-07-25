@@ -8,9 +8,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.delay
 
 /**
@@ -28,7 +28,7 @@ fun DoubleBackPressToExit(
     rootRoutes: List<String>,
     onExit: () -> Unit
 ) {
-    val context = LocalContext.current
+    val context = LocalAppContext.current
     var backPressedOnce by remember { mutableStateOf(false) }
 
     val currentRoute = navController

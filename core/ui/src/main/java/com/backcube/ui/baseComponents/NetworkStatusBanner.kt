@@ -15,15 +15,16 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.backcube.ui.R
+import com.backcube.ui.utils.LocalAppContext
 
 @Composable
 fun NetworkStatusBanner(
     isConnected: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalAppContext.current
     val colors = MaterialTheme.colorScheme
     val visible by rememberUpdatedState(!isConnected)
 
@@ -43,7 +44,7 @@ fun NetworkStatusBanner(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(R.string.no_internet_connection),
+                    text = context.getString(R.string.no_internet_connection),
                     color = colors.onErrorContainer,
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )

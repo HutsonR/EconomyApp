@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.navigation.AppNavigationController
@@ -33,12 +32,14 @@ import com.backcube.settings.main.models.ui.SettingType
 import com.backcube.ui.baseComponents.CustomTopBar
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SettingsScreenRoot(
     navController: AppNavigationController
 ) {
+    val context = LocalAppContext.current
     val applicationContext = LocalContext.current.applicationContext
     val settingComponent = (applicationContext as SettingComponentProvider).provideSettingComponent()
     val viewModel = remember {
@@ -51,7 +52,7 @@ fun SettingsScreenRoot(
     Scaffold(
         topBar = {
             CustomTopBar(
-                title = stringResource(R.string.settings_title),
+                title = context.getString(R.string.settings_title),
                 backgroundColor = MaterialTheme.colorScheme.primary
             )
         }
@@ -74,7 +75,7 @@ internal fun SettingsScreen(
     effects: Flow<SettingsEffect>,
     onIntent: (SettingsIntent) -> Unit
 ) {
-    val context = LocalContext.current
+    val context = LocalAppContext.current
     val colors = MaterialTheme.colorScheme
 
     CollectEffect(effects) { effect ->
@@ -83,8 +84,16 @@ internal fun SettingsScreen(
             SettingsEffect.NavigateToColor -> navController.navigate(Screens.SettingMainColorScreen.route)
             SettingsEffect.NavigateToHaptics -> navController.navigate(Screens.SettingVibrateScreen.route)
             SettingsEffect.NavigateToLanguage -> navController.navigate(Screens.SettingLanguageScreen.route)
-            SettingsEffect.NavigateToPasscode -> Toast.makeText(context, "Будет добавлено позже", Toast.LENGTH_SHORT).show()
-            SettingsEffect.NavigateToSync -> Toast.makeText(context, "Будет добавлено позже", Toast.LENGTH_SHORT).show()
+            SettingsEffect.NavigateToPasscode -> Toast.makeText(
+                context,
+                context.getString(com.backcube.ui.R.string.will_be_add),
+                Toast.LENGTH_SHORT
+            ).show()
+            SettingsEffect.NavigateToSync -> Toast.makeText(
+                context,
+                context.getString(com.backcube.ui.R.string.will_be_add),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -100,7 +109,7 @@ internal fun SettingsScreen(
             ) { item ->
                 when (item.type) {
                     SettingType.SWITCH -> CustomListItem(
-                        title = stringResource(item.nameRes),
+                        title = context.getString(item.nameRes),
                         isSmallItem = true,
                         showLeading = false,
                         trailingContent = {
@@ -117,7 +126,7 @@ internal fun SettingsScreen(
                     )
 
                     SettingType.LINK -> CustomListItem(
-                        title = stringResource(item.nameRes),
+                        title = context.getString(item.nameRes),
                         isSmallItem = true,
                         showLeading = false,
                         trailingContent = {

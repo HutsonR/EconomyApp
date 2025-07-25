@@ -42,6 +42,10 @@ class App: Application(), AccountComponentProvider, ArticlesComponentProvider, S
             .setContext(applicationContext)
             .build()
 
+        initWorker()
+    }
+
+    private fun initWorker() {
         val customWorkerFactory = appComponent.createCustomWorkerFactory()
 
         val workManagerConfig = Configuration.Builder()

@@ -2,6 +2,7 @@ package com.backcube.economyapp.main
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,16 +12,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.backcube.domain.models.entities.AppLocale
+import com.backcube.domain.repositories.PreferencesRepository
+import com.backcube.economyapp.App
 import com.backcube.economyapp.App.Companion.appComponent
 import com.backcube.economyapp.main.navigation.AppNavHost
 import com.backcube.economyapp.main.navigation.DoubleBackPressToExit
@@ -29,12 +33,19 @@ import com.backcube.economyapp.main.viewmodels.NetworkViewModel
 import com.backcube.ui.baseComponents.navbar.BottomNavBar
 import com.backcube.ui.baseComponents.navbar.NavBarItem
 import com.backcube.ui.theme.EconomyAppTheme
+import com.backcube.ui.utils.LocalAppContext
+import com.backcube.ui.utils.LocaleManager
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var networkViewModel: NetworkViewModel
+
+    @Inject
+    lateinit var preferencesRepository: PreferencesRepository
 
     private lateinit var navController: NavHostController
 
@@ -47,17 +58,33 @@ class MainActivity : ComponentActivity() {
         setupWindow()
 
         setContent {
+            val locale by preferencesRepository.localeFlow.collectAsStateWithLifecycle(AppLocale.RU)
+            val localizedContext = remember(locale) {
+                LocaleManager.updateContextLocale(this@MainActivity, locale.name.lowercase())
+            }
+
             navController = rememberNavController()
 
-            EconomyAppTheme {
-                AppScreen()
+            CompositionLocalProvider(LocalAppContext provides localizedContext) {
+                EconomyAppTheme {
+                    AppScreen()
+                }
             }
         }
     }
 
+    override fun attachBaseContext(base: Context) {
+        val prefsRepo = (base.applicationContext as App).appComponent.preferencesRepository()
+        val localeCode = runBlocking {
+            prefsRepo.localeFlow.first().name.lowercase()
+        }
+        val localizedContext = LocaleManager.updateContextLocale(base, localeCode)
+        super.attachBaseContext(localizedContext)
+    }
+
     @Composable
     fun AppScreen() {
-        val context = LocalContext.current
+        val context = LocalAppContext.current
         val isConnected by networkViewModel.isConnected.collectAsStateWithLifecycle()
         val navController = rememberNavController()
         val navigator = remember {
