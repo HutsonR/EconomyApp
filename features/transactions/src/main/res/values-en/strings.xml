@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Transactions -->
+    <string name="expense_title">Expenses today</string>
+    <string name="my_expenses_title">My Expenses</string>
+    <string name="expense_delete">Delete expense</string>
+
+    <string name="income_title">Incomes today</string>
+    <string name="my_incomes_title">My incomes</string>
+    <string name="income_delete">Delete income</string>
+
+    <string name="history_title">My history</string>
+
+    <string name="analyze_title">Analyze</string>
+    <string name="analyze_period_start">Period: start</string>
+    <string name="analyze_period_end">Period: end</string>
+</resources>

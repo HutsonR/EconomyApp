@@ -8,6 +8,7 @@ import com.backcube.domain.usecases.api.TransactionUseCase
 import com.backcube.domain.utils.CurrencyIsoCode
 import com.backcube.domain.utils.formatAsWholeThousands
 import com.backcube.transactions.presentation.analyze.domain.GetCategoriesWithPercentUseCase
+import com.backcube.transactions.presentation.analyze.mappers.toCategorySpendingDonutUiModel
 import com.backcube.transactions.presentation.analyze.models.AnalyzeEffect
 import com.backcube.transactions.presentation.analyze.models.AnalyzeIntent
 import com.backcube.transactions.presentation.analyze.models.AnalyzeState
@@ -85,6 +86,7 @@ class AnalyzeViewModel @AssistedInject constructor(
             it.category.isIncome == getState().isIncome
         }
         val items = getCategoriesWithPercentUseCase(filteredTransactions)
+        val itemsDonutUiModel = items.map { it.toCategorySpendingDonutUiModel() }
         val currentCurrencyIsoCode = account?.currency ?: CurrencyIsoCode.RUB
         val totalTransactionsSum = filteredTransactions.sumOf { it.amount }
         val formattedTotalSum = totalTransactionsSum.formatAsWholeThousands() + " " + currentCurrencyIsoCode.toCurrency()
@@ -92,6 +94,7 @@ class AnalyzeViewModel @AssistedInject constructor(
         modifyState {
             copy(
                 items = items,
+                itemsDonutUiModel = itemsDonutUiModel,
                 totalSum = formattedTotalSum,
                 currencyIsoCode = currentCurrencyIsoCode,
                 isLoading = false

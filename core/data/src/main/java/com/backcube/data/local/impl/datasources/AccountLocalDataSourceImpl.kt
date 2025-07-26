@@ -3,12 +3,14 @@ package com.backcube.data.local.impl.datasources
 import com.backcube.data.local.api.AccountLocalDataSource
 import com.backcube.data.local.impl.dao.AccountDao
 import com.backcube.data.local.impl.entities.accounts.AccountEntity
+import com.backcube.data.local.impl.entities.accounts.AccountHistoryEntity
 import com.backcube.data.local.impl.entities.accounts.AccountResponseEntity
+import com.backcube.domain.models.accounts.AccountHistoryResponseModel
 import com.backcube.domain.models.accounts.AccountModel
 import com.backcube.domain.models.accounts.AccountResponseModel
 import javax.inject.Inject
 
-class AccountLocalDataSourceImpl @Inject constructor(
+internal class AccountLocalDataSourceImpl @Inject constructor(
     private val accountDao: AccountDao
 ) : AccountLocalDataSource {
 
@@ -26,6 +28,14 @@ class AccountLocalDataSourceImpl @Inject constructor(
 
     override suspend fun insertAccountDetails(account: AccountResponseModel) {
         accountDao.insertAccountDetails(AccountResponseEntity.toEntity(account))
+    }
+
+    override suspend fun getAccountHistory(id: Int): AccountHistoryResponseModel? {
+        return accountDao.getAccountHistory(id)?.toDomain()
+    }
+
+    override suspend fun insertAccountHistory(account: AccountHistoryResponseModel) {
+        accountDao.insertAccountHistory(AccountHistoryEntity.toEntity(account))
     }
 
     override suspend fun clearAccounts() {

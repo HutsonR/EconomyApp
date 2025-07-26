@@ -17,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.domain.utils.CurrencyIsoCode
 import com.backcube.domain.utils.formatAsWholeThousands
@@ -34,8 +33,8 @@ import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
 import com.backcube.ui.components.date.CustomDatePicker
 import com.backcube.ui.components.date.DateMode
-import com.backcube.ui.theme.LightGreen
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import com.backcube.ui.utils.formatAsPeriodDate
 import com.backcube.ui.utils.formatAsTransactionDate
 import kotlinx.coroutines.flow.Flow
@@ -45,6 +44,7 @@ fun HistoryScreenRoot(
     isIncome: Boolean,
     navController: AppNavigationController
 ) {
+    val context = LocalAppContext.current
     val applicationContext = LocalContext.current.applicationContext
     val transactionComponent = (applicationContext as TransactionsComponentProvider).provideTransactionsComponent()
     val viewModel = remember {
@@ -61,7 +61,7 @@ fun HistoryScreenRoot(
     Scaffold(
         topBar = {
             CustomTopBar(
-                title = stringResource(R.string.history_title),
+                title = context.getString(R.string.history_title),
                 leadingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_back),
                 onLeadingClick = { viewModel.handleIntent(HistoryIntent.GoBack) },
                 trailingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_clipboard),
@@ -90,6 +90,8 @@ internal fun HistoryScreen(
     effects: Flow<HistoryEffect>,
     onIntent: (HistoryIntent) -> Unit
 ) {
+    val context = LocalAppContext.current
+    val colors = MaterialTheme.colorScheme
     var isAlertVisible by remember { mutableStateOf(false) }
     var showDatePicker by remember { mutableStateOf<Pair<DateMode, Boolean>?>(null) }
 
@@ -140,8 +142,8 @@ internal fun HistoryScreen(
             .background(MaterialTheme.colorScheme.surface)
     ) {
         CustomListItem(
-            modifier = Modifier.background(LightGreen),
-            title = stringResource(com.backcube.ui.R.string.start),
+            modifier = Modifier.background(colors.surfaceVariant),
+            title = context.getString(com.backcube.ui.R.string.start),
             isSmallItem = true,
             showLeading = false,
             showTrailingIcon = false,
@@ -151,8 +153,8 @@ internal fun HistoryScreen(
             }
         )
         CustomListItem(
-            modifier = Modifier.background(LightGreen),
-            title = stringResource(com.backcube.ui.R.string.end),
+            modifier = Modifier.background(colors.surfaceVariant),
+            title = context.getString(com.backcube.ui.R.string.end),
             isSmallItem = true,
             showLeading = false,
             showTrailingIcon = false,
@@ -165,8 +167,8 @@ internal fun HistoryScreen(
         LazyColumn {
             item {
                 CustomListItem(
-                    modifier = Modifier.background(LightGreen),
-                    title = stringResource(com.backcube.ui.R.string.amount),
+                    modifier = Modifier.background(colors.surfaceVariant),
+                    title = context.getString(com.backcube.ui.R.string.amount),
                     isSmallItem = true,
                     showLeading = false,
                     showTrailingIcon = false,

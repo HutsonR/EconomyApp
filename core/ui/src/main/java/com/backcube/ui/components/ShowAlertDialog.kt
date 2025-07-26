@@ -8,9 +8,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import com.backcube.ui.R
+import com.backcube.ui.utils.LocalAppContext
 
 @Composable
 fun ShowAlertDialog(
@@ -19,13 +19,14 @@ fun ShowAlertDialog(
     onCancelButtonClick: () -> Unit = {},
     onActionButtonClick: () -> Unit
 ) {
+    val context = LocalAppContext.current
     val message = alertData.messageString.ifEmpty {
-        stringResource(id = alertData.message)
+        context.getString(alertData.message)
     }
     AlertDialog(
         title = {
             Text(
-                text = stringResource(id = alertData.title),
+                text = context.getString(alertData.title),
                 modifier = Modifier
             )
         },
@@ -49,7 +50,7 @@ fun ShowAlertDialog(
                     ),
                     content = {
                         Text(
-                            text = stringResource(id = alertData.secondButtonTitle),
+                            text = context.getString(alertData.secondButtonTitle),
                             modifier = Modifier
                         )
                     }
@@ -69,7 +70,7 @@ fun ShowAlertDialog(
                 ),
                 content = {
                     Text(
-                        text = stringResource(id = alertData.actionButtonTitle),
+                        text = context.getString(alertData.actionButtonTitle),
                         modifier = Modifier
                     )
                 }

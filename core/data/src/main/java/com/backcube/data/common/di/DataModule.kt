@@ -1,7 +1,7 @@
 package com.backcube.data.common.di
 
-import com.backcube.data.local.di.DatabaseModule
 import com.backcube.data.local.di.LocalDataSourceModule
+import com.backcube.data.local.di.StorageModule
 import com.backcube.data.remote.di.ApiModule
 import com.backcube.data.remote.di.NetworkModule
 import com.backcube.data.remote.di.RemoteDataSourceModule
@@ -17,7 +17,7 @@ import dagger.Module
         RemoteDataSourceModule::class,
         LocalDataSourceModule::class,
         RetryModule::class,
-        DatabaseModule::class
+        StorageModule::class
     ]
 )
 interface DataModule

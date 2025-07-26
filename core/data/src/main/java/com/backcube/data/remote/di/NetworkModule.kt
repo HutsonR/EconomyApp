@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class NetworkModule {
+internal class NetworkModule {
 
     @Provides
     fun provideConnectivityObserver(context: Context): ConnectivityObserver {

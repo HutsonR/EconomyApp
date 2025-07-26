@@ -7,7 +7,7 @@ import com.backcube.domain.models.transactions.TransactionResponseModel
 import java.time.Instant
 import javax.inject.Inject
 
-class TransactionsLocalDataSourceImpl @Inject constructor(
+internal class TransactionsLocalDataSourceImpl @Inject constructor(
     private val transactionDao: TransactionDao
 ): TransactionsLocalDataSource {
     override suspend fun getAllTransactions(): List<TransactionResponseModel> {

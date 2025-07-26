@@ -1,6 +1,6 @@
 package com.backcube.data.remote.impl.utils.retry
 
-interface RetryPolicy {
+internal interface RetryPolicy {
     val maxRetries: Int
     val retryInterval: Long
 }

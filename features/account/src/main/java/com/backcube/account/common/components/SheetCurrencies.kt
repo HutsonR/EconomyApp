@@ -1,4 +1,4 @@
-package com.backcube.economyapp.features.account.common.components
+package com.backcube.account.common.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,12 +8,13 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.backcube.domain.utils.CurrencyIsoCode
+import com.backcube.ui.R
 import com.backcube.ui.components.CustomListItem
-import com.backcube.ui.theme.EconomyAppTheme
+import com.backcube.ui.utils.LocalAppContext
 import com.backcube.ui.utils.toCurrency
 import com.backcube.ui.utils.toDisplayNameId
 import com.backcube.ui.utils.toImageSource
@@ -24,7 +25,7 @@ fun SheetCurrencies(
     onCurrencyClick: (CurrencyIsoCode) -> Unit,
     onCancel: () -> Unit
 ) {
-    val context = LocalContext.current
+    val context = LocalAppContext.current
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,7 +38,8 @@ fun SheetCurrencies(
                 leadingContent = {
                     Image(
                         painter = painterResource(currency.toImageSource()),
-                        contentDescription = null
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant)
                     )
                 },
                 showTrailingIcon = false,
@@ -49,11 +51,11 @@ fun SheetCurrencies(
         item {
             CustomListItem(
                 modifier = Modifier.background(MaterialTheme.colorScheme.errorContainer),
-                title = context.getString(com.backcube.ui.R.string.cancel),
+                title = context.getString(R.string.cancel),
                 titleColor = MaterialTheme.colorScheme.onErrorContainer,
                 leadingContent = {
                     Image(
-                        painter = painterResource(com.backcube.ui.R.drawable.ic_cancel),
+                        painter = painterResource(R.drawable.ic_cancel),
                         contentDescription = null
                     )
                 },
@@ -68,11 +70,9 @@ fun SheetCurrencies(
 @Preview
 @Composable
 fun SheetCurrenciesPreview() {
-    EconomyAppTheme {
-        SheetCurrencies(
-            currencies = CurrencyIsoCode.entries,
-            onCurrencyClick = {  },
-            onCancel = {  }
-        )
-    }
+    SheetCurrencies(
+        currencies = CurrencyIsoCode.entries,
+        onCurrencyClick = {  },
+        onCancel = {  }
+    )
 }

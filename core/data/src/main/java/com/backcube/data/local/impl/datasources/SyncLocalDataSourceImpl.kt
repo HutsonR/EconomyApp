@@ -6,7 +6,7 @@ import com.backcube.data.local.impl.entities.SyncQueueEntity
 import com.backcube.domain.models.sync.SyncQueueModel
 import javax.inject.Inject
 
-class SyncLocalDataSourceImpl @Inject constructor(
+internal class SyncLocalDataSourceImpl @Inject constructor(
     private val syncQueueDao: SyncQueueDao
 ): SyncLocalDataSource {
 

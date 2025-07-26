@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
-class NetworkConnectivityObserver(
+internal class NetworkConnectivityObserver(
     private val context: Context
 ) : ConnectivityObserver {
 

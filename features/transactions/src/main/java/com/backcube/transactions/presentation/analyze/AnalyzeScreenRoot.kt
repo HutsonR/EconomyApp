@@ -3,8 +3,8 @@ package com.backcube.transactions.presentation.analyze
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,7 +45,9 @@ import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
 import com.backcube.ui.components.date.CustomDatePicker
 import com.backcube.ui.components.date.DateMode
+import com.backcube.ui.components.graphics.DonutChart
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import com.backcube.ui.utils.formatAsPeriodDate
 import com.backcube.ui.utils.toCurrency
 import kotlinx.coroutines.flow.Flow
@@ -57,6 +58,7 @@ fun AnalyzeScreenRoot(
     isIncome: Boolean,
     navController: AppNavigationController
 ) {
+    val context = LocalAppContext.current
     val applicationContext = LocalContext.current.applicationContext
     val transactionComponent = (applicationContext as TransactionsComponentProvider).provideTransactionsComponent()
     val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
@@ -75,7 +77,7 @@ fun AnalyzeScreenRoot(
     Scaffold(
         topBar = {
             CustomTopBar(
-                title = stringResource(R.string.analyze_title),
+                title = context.getString(R.string.analyze_title),
                 leadingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_close),
                 onLeadingClick = { viewModel.handleIntent(AnalyzeIntent.GoBack) },
                 backgroundColor = MaterialTheme.colorScheme.primary
@@ -100,6 +102,7 @@ internal fun AnalyzeScreen(
     effects: Flow<AnalyzeEffect>,
     onIntent: (AnalyzeIntent) -> Unit
 ) {
+    val context = LocalAppContext.current
     val colors = MaterialTheme.colorScheme
 
     var showDatePicker by remember { mutableStateOf<Pair<DateMode, Boolean>?>(null) }
@@ -149,7 +152,7 @@ internal fun AnalyzeScreen(
         if (state.isLoading) return
 
         CustomListItem(
-            title = stringResource(R.string.analyze_period_start),
+            title = context.getString(R.string.analyze_period_start),
             isSmallItem = true,
             showLeading = false,
             trailingContent = {
@@ -164,7 +167,7 @@ internal fun AnalyzeScreen(
             }
         )
         CustomListItem(
-            title = stringResource(R.string.analyze_period_end),
+            title = context.getString(R.string.analyze_period_end),
             isSmallItem = true,
             showLeading = false,
             trailingContent = {
@@ -182,7 +185,7 @@ internal fun AnalyzeScreen(
         if (state.items.isEmpty()) {
             Text(
                 modifier = Modifier.padding(top = 16.dp),
-                text = stringResource(com.backcube.ui.R.string.empty),
+                text = context.getString(com.backcube.ui.R.string.empty),
                 color = colors.onSurface,
                 fontSize = 16.sp
             )
@@ -192,7 +195,7 @@ internal fun AnalyzeScreen(
         LazyColumn {
             item {
                 CustomListItem(
-                    title = stringResource(com.backcube.ui.R.string.amount),
+                    title = context.getString(com.backcube.ui.R.string.amount),
                     isSmallItem = true,
                     showLeading = false,
                     showTrailingIcon = false,
@@ -202,7 +205,11 @@ internal fun AnalyzeScreen(
 
             item {
                 Column {
-                    Spacer(modifier = Modifier.padding(vertical = 16.dp))
+                    DonutChart(
+                        modifier = Modifier.padding(vertical = 40.dp).height(200.dp),
+                        items = state.itemsDonutUiModel
+                    )
+
                     HorizontalDivider(
                         thickness = 1.dp,
                         color = colors.outlineVariant

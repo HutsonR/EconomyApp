@@ -13,7 +13,11 @@ import com.backcube.account.main.AccountScreenRoot
 import com.backcube.articles.ArticlesScreenRoot
 import com.backcube.navigation.AppNavigationController
 import com.backcube.navigation.model.Screens
-import com.backcube.settings.SettingsScreenRoot
+import com.backcube.settings.about.SettingAboutScreenRoot
+import com.backcube.settings.language.SettingLanguageScreenRoot
+import com.backcube.settings.main.SettingsScreenRoot
+import com.backcube.settings.main_color.SettingMainColorScreenRoot
+import com.backcube.settings.vibrate.SettingVibrateScreenRoot
 import com.backcube.transactions.presentation.analyze.AnalyzeScreenRoot
 import com.backcube.transactions.presentation.edit.TransactionEditorScreenRoot
 import com.backcube.transactions.presentation.histories.HistoryScreenRoot
@@ -46,6 +50,18 @@ fun AppNavHost(
         }
         composable(Screens.SettingsScreen.route) {
             SettingsScreenRoot(protectedNavController)
+        }
+        composable(Screens.SettingMainColorScreen.route) {
+            SettingMainColorScreenRoot(protectedNavController)
+        }
+        composable(Screens.SettingVibrateScreen.route) {
+            SettingVibrateScreenRoot(protectedNavController)
+        }
+        composable(Screens.SettingLanguageScreen.route) {
+            SettingLanguageScreenRoot(protectedNavController)
+        }
+        composable(Screens.SettingAboutScreen.route) {
+            SettingAboutScreenRoot(protectedNavController)
         }
 
         // Secondary screens

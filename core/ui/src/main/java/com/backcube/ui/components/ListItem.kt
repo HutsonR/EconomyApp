@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -31,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.backcube.domain.utils.CurrencyIsoCode
 import com.backcube.ui.R
-import com.backcube.ui.theme.LightGreen
 import com.backcube.ui.utils.toCurrency
 
 private val BASE_HEIGHT = 70.dp
@@ -48,7 +48,7 @@ fun CustomListItem(
     leadingEmojiOrText: String? = null,
     leadingContent: @Composable (() -> Unit)? = null,
     showLeading: Boolean = true,
-    leadingBackground: Color = LightGreen,
+    leadingBackground: Color = MaterialTheme.colorScheme.surfaceVariant,
     trailingText: String? = null,
     trailingSubText: String? = null,
     trailingContent: @Composable (() -> Unit)? = null,
@@ -222,6 +222,7 @@ private fun TrailingContentColumn(
         Spacer(modifier = Modifier.width(16.dp))
         trailingContent?.invoke() ?: Image(
             painter = painterResource(R.drawable.ic_more),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
             contentDescription = null
         )
     }

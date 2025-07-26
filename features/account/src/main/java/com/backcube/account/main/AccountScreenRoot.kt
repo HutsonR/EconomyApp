@@ -1,13 +1,20 @@
 package com.backcube.account.main
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,17 +23,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.account.R
+import com.backcube.account.common.components.SheetCurrencies
 import com.backcube.account.common.di.AccountComponentProvider
 import com.backcube.account.main.models.AccountEffect
 import com.backcube.account.main.models.AccountIntent
 import com.backcube.account.main.models.AccountState
 import com.backcube.domain.utils.formatAsWholeThousands
-import com.backcube.economyapp.features.account.common.components.SheetCurrencies
 import com.backcube.navigation.AppNavigationController
 import com.backcube.navigation.model.Screens
 import com.backcube.ui.baseComponents.CustomTopBar
@@ -34,15 +42,16 @@ import com.backcube.ui.components.AlertData
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
-import com.backcube.ui.theme.LightGreen
-import com.backcube.ui.theme.White
+import com.backcube.ui.components.graphics.AnimatedChartView
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun AccountScreenRoot(
     navController: AppNavigationController
 ) {
+    val context = LocalAppContext.current
     val applicationContext = LocalContext.current.applicationContext
     val accountComponent = (applicationContext as AccountComponentProvider).provideAccountComponent()
     val viewModel = remember {
@@ -55,7 +64,7 @@ fun AccountScreenRoot(
     Scaffold(
         topBar = {
             CustomTopBar(
-                title = stringResource(R.string.account_title),
+                title = context.getString(R.string.account_title),
                 trailingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_edit),
                 onTrailingClick = { viewModel.handleIntent(AccountIntent.OnOpenEditScreen) },
                 backgroundColor = MaterialTheme.colorScheme.primary
@@ -81,6 +90,8 @@ internal fun AccountScreen(
     effects: Flow<AccountEffect>,
     onIntent: (AccountIntent) -> Unit
 ) {
+    val context = LocalAppContext.current
+    val colors = MaterialTheme.colorScheme
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isIsoCodeSheetOpen by rememberSaveable { mutableStateOf(false) }
     var isAlertVisible by remember { mutableStateOf(false) }
@@ -109,7 +120,7 @@ internal fun AccountScreen(
     if (isIsoCodeSheetOpen) {
         ModalBottomSheet(
             sheetState = sheetState,
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = colors.surface,
             onDismissRequest = { isIsoCodeSheetOpen = !isIsoCodeSheetOpen }
         ) {
             SheetCurrencies(
@@ -126,7 +137,7 @@ internal fun AccountScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(colors.surface)
     ) {
         ShowProgressIndicator(state.isLoading)
         if (state.isLoading) return@Column
@@ -134,25 +145,25 @@ internal fun AccountScreen(
         if (item != null) {
             Column {
                 CustomListItem(
-                    modifier = Modifier.background(LightGreen),
-                    title = stringResource(R.string.account_name),
+                    modifier = Modifier.background(colors.surfaceVariant),
+                    title = context.getString(R.string.account_name),
                     isSmallItem = true,
                     trailingText = state.item.name,
                     showLeading = false,
                     showTrailingIcon = false
                 )
                 CustomListItem(
-                    modifier = Modifier.background(LightGreen),
-                    title = stringResource(R.string.account_balance),
-                    leadingBackground = White,
+                    modifier = Modifier.background(colors.surfaceVariant),
+                    title = context.getString(R.string.account_balance),
+                    leadingBackground = colors.onPrimary,
                     leadingEmojiOrText = "\uD83D\uDCB0",
                     isSmallItem = true,
                     trailingText = state.item.balance.formatAsWholeThousands(showDecimals = true),
                     currencyIsoCode = state.item.currency,
                 )
                 CustomListItem(
-                    modifier = Modifier.background(LightGreen),
-                    title = stringResource(R.string.account_currency),
+                    modifier = Modifier.background(colors.surfaceVariant),
+                    title = context.getString(R.string.account_currency),
                     isSmallItem = true,
                     showLeading = false,
                     currencyIsoCode = state.item.currency,
@@ -161,8 +172,50 @@ internal fun AccountScreen(
                 )
             }
         }
-//        CustomFloatingButton {
-//            // todo add expense
-//        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        val chartPoints = state.chartPoints
+        if (!chartPoints.isNullOrEmpty()) {
+            AnimatedChartView(
+                points = chartPoints,
+                chartType = state.chartType,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface)
+            )
+
+            ChangeButton(
+                modifier = Modifier.padding(20.dp),
+                text = R.string.account_change_graphics_button,
+                buttonBackground = MaterialTheme.colorScheme.primary,
+                buttonTextColor = MaterialTheme.colorScheme.onPrimary,
+                onClick = { onIntent(AccountIntent.OnChangeGraphType) }
+            )
+        }
+    }
+}
+
+@Composable
+fun ChangeButton(
+    modifier: Modifier = Modifier,
+    @StringRes text: Int,
+    buttonBackground: Color,
+    buttonTextColor: Color,
+    onClick: () -> Unit,
+) {
+    val context = LocalAppContext.current
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = buttonBackground
+        ),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = context.getString(text),
+            color = buttonTextColor
+        )
     }
 }

@@ -8,7 +8,7 @@ import retrofit2.HttpException
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
-class RetryHandler @Inject constructor(
+internal class RetryHandler @Inject constructor(
     private val retryPolicy: RetryPolicy,
     @IoDispatchers private val dispatcher: CoroutineDispatcher,
 ) {

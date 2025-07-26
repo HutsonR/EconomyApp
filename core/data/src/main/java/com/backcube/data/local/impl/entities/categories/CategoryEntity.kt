@@ -5,13 +5,13 @@ import androidx.room.PrimaryKey
 import com.backcube.domain.models.categories.CategoryModel
 
 @Entity(tableName = "categories")
-data class CategoryEntity(
+internal data class CategoryEntity(
     @PrimaryKey val id: Int,
     val name: String,
     val emoji: String,
     val isIncome: Boolean
 ) {
-    fun toDomain() = CategoryModel(
+    internal fun toDomain() = CategoryModel(
         id,
         name,
         emoji,
@@ -19,7 +19,7 @@ data class CategoryEntity(
     )
 
     companion object {
-        fun toEntity(categoryModel: CategoryModel) = CategoryEntity(
+        internal fun toEntity(categoryModel: CategoryModel) = CategoryEntity(
             id = categoryModel.id,
             name = categoryModel.name,
             emoji = categoryModel.emoji,

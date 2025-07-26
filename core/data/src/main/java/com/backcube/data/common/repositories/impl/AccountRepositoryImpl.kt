@@ -15,7 +15,7 @@ import com.backcube.domain.utils.ConnectivityObserver
 import com.backcube.domain.utils.NoInternetConnectionException
 import javax.inject.Inject
 
-class AccountRepositoryImpl @Inject constructor(
+internal class AccountRepositoryImpl @Inject constructor(
     private val accountLocalDataSource: AccountLocalDataSource,
     private val accountRemoteDataSource: AccountRemoteDataSource,
     private val connectivityObserver: ConnectivityObserver
@@ -60,7 +60,16 @@ class AccountRepositoryImpl @Inject constructor(
         return accountRemoteDataSource.updateAccount(id, request.toApi()).toDomain()
     }
 
-    override suspend fun getAccountHistory(id: Int): AccountHistoryResponseModel {
-        return accountRemoteDataSource.getAccountHistory(id).toDomain()
+    override suspend fun getAccountHistory(id: Int): AccountHistoryResponseModel? {
+        val cachedData = accountLocalDataSource.getAccountHistory(id)
+        return if (!connectivityObserver.isInternetAvailable()) {
+            cachedData
+        } else {
+            val remoteData = accountRemoteDataSource.getAccountHistory(id).toDomain()
+            if (cachedData != remoteData) {
+                accountLocalDataSource.insertAccountHistory(remoteData)
+            }
+            remoteData
+        }
     }
 }

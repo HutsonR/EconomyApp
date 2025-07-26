@@ -14,9 +14,9 @@ import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.backcube.ui.R
+import com.backcube.ui.utils.LocalAppContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,6 +27,7 @@ fun CustomTimePicker(
     onClear: () -> Unit,
     onDismiss: () -> Unit
 ) {
+    val context = LocalAppContext.current
     val state = rememberTimePickerState(
         initialHour = initialHour,
         initialMinute = initialMinute,
@@ -36,7 +37,7 @@ fun CustomTimePicker(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(text = stringResource(R.string.time), style = MaterialTheme.typography.titleLarge)
+            Text(text = context.getString(R.string.time), style = MaterialTheme.typography.titleLarge)
         },
         text = {
             TimePicker(
@@ -58,7 +59,7 @@ fun CustomTimePicker(
                 },
                 enabled = true
             ) {
-                Text(stringResource(R.string.ok_big))
+                Text(context.getString(R.string.ok_big))
             }
         },
         dismissButton = {
@@ -67,11 +68,11 @@ fun CustomTimePicker(
                     onClear()
                     onDismiss()
                 }) {
-                    Text(stringResource(R.string.clear))
+                    Text(context.getString(R.string.clear))
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 TextButton(onClick = onDismiss) {
-                    Text(stringResource(R.string.cancel))
+                    Text(context.getString(R.string.cancel))
                 }
             }
         }

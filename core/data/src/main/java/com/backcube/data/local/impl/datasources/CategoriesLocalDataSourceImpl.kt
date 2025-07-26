@@ -6,7 +6,7 @@ import com.backcube.data.local.impl.entities.categories.CategoryEntity
 import com.backcube.domain.models.categories.CategoryModel
 import javax.inject.Inject
 
-class CategoriesLocalDataSourceImpl @Inject constructor(
+internal class CategoriesLocalDataSourceImpl @Inject constructor(
     private val categoryDao: CategoryDao
 ): CategoriesLocalDataSource {
 

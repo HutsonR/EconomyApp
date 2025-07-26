@@ -7,7 +7,7 @@ import com.backcube.domain.models.sync.SyncOperationType
 import com.backcube.domain.models.sync.SyncQueueModel
 
 @Entity(tableName = "sync_queue")
-data class SyncQueueEntity(
+internal data class SyncQueueEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val operation: SyncOperationType,
     val entityType: SyncEntityType,
@@ -15,7 +15,7 @@ data class SyncQueueEntity(
     val payload: String,
     val createdAt: Long = System.currentTimeMillis()
 ) {
-    fun toDomain() = SyncQueueModel(
+    internal fun toDomain() = SyncQueueModel(
         id = id,
         operation = operation,
         entityType = entityType,
@@ -24,7 +24,7 @@ data class SyncQueueEntity(
         createdAt = createdAt
     )
     companion object {
-        fun toEntity(syncQueueModel: SyncQueueModel) = SyncQueueEntity(
+        internal fun toEntity(syncQueueModel: SyncQueueModel) = SyncQueueEntity(
             id = syncQueueModel.id,
             operation = syncQueueModel.operation,
             entityType = syncQueueModel.entityType,

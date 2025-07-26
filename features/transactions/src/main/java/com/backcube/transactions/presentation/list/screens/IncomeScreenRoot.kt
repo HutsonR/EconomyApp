@@ -16,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,15 +36,16 @@ import com.backcube.ui.components.CustomFloatingButton
 import com.backcube.ui.components.CustomListItem
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
-import com.backcube.ui.theme.LightGreen
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun IncomesScreenRoot(
     navController: AppNavigationController
 ) {
-    val context = LocalContext.current
+    val context = LocalAppContext.current
+    val localContext = LocalContext.current
     val applicationContext = LocalContext.current.applicationContext
     val transactionComponent = (applicationContext as TransactionsComponentProvider).provideTransactionsComponent()
 
@@ -53,7 +53,7 @@ fun IncomesScreenRoot(
         val factory = transactionComponent.transactionsViewModel
 
         ViewModelProvider(
-            context as ViewModelStoreOwner,
+            localContext as ViewModelStoreOwner,
             TransactionsViewModelFactory(factory, isIncome = true)
         )["incomes", TransactionsViewModel::class.java]
     }
@@ -64,7 +64,7 @@ fun IncomesScreenRoot(
     Scaffold(
         topBar = {
             CustomTopBar(
-                title = stringResource(R.string.income_title),
+                title = context.getString(R.string.income_title),
                 trailingIconPainter = painterResource(com.backcube.ui.R.drawable.ic_history),
                 onTrailingClick = {
                     viewModel.handleIntent(TransactionIntent.GoToHistory)
@@ -91,6 +91,7 @@ internal fun IncomeScreen(
     effects: Flow<TransactionEffect>,
     onIntent: (TransactionIntent) -> Unit
 ) {
+    val context = LocalAppContext.current
     var isAlertVisible by remember { mutableStateOf(false) }
 
     CollectEffect(effects) { effect ->
@@ -124,8 +125,8 @@ internal fun IncomeScreen(
         LazyColumn {
             item {
                 CustomListItem(
-                    modifier = Modifier.background(LightGreen),
-                    title = stringResource(com.backcube.ui.R.string.total),
+                    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
+                    title = context.getString(com.backcube.ui.R.string.total),
                     isSmallItem = true,
                     showLeading = false,
                     showTrailingIcon = false,

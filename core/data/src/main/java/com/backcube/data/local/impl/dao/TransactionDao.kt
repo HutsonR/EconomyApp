@@ -8,7 +8,7 @@ import com.backcube.data.local.impl.entities.transactions.TransactionEntity
 import com.backcube.data.local.impl.entities.transactions.TransactionResponseEntity
 
 @Dao
-interface TransactionDao {
+internal interface TransactionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEntity(entity: TransactionEntity)

@@ -14,6 +14,14 @@ sealed class Screens(val route: String) {
 
     data object SettingsScreen : Screens("setting")
 
+    data object SettingMainColorScreen : Screens("setting_main_color")
+
+    data object SettingVibrateScreen : Screens("setting_vibrate")
+
+    data object SettingLanguageScreen : Screens("setting_language")
+
+    data object SettingAboutScreen : Screens("setting_about")
+
     data object HistoryScreen : Screens("history") {
         fun createRoute(isIncome: Boolean) = "history/${Uri.encode(isIncome.toString())}"
     }

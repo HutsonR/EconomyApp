@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.backcube.articles.di.ArticlesComponentProvider
 import com.backcube.articles.models.ArticleEffect
@@ -33,12 +32,14 @@ import com.backcube.ui.components.CustomTextInput
 import com.backcube.ui.components.ShowAlertDialog
 import com.backcube.ui.components.ShowProgressIndicator
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun ArticlesScreenRoot(
     navController: AppNavigationController
 ) {
+    val context = LocalAppContext.current
     val applicationContext = LocalContext.current.applicationContext
     val articleComponent = (applicationContext as ArticlesComponentProvider).provideArticlesComponent()
     val viewModel = remember {
@@ -51,7 +52,7 @@ fun ArticlesScreenRoot(
     Scaffold(
         topBar = {
             CustomTopBar(
-                title = stringResource(R.string.article_title),
+                title = context.getString(R.string.article_title),
                 onTrailingClick = {},
                 backgroundColor = MaterialTheme.colorScheme.primary
             )
@@ -76,6 +77,7 @@ internal fun ArticlesScreen(
     onIntent: (ArticleIntent) -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
+    val context = LocalAppContext.current
     var query by remember { mutableStateOf("") }
     var isAlertVisible by remember { mutableStateOf(false) }
 
@@ -105,7 +107,7 @@ internal fun ArticlesScreen(
                 query = it
                 onIntent(ArticleIntent.OnChangeQuery(it))
             },
-            placeholder = stringResource(id = R.string.article_search),
+            placeholder = context.getString(R.string.article_search),
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Search,

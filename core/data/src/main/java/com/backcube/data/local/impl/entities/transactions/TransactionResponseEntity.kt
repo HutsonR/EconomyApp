@@ -7,7 +7,7 @@ import com.backcube.domain.models.transactions.TransactionResponseModel
 import java.time.Instant
 
 @Entity(tableName = "transactions_response")
-data class TransactionResponseEntity(
+internal data class TransactionResponseEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "account_id")
     val accountId: Int,
@@ -20,7 +20,7 @@ data class TransactionResponseEntity(
     val createdAt: String,
     val updatedAt: String
 ) {
-    fun toDomain() = TransactionResponseModel(
+    internal fun toDomain() = TransactionResponseModel(
         id = id,
         account = account.toDomain(),
         category = category.toDomain(),
@@ -31,7 +31,7 @@ data class TransactionResponseEntity(
         updatedAt = Instant.parse(updatedAt)
     )
     companion object {
-        fun toEntity(transactionResponseModel: TransactionResponseModel) = TransactionResponseEntity(
+        internal fun toEntity(transactionResponseModel: TransactionResponseModel) = TransactionResponseEntity(
             id = transactionResponseModel.id,
             accountId = transactionResponseModel.account.id,
             account = AccountBriefSerialEntity.toEntity(transactionResponseModel.account),

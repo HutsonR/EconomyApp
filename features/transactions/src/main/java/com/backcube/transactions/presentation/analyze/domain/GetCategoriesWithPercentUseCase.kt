@@ -30,6 +30,7 @@ class GetCategoriesWithPercentUseCase @Inject constructor() {
             }
 
             CategoryStats(
+                id = category.id,
                 name = category.name,
                 emoji = category.emoji,
                 percent = percentage.toFloat(),

@@ -11,7 +11,7 @@ import com.backcube.data.remote.impl.utils.getOrThrow
 import com.backcube.data.remote.impl.utils.retry.RetryHandler
 import javax.inject.Inject
 
-class AccountRemoteDataSourceImpl @Inject constructor(
+internal class AccountRemoteDataSourceImpl @Inject constructor(
     private val accountApi: AccountApi,
     private val retryHandler: RetryHandler
 ) : AccountRemoteDataSource {

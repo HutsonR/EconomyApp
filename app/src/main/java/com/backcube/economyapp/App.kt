@@ -9,8 +9,8 @@ import com.backcube.account.common.di.AccountComponentProvider
 import com.backcube.articles.di.ArticlesComponent
 import com.backcube.articles.di.ArticlesComponentProvider
 import com.backcube.economyapp.workmanager.SyncWorker
-import com.backcube.settings.di.SettingComponent
-import com.backcube.settings.di.SettingComponentProvider
+import com.backcube.settings.common.di.SettingComponent
+import com.backcube.settings.common.di.SettingComponentProvider
 import com.backcube.transactions.common.di.TransactionsComponent
 import com.backcube.transactions.common.di.TransactionsComponentProvider
 
@@ -42,6 +42,10 @@ class App: Application(), AccountComponentProvider, ArticlesComponentProvider, S
             .setContext(applicationContext)
             .build()
 
+        initWorker()
+    }
+
+    private fun initWorker() {
         val customWorkerFactory = appComponent.createCustomWorkerFactory()
 
         val workManagerConfig = Configuration.Builder()

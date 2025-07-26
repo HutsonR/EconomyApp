@@ -1,7 +1,11 @@
 package com.backcube.account.main
 
 import androidx.lifecycle.viewModelScope
+import com.backcube.account.main.mappers.toChartPoints
 import com.backcube.account.main.models.AccountEffect
+import com.backcube.account.main.models.AccountEffect.OpenEditScreen
+import com.backcube.account.main.models.AccountEffect.ShowCurrencySheet
+import com.backcube.account.main.models.AccountEffect.ShowError
 import com.backcube.account.main.models.AccountIntent
 import com.backcube.account.main.models.AccountState
 import com.backcube.domain.models.accounts.AccountUpdateRequestModel
@@ -11,6 +15,7 @@ import com.backcube.domain.utils.CurrencyIsoCode
 import com.backcube.domain.utils.NoInternetConnectionException
 import com.backcube.ui.BaseViewModel
 import com.backcube.ui.components.AlertData
+import com.backcube.ui.components.graphics.ChartType
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,39 +36,62 @@ class AccountViewModel @Inject constructor(
     private suspend fun fetchData() {
         modifyState { copy(isLoading = true) }
 
-       accountUseCase.getAccounts().fold (
-           onSuccess = { accounts ->
-               val accountId = accounts.firstOrNull()?.id ?: 1
-               accountUseCase.getAccountById(accountId).fold(
-                   onSuccess = { account ->
-                       modifyState {
-                           copy(
-                               item = account,
-                               isLoading = false
-                           )
-                       }
-                   },
-                   onFailure = { handleError(it) }
-               )
-           },
-           onFailure = { handleError(it) }
-       )
+        accountUseCase.getAccounts().fold (
+            onSuccess = { accounts ->
+                val accountId = accounts.firstOrNull()?.id ?: 1
+
+                handleAccount(accountId)
+                handleAccountHistory(accountId)
+            },
+            onFailure = { handleError(it) }
+        )
 
         modifyState { copy(isLoading = false) }
+    }
+
+    private suspend fun handleAccount(accountId: Int) {
+        accountUseCase.getAccountById(accountId).fold(
+            onSuccess = { account ->
+                modifyState {
+                    copy(
+                        item = account,
+                        isLoading = false
+                    )
+                }
+
+            },
+            onFailure = { handleError(it) }
+        )
+    }
+
+    private suspend fun handleAccountHistory(accountId: Int) {
+        accountUseCase.getAccountHistory(accountId).fold(
+            onSuccess = { history ->
+                val chartPoints = history?.toChartPoints()
+                modifyState {
+                    copy(chartPoints = chartPoints)
+                }
+            },
+            onFailure = { handleError(it) }
+        )
     }
 
     internal fun handleIntent(intent: AccountIntent) {
         when(intent) {
             is AccountIntent.OnCurrencySelected -> updateAccount(intent.isoCode)
-            AccountIntent.OnOpenIsoCodeSheet -> effect(AccountEffect.ShowCurrencySheet)
+
+            AccountIntent.OnOpenIsoCodeSheet -> effect(ShowCurrencySheet)
+
             is AccountIntent.OnOpenEditScreen -> {
                 val accountId = getState().item?.id
                 if (accountId == null) {
-                    effect(AccountEffect.ShowError())
+                    effect(ShowError())
                     return
                 }
-                effect(AccountEffect.OpenEditScreen(accountId))
+                effect(OpenEditScreen(accountId))
             }
+
+            AccountIntent.OnChangeGraphType -> onChangeGraphType()
         }
     }
 
@@ -100,6 +128,15 @@ class AccountViewModel @Inject constructor(
 
             modifyState { copy(isLoading = false) }
         }
+    }
+
+    private fun onChangeGraphType() {
+        val currentType = getState().chartType
+        val newType = when (currentType) {
+            ChartType.Line -> ChartType.Bar
+            ChartType.Bar -> ChartType.Line
+        }
+        modifyState { copy(chartType = newType) }
     }
 
     private fun handleError(e: Throwable) {

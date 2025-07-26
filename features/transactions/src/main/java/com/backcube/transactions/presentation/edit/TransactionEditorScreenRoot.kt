@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -54,6 +53,7 @@ import com.backcube.ui.components.ShowProgressIndicator
 import com.backcube.ui.components.date.CustomDatePicker
 import com.backcube.ui.components.date.DateMode
 import com.backcube.ui.utils.CollectEffect
+import com.backcube.ui.utils.LocalAppContext
 import com.backcube.ui.utils.formatAsSimpleDate
 import com.backcube.ui.utils.formatAsSimpleTime
 import com.backcube.ui.utils.toCurrency
@@ -66,6 +66,7 @@ fun TransactionEditorScreenRoot(
     isIncome: Boolean,
     navController: AppNavigationController
 ) {
+    val context = LocalAppContext.current
     val applicationContext = LocalContext.current.applicationContext
     val transactionComponent = (applicationContext as TransactionsComponentProvider).provideTransactionsComponent()
     val owner = LocalViewModelStoreOwner.current ?: error("No ViewModelStoreOwner found")
@@ -82,9 +83,9 @@ fun TransactionEditorScreenRoot(
     val effects = viewModel.effect
 
     val topBarTitle = if (isIncome) {
-        stringResource(R.string.my_incomes_title)
+        context.getString(R.string.my_incomes_title)
     } else {
-        stringResource(R.string.my_expenses_title)
+        context.getString(R.string.my_expenses_title)
     }
     Scaffold(
         topBar = {
@@ -119,6 +120,7 @@ internal fun TransactionEditorScreen(
     effects: Flow<TransactionEditorEffect>,
     onIntent: (TransactionEditorIntent) -> Unit
 ) {
+    val context = LocalAppContext.current
     val colors = MaterialTheme.colorScheme
     val defaultTextFieldColors = OutlinedTextFieldDefaults.colors(
         focusedTextColor = colors.onSurface,
@@ -246,13 +248,13 @@ internal fun TransactionEditorScreen(
         if (state.isLoading) return
         Column {
             CustomListItem(
-                title = stringResource(com.backcube.ui.R.string.account),
+                title = context.getString(com.backcube.ui.R.string.account),
                 showLeading = false,
                 trailingText = state.selectedAccount?.name.orEmpty(),
                 onItemClick = { onIntent(TransactionEditorIntent.OnOpenAccountSheet) }
             )
             CustomListItem(
-                title = stringResource(com.backcube.ui.R.string.category),
+                title = context.getString(com.backcube.ui.R.string.category),
                 showLeading = false,
                 trailingText = state.selectedCategory?.name.orEmpty(),
                 onItemClick = { onIntent(TransactionEditorIntent.OnOpenCategorySheet) }
@@ -264,7 +266,7 @@ internal fun TransactionEditorScreen(
                         onIntent(TransactionEditorIntent.OnAmountChange(it))
                     }
                 },
-                leadingText = stringResource(id = com.backcube.ui.R.string.amount),
+                leadingText = context.getString(com.backcube.ui.R.string.amount),
                 textStyle = TextStyle(
                     color = colors.onSurface,
                     fontSize = 16.sp,
@@ -281,14 +283,14 @@ internal fun TransactionEditorScreen(
                 isSmallItem = false
             )
             CustomListItem(
-                title = stringResource(com.backcube.ui.R.string.date),
+                title = context.getString(com.backcube.ui.R.string.date),
                 showLeading = false,
                 trailingText = state.selectedTransactionDate.formatAsSimpleDate(),
                 showTrailingIcon = false,
                 onItemClick = { onIntent(TransactionEditorIntent.OnOpenDatePickerModal) }
             )
             CustomListItem(
-                title = stringResource(com.backcube.ui.R.string.time),
+                title = context.getString(com.backcube.ui.R.string.time),
                 showLeading = false,
                 trailingText = state.selectedTransactionDate.formatAsSimpleTime(),
                 showTrailingIcon = false,
@@ -299,7 +301,7 @@ internal fun TransactionEditorScreen(
                 onValueChange = {
                     onIntent(TransactionEditorIntent.OnDescriptionChange(it))
                 },
-                placeholder = stringResource(id = com.backcube.ui.R.string.comment),
+                placeholder = context.getString(com.backcube.ui.R.string.comment),
                 textStyle = TextStyle(
                     color = colors.onSurface,
                     fontSize = 16.sp,
@@ -340,6 +342,7 @@ fun DeleteButton(
     buttonTextColor: Color,
     onClick: () -> Unit,
 ) {
+    val context = LocalAppContext.current
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
@@ -348,7 +351,7 @@ fun DeleteButton(
         modifier = modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(text),
+            text = context.getString(text),
             color = buttonTextColor
         )
     }

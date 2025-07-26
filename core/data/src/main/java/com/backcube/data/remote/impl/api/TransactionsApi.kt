@@ -12,7 +12,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface TransactionsApi {
+internal interface TransactionsApi {
     /**
      * Создает новую транзакцию (доход или расход)
      *

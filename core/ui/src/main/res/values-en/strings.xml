@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Transactions -->
+    <string name="expense_title">Expenses today</string>
+    <string name="my_expenses_title">My expenses</string>
+
+    <string name="income_title">Income today</string>
+    <string name="my_incomes_title">My incomes</string>
+
+    <string name="history_title">My history</string>
+
+    <!-- Account -->
+    <string name="account_title">My account</string>
+    <string name="account_name">Name</string>
+    <string name="account_balance">Balance</string>
+    <string name="account_currency">Currency</string>
+
+    <!-- Articles -->
+    <string name="article_title">My articles</string>
+    <string name="article_search">Find article</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+
+    <!-- Other -->
+    <string name="total">Total</string>
+    <string name="rub">₽</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="amount">Amount</string>
+    <string name="clear">Clear</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok_big">OK</string>
+    <string name="account">Account</string>
+    <string name="category">Article</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="comment">Comment</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="understand">Understand</string>
+    <string name="repeat">Repeat</string>
+    <string name="exit_double_tap">Press back again to exit</string>
+    <string name="will_be_add">Will be added later</string>
+
+    <string name="currency_rub">Russian ruble</string>
+    <string name="currency_usd">American dollar</string>
+    <string name="currency_eur">Euro</string>
+    <string name="empty">Empty there</string>
+    <string name="other">Other</string>
+
+    <!--  Colors  -->
+    <string name="color_green">Green</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_pink">Pink</string>
+
+    <!-- Alert -->
+    <string name="alert_base_title">Error</string>
+    <string name="alert_base_description">An unexpected error occurred. Please try again later</string>
+    <string name="alert_reqiured_fields_description">Did not fill in all required fields</string>
+
+    <!-- Navbar names -->
+    <string name="navbar_expenses">Expenses</string>
+    <string name="navbar_incomes">Incomes</string>
+    <string name="navbar_account">Account</string>
+    <string name="navbar_articles">Articles</string>
+    <string name="navbar_settings">Settings</string>
+</resources>

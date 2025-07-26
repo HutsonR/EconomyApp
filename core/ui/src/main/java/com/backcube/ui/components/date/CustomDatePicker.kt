@@ -15,9 +15,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.backcube.ui.R
+import com.backcube.ui.utils.LocalAppContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,6 +27,7 @@ fun CustomDatePicker(
     onDateSelected: (DateMode, Long?) -> Unit,
     onDismiss: () -> Unit
 ) {
+    val context = LocalAppContext.current
     val state = rememberDatePickerState(
         initialSelectedDateMillis = selectedDate,
         yearRange = 2000..2100
@@ -50,7 +51,7 @@ fun CustomDatePicker(
                 ) {
                     Text(
                         color = MaterialTheme.colorScheme.onSurface,
-                        text = stringResource(R.string.clear)
+                        text = context.getString(R.string.clear)
                     )
                 }
 
@@ -58,7 +59,7 @@ fun CustomDatePicker(
                     TextButton(onClick = onDismiss) {
                         Text(
                             color = MaterialTheme.colorScheme.onSurface,
-                            text = stringResource(R.string.cancel)
+                            text = context.getString(R.string.cancel)
                         )
                     }
 
@@ -71,7 +72,7 @@ fun CustomDatePicker(
                     ) {
                         Text(
                             color = MaterialTheme.colorScheme.onSurface,
-                            text = stringResource(R.string.ok_big)
+                            text = context.getString(R.string.ok_big)
                         )
                     }
                 }

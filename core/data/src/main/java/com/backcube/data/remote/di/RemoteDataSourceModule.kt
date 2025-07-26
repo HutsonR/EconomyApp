@@ -11,7 +11,7 @@ import dagger.Module
 import javax.inject.Singleton
 
 @Module
-interface RemoteDataSourceModule {
+internal interface RemoteDataSourceModule {
 
     @Binds
     @Singleton

@@ -16,13 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.backcube.ui.baseComponents.NetworkStatusBanner
-import com.backcube.ui.theme.LightGreen
-import com.backcube.ui.theme.UltraGreen
+import com.backcube.ui.utils.LocalAppContext
 
 /**
  * Кастомная нижняя навигационная панель (Bottom Navigation Bar).
@@ -41,6 +39,7 @@ fun BottomNavBar(
     currentRoute: String?,
     onItemClick: (String) -> Unit
 ) {
+    val context = LocalAppContext.current
     val colors = MaterialTheme.colorScheme
     val items = NavBarItem.all
 
@@ -58,21 +57,21 @@ fun BottomNavBar(
             ) {
                 items.forEach {
                     val selected = currentRoute == it.route
-                    val activeBackground = LightGreen
-                    val activeIconColor = UltraGreen
+                    val activeBackground = colors.surfaceVariant
+                    val activeIconColor = colors.primary
                     val inactiveIconColor = colors.onSurfaceVariant
 
                     NavigationBarItem(
                         icon = {
                             Icon(
                                 painter = painterResource(it.icon),
-                                contentDescription = stringResource(id = it.label),
+                                contentDescription = context.getString(it.label),
                                 tint = if (selected) activeIconColor else inactiveIconColor
                             )
                         },
                         label = {
                             Text(
-                                text = stringResource(id = it.label),
+                                text = context.getString(it.label),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                                 style = MaterialTheme.typography.labelMedium,

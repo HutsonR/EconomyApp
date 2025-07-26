@@ -42,5 +42,5 @@ interface AccountUseCase {
      *
      * @param id ID счета
      * */
-    suspend fun getAccountHistory(id: Int): Result<AccountHistoryResponseModel>
+    suspend fun getAccountHistory(id: Int): Result<AccountHistoryResponseModel?>
 }
