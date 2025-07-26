@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -132,6 +133,7 @@ internal fun SettingsScreen(
                         trailingContent = {
                             Image(
                                 painter = painterResource(com.backcube.ui.R.drawable.ic_arrow_solid),
+                                colorFilter = ColorFilter.tint(colors.onSurfaceVariant),
                                 contentDescription = null
                             )
                         },

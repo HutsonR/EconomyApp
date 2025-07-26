@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -221,6 +222,7 @@ private fun TrailingContentColumn(
         Spacer(modifier = Modifier.width(16.dp))
         trailingContent?.invoke() ?: Image(
             painter = painterResource(R.drawable.ic_more),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
             contentDescription = null
         )
     }
