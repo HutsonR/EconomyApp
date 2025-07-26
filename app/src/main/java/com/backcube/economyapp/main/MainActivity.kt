@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.VibrationEffect
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -27,6 +28,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.backcube.domain.models.entities.AppLocale
 import com.backcube.domain.models.entities.AppTheme
+import com.backcube.domain.models.entities.HapticEffect
 import com.backcube.domain.models.entities.ThemeColor
 import com.backcube.domain.repositories.PreferencesRepository
 import com.backcube.economyapp.App
@@ -40,6 +42,7 @@ import com.backcube.ui.baseComponents.navbar.NavBarItem
 import com.backcube.ui.theme.EconomyAppTheme
 import com.backcube.ui.utils.LocalAppContext
 import com.backcube.ui.utils.LocaleManager
+import com.backcube.ui.utils.vibration.getVibratorCompat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -66,6 +69,9 @@ class MainActivity : ComponentActivity() {
             val locale by preferencesRepository.localeFlow.collectAsStateWithLifecycle(AppLocale.RU)
             val theme by preferencesRepository.themeFlow.collectAsStateWithLifecycle(AppTheme.LIGHT)
             val primaryColor = preferencesRepository.colorFlow.collectAsStateWithLifecycle(ThemeColor.GREEN)
+            val vibrationEnabled by preferencesRepository.vibrationEnabledFlow.collectAsStateWithLifecycle(false)
+            val hapticEffect by preferencesRepository.hapticEffectFlow.collectAsStateWithLifecycle(HapticEffect.MEDIUM)
+
 
             val localizedContext = remember(locale) {
                 LocaleManager.updateContextLocale(this@MainActivity, locale.name.lowercase())
@@ -78,7 +84,10 @@ class MainActivity : ComponentActivity() {
                     isDarkTheme = theme == AppTheme.DARK,
                     primaryColor = primaryColor.value
                 ) {
-                    AppScreen()
+                    AppScreen(
+                        vibrationEnabled = vibrationEnabled,
+                        hapticEffect = hapticEffect
+                    )
                 }
             }
         }
@@ -94,7 +103,10 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun AppScreen() {
+    fun AppScreen(
+        vibrationEnabled: Boolean,
+        hapticEffect: HapticEffect
+    ) {
         val context = LocalAppContext.current
         val isConnected by networkViewModel.isConnected.collectAsStateWithLifecycle()
         val navController = rememberNavController()
@@ -119,6 +131,7 @@ class MainActivity : ComponentActivity() {
                     isInternetConnected = isConnected,
                     currentRoute = currentRoute,
                     onItemClick = {
+                        if (vibrationEnabled) context.vibrate(hapticEffect)
                         navController.navigate(it) {
                             popUpTo(0)
                             launchSingleTop = true
@@ -147,4 +160,18 @@ class MainActivity : ComponentActivity() {
         controller.isAppearanceLightStatusBars = true
         controller.isAppearanceLightNavigationBars = false
     }
+
+    fun Context.vibrate(hapticEffect: HapticEffect) {
+        val vibrator = getVibratorCompat()
+
+        val duration = when (hapticEffect) {
+            HapticEffect.LIGHT -> 10L
+            HapticEffect.MEDIUM -> 30L
+            HapticEffect.HEAVY -> 60L
+        }
+
+        val effect = VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE)
+        vibrator.vibrate(effect)
+    }
+
 }
