@@ -6,18 +6,23 @@ plugins {
 }
 
 android {
-    namespace = "com.backcube.data"
+    namespace = "com.backcube.local"
     compileSdk = 35
 
     defaultConfig {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -32,9 +37,13 @@ android {
 dependencies {
     implementation(projects.core.base)
     implementation(projects.core.domain)
-    implementation(projects.core.data.local)
-    implementation(projects.core.data.remote)
 
     kapt(libs.dagger.compiler)
+
+    // local
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.datastore.preferences)
 }

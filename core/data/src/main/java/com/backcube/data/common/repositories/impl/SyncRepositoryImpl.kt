@@ -1,7 +1,7 @@
 package com.backcube.data.common.repositories.impl
 
-import com.backcube.data.local.api.SyncLocalDataSource
-import com.backcube.data.local.api.TransactionsLocalDataSource
+import com.backcube.data.local.api.db.TransactionsLocalDataSource
+import com.backcube.data.local.api.sync.SyncLocalDataSource
 import com.backcube.data.remote.api.TransactionsRemoteDataSource
 import com.backcube.data.remote.impl.models.request.transactions.TransactionRequestApiModel
 import com.backcube.domain.models.sync.SyncEntityType

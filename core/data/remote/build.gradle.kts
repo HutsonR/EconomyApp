@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -5,19 +7,31 @@ plugins {
     alias(libs.plugins.kotlin.plugin.serialization)
 }
 
+val tokenApiKey: String by lazy {
+    val properties = Properties().apply {
+        rootProject.file("local.properties").inputStream().use { load(it) }
+    }
+    properties.getProperty("MAIN_API_KEY", "")
+}
+
 android {
-    namespace = "com.backcube.data"
+    namespace = "com.backcube.local"
     compileSdk = 35
 
     defaultConfig {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "MAIN_API_KEY", tokenApiKey)
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -27,14 +41,20 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
     implementation(projects.core.base)
     implementation(projects.core.domain)
-    implementation(projects.core.data.local)
-    implementation(projects.core.data.remote)
 
     kapt(libs.dagger.compiler)
+
+    // remote
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.json)
     implementation(libs.kotlinx.serialization.json)
 }

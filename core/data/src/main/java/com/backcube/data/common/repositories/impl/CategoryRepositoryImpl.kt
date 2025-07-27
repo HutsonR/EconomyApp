@@ -1,7 +1,7 @@
 package com.backcube.data.common.repositories.impl
 
 import com.backcube.data.common.utils.notSameContentWith
-import com.backcube.data.local.api.CategoriesLocalDataSource
+import com.backcube.data.local.api.db.CategoriesLocalDataSource
 import com.backcube.data.remote.api.CategoriesRemoteDataSource
 import com.backcube.data.remote.impl.models.response.categories.toDomain
 import com.backcube.domain.models.categories.CategoryModel

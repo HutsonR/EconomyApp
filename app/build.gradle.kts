@@ -44,20 +44,24 @@ android {
 dependencies {
     kapt(libs.dagger.compiler)
 
-    for (dirName in listOf("core", "features")) {
-        fun File.isModule() = this.isDirectory && File(this, "build.gradle.kts").exists()
+    fun File.isGradleModule() = isDirectory && File(this, "build.gradle.kts").exists()
 
-        val dir = File(rootDir, dirName)
-        val moduleDirs = dir.listFiles()
-            ?.filter { it.isModule() }
+    fun collectModules(base: File, prefix: String = ""): List<String> {
+        if (!base.exists()) return emptyList()
+        return base.walkTopDown()
+            .filter { it.isGradleModule() }
+            .map { file ->
+                val relativePath = file.relativeTo(rootDir).invariantSeparatorsPath
+                ":" + relativePath.replace("/", ":")
+            }
+            .toList()
+    }
 
-        val modules = moduleDirs
-            ?.map { ":$dirName:${it.name}" }
-            ?: emptyList()
+    val modulePaths = listOf("core", "features")
+        .flatMap { collectModules(File(rootDir, it)) }
 
-        modules.forEach { module ->
-            implementation(project(module))
-        }
+    modulePaths.forEach { path ->
+        implementation(project(path))
     }
 }
 

@@ -1,6 +1,6 @@
 package com.backcube.data.common.repositories.impl
 
-import com.backcube.data.local.impl.datastore.DataStoreManager
+import com.backcube.data.local.api.datastore.PreferencesDataSource
 import com.backcube.domain.models.entities.AppLocale
 import com.backcube.domain.models.entities.AppTheme
 import com.backcube.domain.models.entities.HapticEffect
@@ -12,20 +12,20 @@ import javax.inject.Singleton
 
 @Singleton
 internal class PreferencesRepositoryImpl @Inject constructor(
-    private val dataStoreManager: DataStoreManager
+    private val preferencesDataSource: PreferencesDataSource
 ) : PreferencesRepository {
-    override val themeFlow: Flow<AppTheme> = dataStoreManager.themeFlow
-    override suspend fun setTheme(theme: AppTheme) = dataStoreManager.setTheme(theme)
+    override val themeFlow: Flow<AppTheme> = preferencesDataSource.themeFlow
+    override suspend fun setTheme(theme: AppTheme) = preferencesDataSource.setTheme(theme)
 
-    override val colorFlow: Flow<ThemeColor> = dataStoreManager.colorFlow
-    override suspend fun setColor(color: ThemeColor) = dataStoreManager.setColor(color)
+    override val colorFlow: Flow<ThemeColor> = preferencesDataSource.colorFlow
+    override suspend fun setColor(color: ThemeColor) = preferencesDataSource.setColor(color)
 
-    override val vibrationEnabledFlow: Flow<Boolean> = dataStoreManager.vibrationEnabledFlow
-    override suspend fun setVibrationEnabled(enabled: Boolean) = dataStoreManager.setVibrationEnabled(enabled)
+    override val vibrationEnabledFlow: Flow<Boolean> = preferencesDataSource.vibrationEnabledFlow
+    override suspend fun setVibrationEnabled(enabled: Boolean) = preferencesDataSource.setVibrationEnabled(enabled)
 
-    override val hapticEffectFlow: Flow<HapticEffect> = dataStoreManager.hapticEffectFlow
-    override suspend fun setHapticEffect(effect: HapticEffect) = dataStoreManager.setHapticEffect(effect)
+    override val hapticEffectFlow: Flow<HapticEffect> = preferencesDataSource.hapticEffectFlow
+    override suspend fun setHapticEffect(effect: HapticEffect) = preferencesDataSource.setHapticEffect(effect)
 
-    override val localeFlow: Flow<AppLocale> = dataStoreManager.localeFlow
-    override suspend fun setLocale(locale: AppLocale) = dataStoreManager.setLocale(locale)
+    override val localeFlow: Flow<AppLocale> = preferencesDataSource.localeFlow
+    override suspend fun setLocale(locale: AppLocale) = preferencesDataSource.setLocale(locale)
 }
