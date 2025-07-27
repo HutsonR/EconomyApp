@@ -1,4 +1,4 @@
-package com.backcube.data.remote.di
+package com.backcube.data.common.repositories.di
 
 import android.content.Context
 import com.backcube.data.common.utils.NetworkConnectivityObserver
@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-internal class NetworkModule {
+internal class NetworkConnectivityModule {
 
     @Provides
     fun provideConnectivityObserver(context: Context): ConnectivityObserver {

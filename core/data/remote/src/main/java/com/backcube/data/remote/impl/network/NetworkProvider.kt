@@ -1,6 +1,6 @@
 package com.backcube.data.remote.impl.network
 
-import com.backcube.data.BuildConfig
+import com.backcube.local.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

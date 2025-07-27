@@ -1,4 +1,4 @@
-package com.backcube.data.remote.di
+package com.backcube.data.common.repositories.di
 
 import com.backcube.data.common.repositories.impl.AccountRepositoryImpl
 import com.backcube.data.common.repositories.impl.CategoryRepositoryImpl
