@@ -66,7 +66,7 @@ internal class DataStoreManager @Inject constructor(
         context.dataStore.edit { prefs -> prefs[LOCALE_KEY] = locale.name }
     }
 
-    inline fun <reified T : Enum<T>> safeValueOf(name: String?, default: T): T {
+    private inline fun <reified T : Enum<T>> safeValueOf(name: String?, default: T): T {
         return enumValues<T>()
             .firstOrNull { it.name.equals(name, ignoreCase = true) }
             ?: default

@@ -1,7 +1,7 @@
 package com.backcube.data.common.repositories.impl
 
 import com.backcube.data.common.utils.notSameContentWith
-import com.backcube.data.local.api.AccountLocalDataSource
+import com.backcube.data.local.api.db.AccountLocalDataSource
 import com.backcube.data.remote.api.AccountRemoteDataSource
 import com.backcube.data.remote.impl.models.request.accounts.toApi
 import com.backcube.data.remote.impl.models.response.accounts.toDomain

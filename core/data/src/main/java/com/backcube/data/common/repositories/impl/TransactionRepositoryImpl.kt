@@ -2,10 +2,10 @@ package com.backcube.data.common.repositories.impl
 
 import com.backcube.data.common.repositories.mappers.toApiDate
 import com.backcube.data.common.utils.notSameContentWith
-import com.backcube.data.local.api.AccountLocalDataSource
-import com.backcube.data.local.api.CategoriesLocalDataSource
-import com.backcube.data.local.api.SyncLocalDataSource
-import com.backcube.data.local.api.TransactionsLocalDataSource
+import com.backcube.data.local.api.db.AccountLocalDataSource
+import com.backcube.data.local.api.db.CategoriesLocalDataSource
+import com.backcube.data.local.api.db.TransactionsLocalDataSource
+import com.backcube.data.local.api.sync.SyncLocalDataSource
 import com.backcube.data.local.mapper.sync.mapToSyncTransactionDelete
 import com.backcube.data.local.mapper.sync.toFakeTransactionModel
 import com.backcube.data.local.mapper.sync.toFakeTransactionResponseModel

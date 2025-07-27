@@ -1,6 +1,6 @@
-package com.backcube.data.local.impl.datasources
+package com.backcube.data.local.impl.datasources.db
 
-import com.backcube.data.local.api.TransactionsLocalDataSource
+import com.backcube.data.local.api.db.TransactionsLocalDataSource
 import com.backcube.data.local.impl.dao.TransactionDao
 import com.backcube.data.local.impl.entities.transactions.TransactionResponseEntity
 import com.backcube.domain.models.transactions.TransactionResponseModel

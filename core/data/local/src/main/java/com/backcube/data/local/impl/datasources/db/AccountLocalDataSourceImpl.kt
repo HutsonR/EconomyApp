@@ -1,6 +1,6 @@
-package com.backcube.data.local.impl.datasources
+package com.backcube.data.local.impl.datasources.db
 
-import com.backcube.data.local.api.AccountLocalDataSource
+import com.backcube.data.local.api.db.AccountLocalDataSource
 import com.backcube.data.local.impl.dao.AccountDao
 import com.backcube.data.local.impl.entities.accounts.AccountEntity
 import com.backcube.data.local.impl.entities.accounts.AccountHistoryEntity

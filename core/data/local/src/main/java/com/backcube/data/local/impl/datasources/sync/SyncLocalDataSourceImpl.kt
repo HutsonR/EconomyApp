@@ -1,6 +1,6 @@
-package com.backcube.data.local.impl.datasources
+package com.backcube.data.local.impl.datasources.sync
 
-import com.backcube.data.local.api.SyncLocalDataSource
+import com.backcube.data.local.api.sync.SyncLocalDataSource
 import com.backcube.data.local.impl.dao.SyncQueueDao
 import com.backcube.data.local.impl.entities.SyncQueueEntity
 import com.backcube.domain.models.sync.SyncQueueModel
@@ -15,11 +15,11 @@ internal class SyncLocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun enqueueOperation(operation: SyncQueueModel) {
-        syncQueueDao.enqueue(SyncQueueEntity.toEntity(operation))
+        syncQueueDao.enqueue(SyncQueueEntity.Companion.toEntity(operation))
     }
 
     override suspend fun removeOperation(operation: SyncQueueModel) {
-        syncQueueDao.remove(SyncQueueEntity.toEntity(operation))
+        syncQueueDao.remove(SyncQueueEntity.Companion.toEntity(operation))
     }
 
     override suspend fun removeOperationById(id: Int) {

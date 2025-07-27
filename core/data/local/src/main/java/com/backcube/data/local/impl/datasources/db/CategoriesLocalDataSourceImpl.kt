@@ -1,6 +1,6 @@
-package com.backcube.data.local.impl.datasources
+package com.backcube.data.local.impl.datasources.db
 
-import com.backcube.data.local.api.CategoriesLocalDataSource
+import com.backcube.data.local.api.db.CategoriesLocalDataSource
 import com.backcube.data.local.impl.dao.CategoryDao
 import com.backcube.data.local.impl.entities.categories.CategoryEntity
 import com.backcube.domain.models.categories.CategoryModel

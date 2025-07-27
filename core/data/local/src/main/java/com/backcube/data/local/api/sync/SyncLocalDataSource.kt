@@ -1,4 +1,4 @@
-package com.backcube.data.local.api
+package com.backcube.data.local.api.sync
 
 import com.backcube.domain.models.sync.SyncQueueModel
 
